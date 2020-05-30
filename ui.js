@@ -70,7 +70,7 @@ function conPerReq() {
 
 function checkUpdate() {
     toast('正在检查更新')
-    var versionUrl = 'https://cdn.jsdelivr.net/gh/monsternone/tmall-miao/version'
+    var versionUrl = 'https://cdn.jsdelivr.net/gh/monsternone/tmall-miao@latest/version'
     http.get(versionUrl, {}, function(res, err){
         if(err){
             toast('检查更新出错，请手动前往项目地址查看')
