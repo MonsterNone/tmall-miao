@@ -4,11 +4,14 @@ console.show()
 console.log('开始完成喵币任务...')
 console.log('按音量下键停止')
 
+device.keepScreenDim(5 * 60 * 1000)
+
 function registerKey() {
     events.observeKey()
     events.onKeyDown('volume_down', function (event) {
         console.log('喵币任务脚本停止了')
         console.log('请手动切换回主页面')
+        device.cancelKeepingAwake()
         exit()
     })
 }
@@ -34,6 +37,7 @@ while (true) {
     if (jumpButton == null) {
         console.log('没找到 去浏览/去完成 按钮。也许任务已经全部做完了。退出。')
         console.log('请手动切换回主页面')
+        device.cancelKeepingAwake()
         exit()
     }
 
@@ -42,7 +46,10 @@ while (true) {
 
     console.log('等待任务完成...')
     sleep(15000) // 等待15秒
-    textMatches(/任务已完成|任务完成/).waitFor() // 等待已完成出现
+    while(true) {
+        if (textMatches(/.*完成.*/).exists() || descMatches(/.*完成.*/).exists()) // 等待已完成出现
+            break
+    }
 
     console.log('任务完成，返回')
     back()
