@@ -26,7 +26,7 @@ app.startActivity({
 sleep(2000)
 
 console.log('正在查找开红包按钮...')
-var firstButton = idContains('J_MM_RED_COVER_1_0').findOne(5000)
+var firstButton = idContains('J_MM_RED_COVER_1_0').findOne(15000) // 15秒等待页面加载
 
 if (firstButton == null) {
     console.log('没找到开红包按钮，可能已经领过了')
@@ -36,11 +36,11 @@ if (firstButton == null) {
 
 firstButton.click()
 
-if (textContains('开宝箱')) {
-    console.log('领红包已完成')
-    device.cancelKeepingAwake()
-    exit()
-}
+// if (textContains('开宝箱')) {
+//     console.log('领红包已完成')
+//     device.cancelKeepingAwake()
+//     exit()
+// }
 
 for (var i = 0; i < 2; i++) {
     console.log('正在再次领取...')

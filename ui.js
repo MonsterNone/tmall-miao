@@ -1,6 +1,6 @@
 "ui";
 
-const VERSION = 2
+const VERSION = 3
 
 ui.layout(
     <vertical>
@@ -25,16 +25,7 @@ ui.layout(
 threads.start(checkUpdate)
 
 ui.automationPermission.click(function() {
-    if (auto.service == null) { 
-        toast('进入 无障碍 ，选择 天猫618喵币助手')
-        threads.start(function () { 
-            auto()
-        })
-        toast('无障碍权限授予成功')
-    }
-    else {
-        toast('无障碍权限授予成功')
-    }
+    threads.start(autoPerReq)
 })
 
 ui.consolePermission.click(function() {
@@ -56,7 +47,7 @@ ui.checkUpdate.click(function() {
 function autoPerReq() {
     toast('进入 无障碍 ，选择 天猫618喵币助手')
     auto.waitFor()
-    toast('无障碍权限授予成功')
+    toast('无障碍权限授予成功') 
 }
 
 function conPerReq() {
@@ -78,12 +69,10 @@ function checkUpdate() {
         }
         var version = res.body.string()
         if (version != VERSION) {
-            confirm("有新的版本，前往下载")
-                .then(go => {
-                    if(go){
-                        app.openUrl('https://github.com/MonsterNone/tmall-miao/releases')
-                    }
-                })
+            var go = confirm("有新的版本，前往下载")
+            if (go) {
+                app.openUrl('https://github.com/MonsterNone/tmall-miao/releases')
+            }
         }
         else {
             toast('当前为最新版')
