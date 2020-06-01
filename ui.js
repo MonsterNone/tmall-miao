@@ -50,7 +50,9 @@ ui.checkUpdate.click(function() {
 })
 
 function autoPerReq() {
-    toast('进入 无障碍 ，选择 天猫618喵币助手')
+    if(!auto.service) {
+        toast('进入 无障碍 ，选择 天猫618喵币助手')
+    }
     auto.waitFor()
     toast('无障碍权限授予成功') 
 }
