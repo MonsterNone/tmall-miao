@@ -1,4 +1,7 @@
-auto.waitFor()
+if(!auto.service) {
+    toast('无障碍服务未启动！退出！')
+    exit()
+}
 
 console.show()
 console.log('开始完成喵币任务...')

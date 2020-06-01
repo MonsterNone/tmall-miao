@@ -1,8 +1,12 @@
-auto.waitFor()
+if(!auto.service) {
+    toast('无障碍服务未启动！退出！')
+    exit()
+}
 
 console.show()
 console.log('开始领取每日红包...')
 console.log('按音量下键停止')
+console.log('这部分可能会无法自动，如果异常退出手动领取就好')
 
 device.keepScreenDim(5 * 60 * 1000)
 
@@ -34,6 +38,7 @@ if (firstButton == null) {
     exit()
 }
 
+sleep(2000)
 firstButton.click()
 
 // if (textContains('开宝箱')) {
@@ -44,12 +49,14 @@ firstButton.click()
 
 for (var i = 0; i < 2; i++) {
     console.log('正在再次领取...')
-    var againButton = idContains('J_MM_RED_RESULT_1_0').findOne(5000)
+    var againButton = idMatches(/J_MM_RED_RESULT_1_0|J_MM_RED_INFO_1_0/).findOne(5000)
     if (againButton == null) {
         console.log('没找到再次领取的入口，退出')
         device.cancelKeepingAwake()
         exit()
     }
+    sleep(2000)
+    againButton.click()
 }
 
 console.log('领红包已完成')
