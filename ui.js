@@ -1,6 +1,6 @@
 "ui";
 
-const VERSION = 6
+const VERSION = 7
 
 ui.layout(
     <vertical>
