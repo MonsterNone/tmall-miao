@@ -50,7 +50,7 @@ while (true) {
     console.log('等待任务完成...')
     sleep(15000) // 等待15秒
     while(true) {
-        if (textMatches(/.*完成.*|.*失败.*/).exists() || descMatches(/.*完成.*|.*失败.*/).exists()) // 等待已完成出现，有可能失败
+        if (textMatches(/.*完成.*|.*失败.*|.*上限.*/).exists() || descMatches(/.*完成.*|.*失败.*|.*上限.*/).exists()) // 等待已完成出现，有可能失败
             break
     }
 

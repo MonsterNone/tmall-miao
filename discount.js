@@ -40,6 +40,7 @@ if (firstButton == null) {
 
 sleep(2000)
 firstButton.click()
+sleep(2000)
 
 // if (textContains('开宝箱')) {
 //     console.log('领红包已完成')
@@ -58,6 +59,8 @@ for (var i = 0; i < 2; i++) {
     sleep(2000)
     againButton.click()
 }
+
+alert('请手动点击再次领取确保没有遗漏。')
 
 console.log('领红包已完成')
 console.log('请手动切换回主页面')
