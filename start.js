@@ -1,4 +1,4 @@
-if(!auto.service) {
+if (!auto.service) {
     toast('无障碍服务未启动！退出！')
     exit()
 }
@@ -31,11 +31,11 @@ app.startActivity({
 sleep(2000)
 
 console.log('等待页面加载...')
-text('做任务，领喵币').findOne().click() // 任务列表入口，如果找不到会阻塞
 
 while (true) {
     console.log('寻找任务入口...')
-    var jumpButton = textMatches(/去浏览|去完成/).findOne(10000) // 找进入任务的按钮，5秒
+    text('做任务，领喵币').findOne(20000).click()
+    var jumpButton = textMatches(/去浏览|去完成/).findOne(10000) // 找进入任务的按钮，10秒
 
     if (jumpButton == null) {
         console.log('没找到 去浏览/去完成 按钮。也许任务已经全部做完了。退出。')
@@ -48,21 +48,46 @@ while (true) {
     jumpButton.click()
 
     console.log('等待任务完成...')
-    sleep(15000) // 等待15秒
-    while(true) {
-        if (textMatches(/.*完成.*|.*失败.*|.*上限.*/).exists() || descMatches(/.*完成.*|.*失败.*|.*上限.*/).exists()) // 等待已完成出现，有可能失败
+
+    if (descMatches(/.*浏览.*/).findOne(10000)) { // 等待浏览出现
+        let v = className('android.support.v7.widget.RecyclerView').findOnce() // 滑动
+        if (v) {
+            sleep(1000)
+            v.scrollForward()
+        }
+    }
+
+    sleep(5000) // 等待15秒
+
+    let finish_c = 0
+    while (finish_c < 100) { // 0.5 * 100 = 50 秒，防止死循环
+        if (textMatches(/.*完成.*|.*失败.*|.*上限.*|.*开小差.*/).exists() || descMatches(/.*完成.*|.*失败.*|.*上限.*|.*开小差.*/).exists()) // 等待已完成出现，有可能失败
             break
+        sleep(500)
+        finish_c++
+    }
+
+    if (finish_c > 99) {
+        console.log('未检测到任务完成标识。退出。')
+        console.log('如果你认为这是一个bug请截图反馈。')
+        console.log('请手动切换回主页面')
+        device.cancelKeepingAwake()
+        exit()
     }
 
     console.log('任务完成，返回')
-    var backButton = textContains('返回618列车').clickable(true).findOnce() || descContains('返回618列车').clickable(true).findOnce() // 有可能是浏览首页，有可能无法点击
-    if (backButton) {
-        // console.log('点击返回按钮')
-        // sleep(10000)
-        backButton.click()
+
+    if (currentActivity() == 'com.taobao.tao.TBMainActivity') {
+        var backButton = descContains('返回618列车').findOnce() // 有可能是浏览首页，有可能无法点击
+        if (backButton) {
+            if (! backButton.parent().parent().parent().click()) {
+                back()
+            }
+        } else {
+            back()
+        }
     }
     else {
-        // sleep(10000)
         back()
     }
 

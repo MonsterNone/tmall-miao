@@ -1,6 +1,6 @@
 "ui";
 
-const VERSION = 9
+const VERSION = 10
 
 ui.layout(
     <frame>
@@ -9,8 +9,10 @@ ui.layout(
             <button id="consolePermission" text="2. 授予悬浮窗权限" />
             <button id="startTask" text="3. 开始每日任务" />
             <button id="discountTask" text="4. 领取618红包（每天三次）" />
-            <button id="showQun" text="加入618列车组队交流群" />
+            <button id="specialTask" text="5. 领取会场红包（0点领红包最大）" />
+            <button id="showQun" text="加入618列车组队交流群 - 每天4+满员车" />
             <button id="checkUpdate" text="检查更新" />
+            <button id="jd" text="领取京东618红包" />
             <text text="部分机型无障碍权限授予部分可能出现bug，请关闭软件重新打开授予权限。" textStyle="bold|italic" textColor="red" />
             <text text="如果始终无法授予请重启手机尝试" />
             <text text="使用说明" textColor="red" />
@@ -26,9 +28,11 @@ ui.layout(
             <text id="ver" line="2" />
         </vertical>
         <vertical id="qun" visibility="gone" bg="#ffffff">
-            <img src="file://res/qun.png" />
+            <img src="file://res/qun.jpg" />
             <button id="hideQun" style="Widget.AppCompat.Button.Colored" text="隐藏" />
+            <text text="每天9点，群公告准时发车" />
             <text text="截图后打开微信扫描二维码加入" />
+            <text text="一群已满200人，二群新建，车队共享" />
             <text text="如果二维码无法进入请添加小助手微信拉进群：zs2020618" />
         </vertical>
     </frame>
@@ -54,6 +58,10 @@ ui.discountTask.click(function() {
     engines.execScriptFile('./discount.js')
 })
 
+ui.specialTask.click(function() {
+    engines.execScriptFile('./special.js')
+})
+
 ui.showQun.click(function() {
     ui.qun.visibility = 0 
 })
@@ -64,6 +72,10 @@ ui.hideQun.click(function() {
 
 ui.checkUpdate.click(function() {
     threads.start(checkUpdate)
+})
+
+ui.jd.click(function() {
+    app.openUrl('https://u.jd.com/sPttYC')
 })
 
 function autoPerReq() {
