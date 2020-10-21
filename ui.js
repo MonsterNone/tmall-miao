@@ -1,6 +1,6 @@
 "ui";
 
-const VERSION = 10
+const VERSION = 12
 
 ui.layout(
     <frame>
@@ -8,11 +8,13 @@ ui.layout(
             <button id="automationPermission" text="1. 授予无障碍权限" />
             <button id="consolePermission" text="2. 授予悬浮窗权限" />
             <button id="startTask" text="3. 开始每日任务" />
-            <button id="discountTask" text="4. 领取618红包（每天三次）" />
-            <button id="specialTask" text="5. 领取会场红包（0点领红包最大）" />
-            <button id="showQun" text="加入618列车组队交流群 - 每天4+满员车" />
+            <button id="discountTask" text="4. 领取双十一红包（21日0点开始）" />
+            {/* <button id="specialTask" text="5. 领取会场红包（0点领红包最大）" /> */}
+            {/* <button id="showQun" text="加入双十一交流群" /> */}
+            <button id="feedback" text="正版发布地址！小心病毒盗版！" />
             <button id="checkUpdate" text="检查更新" />
-            <button id="jd" text="领取京东618红包" />
+            {/* <button id="jd" text="领取京东双十一红包" /> */}
+            <text text="初版不能自动完成所有任务，后续版本将继续优化" textStyle="bold|italic" textColor="red" />
             <text text="部分机型无障碍权限授予部分可能出现bug，请关闭软件重新打开授予权限。" textStyle="bold|italic" textColor="red" />
             <text text="如果始终无法授予请重启手机尝试" />
             <text text="使用说明" textColor="red" />
@@ -23,16 +25,16 @@ ui.layout(
             <text text="1. 本脚本基于Auto.JS（感谢原开发者）" />
             <text text="2. 免费！" />
             <text autoLink="web" text="3. 项目地址https://github.com/MonsterNone/tmall-miao" />
-            <text text="4. 运行中出现bug请附上详细控制台log、页面截图等提交issue" />
-            <text text="5. 由于调用淘宝打开页面，部分手机管家可能会误报为诱导软件，实际上本软件绝无任何病毒行为" />
+            {/* <text text="4. 运行中出现bug请附上详细控制台log、页面截图等提交issue" /> */}
+            {/* <text text="5. 由于调用淘宝打开页面，部分手机管家可能会误报为诱导软件，实际上本软件绝无任何病毒行为" /> */}
             <text id="ver" line="2" />
         </vertical>
         <vertical id="qun" visibility="gone" bg="#ffffff">
-            <img src="file://res/qun.jpg" />
+            <img src="file://res/qun.png" />
             <button id="hideQun" style="Widget.AppCompat.Button.Colored" text="隐藏" />
-            <text text="每天9点，群公告准时发车" />
+            {/* <text text="每天9点，群公告准时发车" />
             <text text="截图后打开微信扫描二维码加入" />
-            <text text="一群已满200人，二群新建，车队共享" />
+            <text text="一群已满200人，二群新建，车队共享" /> */}
             <text text="如果二维码无法进入请添加小助手微信拉进群：zs2020618" />
         </vertical>
     </frame>
@@ -58,12 +60,16 @@ ui.discountTask.click(function() {
     engines.execScriptFile('./discount.js')
 })
 
-ui.specialTask.click(function() {
-    engines.execScriptFile('./special.js')
-})
+// ui.specialTask.click(function() {
+//     engines.execScriptFile('./special.js')
+// })
 
-ui.showQun.click(function() {
-    ui.qun.visibility = 0 
+// ui.showQun.click(function() {
+//     ui.qun.visibility = 0 
+// })
+
+ui.feedback.click(function() {
+    app.openUrl('https://github.com/monsternone/tmall-miao')
 })
 
 ui.hideQun.click(function() {
@@ -74,13 +80,13 @@ ui.checkUpdate.click(function() {
     threads.start(checkUpdate)
 })
 
-ui.jd.click(function() {
-    app.openUrl('https://u.jd.com/sPttYC')
-})
+// ui.jd.click(function() {
+//     app.openUrl('https://u.jd.com/sPttYC')
+// })
 
 function autoPerReq() {
     if(!auto.service) {
-        toast('进入 无障碍 ，选择 天猫618喵币助手')
+        toast('进入 无障碍 ，选择 天猫双十一喵币助手')
     }
     auto.waitFor()
     toast('无障碍权限授予成功') 

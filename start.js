@@ -22,7 +22,7 @@ threads.start(registerKey)
 
 // 打开淘宝活动页面
 console.log('正在打开淘宝...')
-var url = 'pages.tmall.com/wow/z/hdwk/n-hdwk-solution/2020618-single'
+var url = 'pages.tmall.com/wow/z/hdwk/act-20201111/index'
 
 app.startActivity({
     action: "VIEW",
@@ -32,10 +32,11 @@ sleep(2000)
 
 console.log('等待页面加载...')
 
+text('赚喵币').findOne(20000).click()
+
 while (true) {
     console.log('寻找任务入口...')
-    text('做任务，领喵币').findOne(20000).click()
-    var jumpButton = textMatches(/去浏览|去完成/).findOne(10000) // 找进入任务的按钮，10秒
+    var jumpButton = textMatches(/去浏览/).findOne(10000) // 找进入任务的按钮，10秒
 
     if (jumpButton == null) {
         console.log('没找到 去浏览/去完成 按钮。也许任务已经全部做完了。退出。')
