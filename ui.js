@@ -1,6 +1,6 @@
 "ui";
 
-const VERSION = 12
+const VERSION = 13
 
 ui.layout(
     <frame>
@@ -8,14 +8,15 @@ ui.layout(
             <button id="automationPermission" text="1. 授予无障碍权限" />
             <button id="consolePermission" text="2. 授予悬浮窗权限" />
             <button id="startTask" text="3. 开始每日任务" />
-            <button id="discountTask" text="4. 领取双十一红包（21日0点开始）" />
+            <button id="discountTask" text="4. 领取双十一红包（0点红包更大）" />
             {/* <button id="specialTask" text="5. 领取会场红包（0点领红包最大）" /> */}
-            {/* <button id="showQun" text="加入双十一交流群" /> */}
+            <button id="caidan" text="前往天猫开彩蛋活动" />
+            <button id="showQun" text="加入双十一互助交流群" />
             <button id="feedback" text="正版发布地址！小心病毒盗版！" />
             <button id="checkUpdate" text="检查更新" />
             {/* <button id="jd" text="领取京东双十一红包" /> */}
-            <text text="初版不能自动完成所有任务，后续版本将继续优化" textStyle="bold|italic" textColor="red" />
-            <text text="部分机型无障碍权限授予部分可能出现bug，请关闭软件重新打开授予权限。" textStyle="bold|italic" textColor="red" />
+            <text text="使用脚本有机率导致任务喵币收益减少！推荐在运行之前关闭手机淘宝“读取软件列表”权限。自测未出现问题。如果收益变少，关闭重新打开淘宝可能会产生效果。使用脚本导致的任何可能结果与本人无关。" textStyle="bold|italic" textColor="red" textSize="18sp" />
+            <text text="部分机型无障碍权限授予部分可能出现bug，请关闭软件重新打开授予权限。" textStyle="italic" textColor="blue" />
             <text text="如果始终无法授予请重启手机尝试" />
             <text text="使用说明" textColor="red" />
             <text text="1. 运行脚本之前建议按首先点击授予权限" />
@@ -32,9 +33,9 @@ ui.layout(
         <vertical id="qun" visibility="gone" bg="#ffffff">
             <img src="file://res/qun.png" />
             <button id="hideQun" style="Widget.AppCompat.Button.Colored" text="隐藏" />
-            {/* <text text="每天9点，群公告准时发车" />
+            {/* <text text="每天9点，群公告准时发车" /> */}
             <text text="截图后打开微信扫描二维码加入" />
-            <text text="一群已满200人，二群新建，车队共享" /> */}
+            {/* <text text="一群已满200人，二群新建，车队共享" /> */}
             <text text="如果二维码无法进入请添加小助手微信拉进群：zs2020618" />
         </vertical>
     </frame>
@@ -44,19 +45,19 @@ ui.ver.setText('\n版本：V' + VERSION)
 
 threads.start(checkUpdate)
 
-ui.automationPermission.click(function() {
+ui.automationPermission.click(function () {
     threads.start(autoPerReq)
 })
 
-ui.consolePermission.click(function() {
+ui.consolePermission.click(function () {
     threads.start(conPerReq)
 })
 
-ui.startTask.click(function() {
+ui.startTask.click(function () {
     engines.execScriptFile('./start.js')
 })
 
-ui.discountTask.click(function() {
+ui.discountTask.click(function () {
     engines.execScriptFile('./discount.js')
 })
 
@@ -64,19 +65,27 @@ ui.discountTask.click(function() {
 //     engines.execScriptFile('./special.js')
 // })
 
-// ui.showQun.click(function() {
-//     ui.qun.visibility = 0 
-// })
+ui.caidan.click(function () {
+    var url = 'm.tb.cn/h.414TmHQ'
+    app.startActivity({
+        action: "VIEW",
+        data: "taobao://" + url
+    })
+})
 
-ui.feedback.click(function() {
+ui.showQun.click(function () {
+    ui.qun.visibility = 0
+})
+
+ui.feedback.click(function () {
     app.openUrl('https://github.com/monsternone/tmall-miao')
 })
 
-ui.hideQun.click(function() {
+ui.hideQun.click(function () {
     ui.qun.visibility = 8
 })
 
-ui.checkUpdate.click(function() {
+ui.checkUpdate.click(function () {
     threads.start(checkUpdate)
 })
 
@@ -85,11 +94,11 @@ ui.checkUpdate.click(function() {
 // })
 
 function autoPerReq() {
-    if(!auto.service) {
+    if (!auto.service) {
         toast('进入 无障碍 ，选择 天猫双十一喵币助手')
     }
     auto.waitFor()
-    toast('无障碍权限授予成功') 
+    toast('无障碍权限授予成功')
 }
 
 function conPerReq() {
@@ -104,8 +113,8 @@ function conPerReq() {
 function checkUpdate() {
     toast('正在检查更新')
     var versionUrl = 'https://cdn.jsdelivr.net/gh/monsternone/tmall-miao@latest/version'
-    http.get(versionUrl, {}, function(res, err){
-        if(err){
+    http.get(versionUrl, {}, function (res, err) {
+        if (err) {
             toast('检查更新出错，请手动前往项目地址查看')
             return
         }
@@ -115,10 +124,8 @@ function checkUpdate() {
             if (go) {
                 app.openUrl('https://github.com/MonsterNone/tmall-miao/releases')
             }
-        }
-        else {
+        } else {
             toast('当前为最新版')
         }
     })
 }
-

@@ -20,6 +20,65 @@ function registerKey() {
 }
 threads.start(registerKey)
 
+// 自定义一个findTimeout，find_f是原本的查询器 text('sss').find()
+function findTimeout(findF, timeout) {
+    function findSth() {
+        result = findF.find()
+        if (result.nonEmpty()) {
+            return
+        }
+        sleep(50)
+        findSth()
+    }
+
+    var result
+    var thread = threads.start(findSth)
+    thread.join(timeout)
+
+    return result.nonEmpty() ? result : null
+}
+
+// 查找任务按钮
+function findTask() {
+    var jumpButtonFind = textMatches(/去浏览|去搜索|去完成/) // 找进入任务的按钮，10秒
+    var jumpButtons = findTimeout(jumpButtonFind, 10000)
+
+    if (jumpButtons == null) {
+        var awardButtonFind = textMatches(/领取奖励/)
+        var awardButtons = findTimeout(awardButtonFind, 10000)
+
+        if (awardButtons) {
+            for (var i = 0; i < awardButtons.length; i++) {
+                awardButtons[i].click()
+                sleep(1000)
+            }
+        }
+
+        return null
+    }
+
+    for (var i = 0; i < jumpButtons.length; i++) {
+        var taskName
+        try {
+            taskName = jumpButtons[i].parent().child(0).child(0).text()
+        } catch (err) {
+            continue
+        }
+        if (taskName) {
+            if (taskName.match(/签到/)) {
+                sleep(1000)
+                jumpButtons[i].click()
+                sleep(5000)
+            }
+            if (!taskName.match(/邀请|登录/)) {
+                return jumpButtons[i]
+            }
+        }
+    }
+
+    return null
+}
+
 // 打开淘宝活动页面
 console.log('正在打开淘宝...')
 var url = 'pages.tmall.com/wow/z/hdwk/act-20201111/index'
@@ -36,7 +95,7 @@ text('赚喵币').findOne(20000).click()
 
 while (true) {
     console.log('寻找任务入口...')
-    var jumpButton = textMatches(/去浏览/).findOne(10000) // 找进入任务的按钮，10秒
+    var jumpButton = findTask()
 
     if (jumpButton == null) {
         console.log('没找到 去浏览/去完成 按钮。也许任务已经全部做完了。退出。')
@@ -45,7 +104,8 @@ while (true) {
         exit()
     }
 
-    console.log('进入任务...')
+    console.log('随机延时后进入任务...')
+    sleep(random() * 2500)
     jumpButton.click()
 
     console.log('等待任务完成...')
@@ -81,14 +141,13 @@ while (true) {
     if (currentActivity() == 'com.taobao.tao.TBMainActivity') {
         var backButton = descContains('返回618列车').findOnce() // 有可能是浏览首页，有可能无法点击
         if (backButton) {
-            if (! backButton.parent().parent().parent().click()) {
+            if (!backButton.parent().parent().parent().click()) {
                 back()
             }
         } else {
             back()
         }
-    }
-    else {
+    } else {
         back()
     }
 
