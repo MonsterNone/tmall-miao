@@ -1,5 +1,7 @@
 # 目前淘宝App已经有针对Auto.JS等类似物无障碍权限的检测，每次任务只能给100~300金币，请自行斟酌，谨慎使用脚本
 
+根据https://www.52pojie.cn/thread-1289675-1-1.html ，安装淘宝9.0版本可以应对检测。链接贴上https://www.wandoujia.com/apps/32267/history_v253
+
 ---
 
 # tmall-miao
