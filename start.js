@@ -40,22 +40,8 @@ function findTimeout(findF, timeout) {
 
 // 查找任务按钮
 function findTask() {
-    var jumpButtonFind = textMatches(/去浏览|去搜索|去完成/) // 找进入任务的按钮，10秒
+    var jumpButtonFind = textMatches(/去浏览|去搜索|去完成|签到|逛一逛/) // 找进入任务的按钮，10秒
     var jumpButtons = findTimeout(jumpButtonFind, 10000)
-
-    if (jumpButtons == null) {
-        var awardButtonFind = textMatches(/领取奖励/)
-        var awardButtons = findTimeout(awardButtonFind, 10000)
-
-        if (awardButtons) {
-            for (var i = 0; i < awardButtons.length; i++) {
-                awardButtons[i].click()
-                sleep(1000)
-            }
-        }
-
-        return null
-    }
 
     for (var i = 0; i < jumpButtons.length; i++) {
         var taskName
@@ -68,9 +54,9 @@ function findTask() {
             if (taskName.match(/签到/)) {
                 sleep(1000)
                 jumpButtons[i].click()
-                sleep(5000)
+                sleep(8000)
             }
-            if (!taskName.match(/邀请|登录/)) {
+            if (!taskName.match(/邀请|登录|组队/)) {
                 return jumpButtons[i]
             }
         }
@@ -98,7 +84,20 @@ while (true) {
     var jumpButton = findTask()
 
     if (jumpButton == null) {
-        console.log('没找到 去浏览/去完成 按钮。也许任务已经全部做完了。退出。')
+        // 没有任务之后领取奖励
+        var awardButtonFind = textMatches(/领取奖励/)
+        var awardButtons = findTimeout(awardButtonFind, 10000)
+
+        if (awardButtons) {
+            for (var i = 0; i < awardButtons.length; i++) {
+                console.log('领取累计任务奖励')
+                awardButtons[i].click()
+                console.log('等待8秒再次领取...')
+                sleep(8000)
+            }
+        }
+
+        console.log('没找到合适的任务。也许任务已经全部做完了。退出。')
         console.log('请手动切换回主页面')
         device.cancelKeepingAwake()
         exit()

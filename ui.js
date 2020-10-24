@@ -1,21 +1,22 @@
 "ui";
 
-const VERSION = 13
+const VERSION = 14
 
 ui.layout(
     <frame>
         <vertical>
+            <button id="tb" text="点击下载淘宝9.0版本（此版本目前无黑号检测）"  textColor="red" textSize="16sp" />
             <button id="automationPermission" text="1. 授予无障碍权限" />
             <button id="consolePermission" text="2. 授予悬浮窗权限" />
             <button id="startTask" text="3. 开始每日任务" />
             <button id="discountTask" text="4. 领取双十一红包（0点红包更大）" />
             {/* <button id="specialTask" text="5. 领取会场红包（0点领红包最大）" /> */}
-            <button id="caidan" text="前往天猫开彩蛋活动" />
+            <button id="caidan" text="5. 前往天猫开彩蛋活动" />
             <button id="showQun" text="加入双十一互助交流群" />
             <button id="feedback" text="正版发布地址！小心病毒盗版！" />
             <button id="checkUpdate" text="检查更新" />
             {/* <button id="jd" text="领取京东双十一红包" /> */}
-            <text text="使用脚本有机率导致任务喵币收益减少！推荐在运行之前关闭手机淘宝“读取软件列表”权限。自测未出现问题。如果收益变少，关闭重新打开淘宝可能会产生效果。使用脚本导致的任何可能结果与本人无关。" textStyle="bold|italic" textColor="red" textSize="18sp" />
+            <text text="使用脚本有机率导致任务喵币收益减少！目前使用9.0版淘宝可以绕过检测。使用脚本导致的任何可能结果与本人无关。" textStyle="bold|italic" textColor="red" textSize="18sp" />
             <text text="部分机型无障碍权限授予部分可能出现bug，请关闭软件重新打开授予权限。" textStyle="italic" textColor="blue" />
             <text text="如果始终无法授予请重启手机尝试" />
             <text text="使用说明" textColor="red" />
@@ -35,7 +36,6 @@ ui.layout(
             <button id="hideQun" style="Widget.AppCompat.Button.Colored" text="隐藏" />
             {/* <text text="每天9点，群公告准时发车" /> */}
             <text text="截图后打开微信扫描二维码加入" />
-            {/* <text text="一群已满200人，二群新建，车队共享" /> */}
             <text text="如果二维码无法进入请添加小助手微信拉进群：zs2020618" />
         </vertical>
     </frame>
@@ -44,6 +44,10 @@ ui.layout(
 ui.ver.setText('\n版本：V' + VERSION)
 
 threads.start(checkUpdate)
+
+ui.tb.click(function () {
+    app.openUrl('https://www.wandoujia.com/apps/32267/history_v253')
+})
 
 ui.automationPermission.click(function () {
     threads.start(autoPerReq)
