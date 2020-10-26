@@ -1,6 +1,6 @@
 "ui";
 
-const VERSION = 14
+const VERSION = 15
 
 ui.layout(
     <frame>
@@ -11,7 +11,7 @@ ui.layout(
             <button id="startTask" text="3. 开始每日任务" />
             <button id="discountTask" text="4. 领取双十一红包（0点红包更大）" />
             {/* <button id="specialTask" text="5. 领取会场红包（0点领红包最大）" /> */}
-            <button id="caidan" text="5. 前往天猫开彩蛋活动" />
+            <button id="caidan" text="5. 完成天猫开彩蛋任务（新增自动完成！）" textColor="red" />
             <button id="showQun" text="加入双十一互助交流群" />
             <button id="feedback" text="正版发布地址！小心病毒盗版！" />
             <button id="checkUpdate" text="检查更新" />
@@ -70,11 +70,7 @@ ui.discountTask.click(function () {
 // })
 
 ui.caidan.click(function () {
-    var url = 'm.tb.cn/h.414TmHQ'
-    app.startActivity({
-        action: "VIEW",
-        data: "taobao://" + url
-    })
+    engines.execScriptFile('./egg.js')
 })
 
 ui.showQun.click(function () {

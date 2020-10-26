@@ -43,6 +43,10 @@ function findTask() {
     var jumpButtonFind = textMatches(/去浏览|去搜索|去完成|签到|逛一逛/) // 找进入任务的按钮，10秒
     var jumpButtons = findTimeout(jumpButtonFind, 10000)
 
+    if(!jumpButtons) {
+        return null
+    } 
+
     for (var i = 0; i < jumpButtons.length; i++) {
         var taskName
         try {
@@ -100,6 +104,7 @@ while (true) {
         console.log('没找到合适的任务。也许任务已经全部做完了。退出。')
         console.log('请手动切换回主页面')
         device.cancelKeepingAwake()
+        alert('别忘了在脚本主页领取双十一红包！', '彩蛋任务也要记得做哦，第八个彩蛋百分之百开奖红包')
         exit()
     }
 
