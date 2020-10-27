@@ -59,8 +59,9 @@ function findTask() {
                 sleep(1000)
                 jumpButtons[i].click()
                 sleep(8000)
+                return findTask()
             }
-            if (!taskName.match(/邀请|登录|组队/)) {
+            if (!taskName.match(/邀请|登录|组队|参与/)) {
                 return jumpButtons[i]
             }
         }
@@ -109,7 +110,7 @@ while (true) {
     }
 
     console.log('随机延时后进入任务...')
-    sleep(random() * 2500)
+    sleep(random() * 5000)
     jumpButton.click()
 
     console.log('等待任务完成...')
@@ -156,5 +157,5 @@ while (true) {
     }
 
     console.log('等待页面刷新...')
-    sleep(2000)
+    sleep(8000)
 }
