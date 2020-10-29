@@ -1,6 +1,6 @@
 "ui";
 
-const VERSION = 16
+const VERSION = 17
 
 ui.layout(
     <frame>
@@ -12,10 +12,10 @@ ui.layout(
             <button id="discountTask" text="4. 领取双十一红包（0点红包更大）" />
             {/* <button id="specialTask" text="5. 领取会场红包（0点领红包最大）" /> */}
             <button id="caidan" text="5. 完成天猫开彩蛋任务（新增自动完成！）" textColor="red" />
+            <button id="jd" text="6. 领取京东双十一红包" />
             <button id="showQun" text="加入双十一互助交流群" />
             <button id="feedback" text="正版发布地址！小心病毒盗版！" />
             <button id="checkUpdate" text="检查更新" />
-            {/* <button id="jd" text="领取京东双十一红包" /> */}
             <text text="使用脚本有机率导致任务喵币收益减少！目前使用9.0版淘宝可以绕过检测。使用脚本导致的任何可能结果与本人无关。" textStyle="bold|italic" textColor="red" textSize="18sp" />
             <text text="部分机型无障碍权限授予部分可能出现bug，请关闭软件重新打开授予权限。" textStyle="italic" textColor="blue" />
             <text text="如果始终无法授予请重启手机尝试" />
@@ -89,9 +89,9 @@ ui.checkUpdate.click(function () {
     threads.start(checkUpdate)
 })
 
-// ui.jd.click(function() {
-//     app.openUrl('https://u.jd.com/sPttYC')
-// })
+ui.jd.click(function() {
+    app.openUrl('https://u.jd.com/taFd8qf')
+})
 
 function autoPerReq() {
     if (!auto.service) {
