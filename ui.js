@@ -1,6 +1,6 @@
 "ui";
 
-const VERSION = 17
+const VERSION = 18
 
 ui.layout(
     <frame>
@@ -8,11 +8,11 @@ ui.layout(
             <button id="tb" text="点击下载淘宝9.0版本（此版本目前无黑号检测）"  textColor="red" textSize="16sp" />
             <button id="automationPermission" text="1. 授予无障碍权限" />
             <button id="consolePermission" text="2. 授予悬浮窗权限" />
-            <button id="startTask" text="3. 开始每日任务" />
-            <button id="discountTask" text="4. 领取双十一红包（0点红包更大）" />
+            <button id="discountTask" text="3. 领取双十一红包（0点红包更大）" />
+            <button id="startTask" text="4. 开始每日任务" />
             {/* <button id="specialTask" text="5. 领取会场红包（0点领红包最大）" /> */}
-            <button id="caidan" text="5. 完成天猫开彩蛋任务（新增自动完成！）" textColor="red" />
-            <button id="jd" text="6. 领取京东双十一红包" />
+            <button id="caidan" text="5. 完成天猫开彩蛋任务" />
+            <button id="jd" text="6. 领取京东双十一红包（需要打开三次，一次一个）" />
             <button id="showQun" text="加入双十一互助交流群" />
             <button id="feedback" text="正版发布地址！小心病毒盗版！" />
             <button id="checkUpdate" text="检查更新" />
@@ -95,7 +95,7 @@ ui.jd.click(function() {
 
 function autoPerReq() {
     if (!auto.service) {
-        toast('进入 无障碍 ，选择 天猫双十一喵币助手')
+        toast('找到天猫双十一喵币助手，勾选授予权限')
     }
     auto.waitFor()
     toast('无障碍权限授予成功')

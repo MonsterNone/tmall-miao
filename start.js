@@ -61,7 +61,7 @@ function findTask() {
                 sleep(8000)
                 return findTask()
             }
-            if (!taskName.match(/邀请|登录|组队|参与|施肥|浇水|特价版/)) {
+            if (!taskName.match(/邀请|登录|组队|参与|施肥|浇水|特价版|双十一主会场/)) {
                 return jumpButtons[i]
             }
         }
@@ -97,8 +97,8 @@ while (true) {
             for (var i = 0; i < awardButtons.length; i++) {
                 console.log('领取累计任务奖励')
                 awardButtons[i].click()
-                console.log('等待8秒再次领取...')
-                sleep(8000)
+                console.log('等待5秒再次领取...')
+                sleep(5000)
             }
         }
 
@@ -157,5 +157,5 @@ while (true) {
     }
 
     console.log('等待页面刷新...')
-    sleep(8000)
+    sleep(5000)
 }
