@@ -56,12 +56,14 @@ function findTask() {
         }
         if (taskName) {
             if (taskName.match(/签到/)) {
+                console.log('进行“签到”任务')
                 sleep(1000)
                 jumpButtons[i].click()
                 sleep(8000)
                 return findTask()
             }
-            if (!taskName.match(/邀请|登录|组队|参与|施肥|浇水|特价版|双十一主会场/)) {
+            if (!taskName.match(/邀请|登录|组队|参与|施肥|浇水|特价版|小鸡/)) {
+                console.log('进行“' + taskName + '”任务')
                 return jumpButtons[i]
             }
         }
@@ -72,7 +74,7 @@ function findTask() {
 
 // 打开淘宝活动页面
 console.log('正在打开淘宝...')
-var url = 'pages.tmall.com/wow/z/hdwk/act-20201111/index'
+var url = 'pages.tmall.com/wow/hdwk/act/2020nhj-single'
 
 app.startActivity({
     action: "VIEW",
@@ -82,7 +84,26 @@ sleep(2000)
 
 console.log('等待页面加载...')
 
-text('赚喵币').findOne(20000).click()
+check = textMatches(/免费种下|邀请/).findOne(20000) // 判断是否开始任务
+if (check == null) {
+    console.log('无法找到任务入口，可能是淘宝更新了页面逻辑，请反馈')
+    exit()
+}
+else if (check.text() == '免费种下') {
+    alert('请首先选择一个水果种下再运行脚本！')
+    exit()
+}
+else {
+    try {
+        s = textMatches(/.*mWNgYGBg.*/).depth(21).findOnce()
+        s.parent().parent().child(2).click()
+    }
+    catch (err) {
+        console.log(err)
+        console.log('无法进入任务列表，可能是淘宝更新了页面逻辑，请反馈')
+        exit()
+    }
+}
 
 while (true) {
     console.log('寻找任务入口...')
@@ -105,7 +126,7 @@ while (true) {
         console.log('没找到合适的任务。也许任务已经全部做完了。退出。')
         console.log('请手动切换回主页面')
         device.cancelKeepingAwake()
-        alert('别忘了在脚本主页领取双十一红包！', '彩蛋任务也要记得做哦，第八个彩蛋百分之百开奖红包')
+        alert('别忘了在脚本主页领取年货节红包！')
         exit()
     }
 
