@@ -6,7 +6,6 @@ if(!auto.service) {
 console.show()
 console.log('开始领取每日红包...')
 console.log('按音量下键停止')
-console.log('这部分可能会无法自动，如果异常退出手动领取就好')
 
 device.keepScreenDim(5 * 60 * 1000)
 
@@ -21,7 +20,7 @@ function registerKey() {
 }
 threads.start(registerKey)
 
-var url = 'm.tb.cn/h.4btEu5H'
+var url = 'm.tb.cn/h.4R1LANT'
 
 app.startActivity({
     action: "VIEW",
@@ -60,9 +59,12 @@ sleep(2000)
 //     againButton.click()
 // }
 
+console.log('等待页面加载...')
+text('玩法规则').findOne(15000) // 15秒等待页面加载
 alert('此页面无法自动操作，请手动领取。')
 
 console.log('领红包已完成')
 console.log('请手动切换回主页面')
 device.cancelKeepingAwake()
+console.hide()
 exit()

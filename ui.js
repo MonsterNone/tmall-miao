@@ -1,22 +1,22 @@
 "ui";
 
-const VERSION = 18
+const VERSION = 'N1'
 
 ui.layout(
     <frame>
         <vertical>
-            <button id="tb" text="点击下载淘宝9.0版本（此版本目前无黑号检测）"  textColor="red" textSize="16sp" />
+            {/* <button id="tb" text="点击下载淘宝9.0版本（此版本目前无黑号检测）"  textColor="red" textSize="16sp" /> */}
             <button id="automationPermission" text="1. 授予无障碍权限" />
             <button id="consolePermission" text="2. 授予悬浮窗权限" />
-            <button id="discountTask" text="3. 领取双十一红包（0点红包更大）" />
+            <button id="discountTask" text="3. 领取年货节红包" />
             <button id="startTask" text="4. 开始每日任务" />
             {/* <button id="specialTask" text="5. 领取会场红包（0点领红包最大）" /> */}
-            <button id="caidan" text="5. 完成天猫开彩蛋任务" />
-            <button id="jd" text="6. 领取京东双十一红包（需要打开三次，一次一个）" />
-            <button id="showQun" text="加入双十一互助交流群" />
+            {/* <button id="caidan" text="5. 完成天猫开彩蛋任务" /> */}
+            {/* <button id="jd" text="6. 领取京东双十一红包（需要打开三次，一次一个）" /> */}
+            <button id="showQun" text="加入天猫活动助力群" />
             <button id="feedback" text="正版发布地址！小心病毒盗版！" />
             <button id="checkUpdate" text="检查更新" />
-            <text text="使用脚本有机率导致任务喵币收益减少！目前使用9.0版淘宝可以绕过检测。使用脚本导致的任何可能结果与本人无关。" textStyle="bold|italic" textColor="red" textSize="18sp" />
+            {/* <text text="使用脚本有机率导致任务喵币收益减少！目前使用9.0版淘宝可以绕过检测。使用脚本导致的任何可能结果与本人无关。" textStyle="bold|italic" textColor="red" textSize="18sp" /> */}
             <text text="部分机型无障碍权限授予部分可能出现bug，请关闭软件重新打开授予权限。" textStyle="italic" textColor="blue" />
             <text text="如果始终无法授予请重启手机尝试" />
             <text text="使用说明" textColor="red" />
@@ -26,7 +26,7 @@ ui.layout(
             <text text="其他说明" textColor="red" />
             <text text="1. 本脚本基于Auto.JS（感谢原开发者）" />
             <text text="2. 免费！" />
-            <text autoLink="web" text="3. 项目地址https://github.com/MonsterNone/tmall-miao" />
+            {/* <text autoLink="web" text="3. 项目地址https://github.com/MonsterNone/tmall-miao" /> */}
             {/* <text text="4. 运行中出现bug请附上详细控制台log、页面截图等提交issue" /> */}
             {/* <text text="5. 由于调用淘宝打开页面，部分手机管家可能会误报为诱导软件，实际上本软件绝无任何病毒行为" /> */}
             <text id="ver" line="2" />
@@ -45,9 +45,9 @@ ui.ver.setText('\n版本：V' + VERSION)
 
 threads.start(checkUpdate)
 
-ui.tb.click(function () {
-    app.openUrl('https://www.wandoujia.com/apps/32267/history_v253')
-})
+// ui.tb.click(function () {
+//     app.openUrl('https://www.wandoujia.com/apps/32267/history_v253')
+// })
 
 ui.automationPermission.click(function () {
     threads.start(autoPerReq)
@@ -69,9 +69,9 @@ ui.discountTask.click(function () {
 //     engines.execScriptFile('./special.js')
 // })
 
-ui.caidan.click(function () {
-    engines.execScriptFile('./egg.js')
-})
+// ui.caidan.click(function () {
+//     engines.execScriptFile('./egg.js')
+// })
 
 ui.showQun.click(function () {
     ui.qun.visibility = 0
@@ -89,13 +89,13 @@ ui.checkUpdate.click(function () {
     threads.start(checkUpdate)
 })
 
-ui.jd.click(function() {
-    app.openUrl('https://u.jd.com/taFd8qf')
-})
+// ui.jd.click(function() {
+//     app.openUrl('https://u.jd.com/taFd8qf')
+// })
 
 function autoPerReq() {
     if (!auto.service) {
-        toast('找到天猫双十一喵币助手，勾选授予权限')
+        toast('找到天猫年货节助手，勾选授予权限')
     }
     auto.waitFor()
     toast('无障碍权限授予成功')
