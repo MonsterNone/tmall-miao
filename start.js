@@ -84,9 +84,9 @@ sleep(2000)
 
 console.log('等待页面加载...')
 
-check = textMatches(/免费种下|我/).findOne(20000) // 判断是否开始任务
+check = textMatches(/免费种下|逛店铺得福气/).findOne(20000) // 判断是否开始任务
 if (check == null) {
-    console.log('无法找到任务入口，可能是淘宝更新了页面逻辑，请反馈')
+    console.log('无法找到任务入口')
     exit()
 }
 else if (check.text() == '免费种下') {
@@ -96,7 +96,7 @@ else if (check.text() == '免费种下') {
 else {
     try {
         s = textMatches(/.*mWNgYGBg.*/).depth(21).findOnce()
-        s.parent().parent().child(2).click()
+        s.parent().parent().child(3).click()
     }
     catch (err) {
         console.log(err)
