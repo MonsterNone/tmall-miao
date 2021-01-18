@@ -12,7 +12,7 @@ ui.layout(
             <button id="startTask" text="4. 开始每日任务" />
             {/* <button id="specialTask" text="5. 领取会场红包（0点领红包最大）" /> */}
             {/* <button id="caidan" text="5. 完成天猫开彩蛋任务" /> */}
-            {/* <button id="jd" text="6. 领取京东双十一红包（需要打开三次，一次一个）" /> */}
+            <button id="jd" text="5. 领取京东年货节红包" />
             <button id="showQun" text="加入天猫活动助力群" />
             <button id="feedback" text="正版发布地址！小心病毒盗版！" />
             <button id="checkUpdate" text="检查更新" />
@@ -89,9 +89,9 @@ ui.checkUpdate.click(function () {
     threads.start(checkUpdate)
 })
 
-// ui.jd.click(function() {
-//     app.openUrl('https://u.jd.com/taFd8qf')
-// })
+ui.jd.click(function() {
+    app.openUrl('https://u.jd.com/tXtiedx')
+})
 
 function autoPerReq() {
     if (!auto.service) {
