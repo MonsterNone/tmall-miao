@@ -84,7 +84,7 @@ sleep(2000)
 
 console.log('等待页面加载...')
 
-check = textMatches(/免费种下|邀请/).findOne(20000) // 判断是否开始任务
+check = textMatches(/免费种下|我/).findOne(20000) // 判断是否开始任务
 if (check == null) {
     console.log('无法找到任务入口，可能是淘宝更新了页面逻辑，请反馈')
     exit()
