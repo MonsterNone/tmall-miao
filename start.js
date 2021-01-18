@@ -96,7 +96,7 @@ else if (check.text() == '免费种下') {
 else {
     try {
         s = textMatches(/.*mWNgYGBg.*/).depth(21).findOnce()
-        s.parent().parent().child(3).click()
+        s.parent().parent().child(s.parent().parent().childCount() - 1).click()
     }
     catch (err) {
         console.log(err)
