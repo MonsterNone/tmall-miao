@@ -1,6 +1,6 @@
 "ui";
 
-const VERSION = 'N6'
+const VERSION = 'N7'
 
 ui.layout(
     <frame>
