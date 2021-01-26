@@ -62,7 +62,7 @@ function findTask() {
                 sleep(8000)
                 return findTask()
             }
-            if (!taskName.match(/邀请|登录|组队|参与|施肥|浇水|特价版|小鸡/)) {
+            if (!taskName.match(/邀请|登录|组队|参与|施肥|浇水|特价版|小鸡|消除/)) {
                 console.log('进行“' + taskName + '”任务')
                 return jumpButtons[i]
             }
@@ -95,7 +95,7 @@ else if (check.text() == '免费种下') {
 }
 else {
     try {
-        s = textMatches(/.*mWNgYGBg.*/).depth(21).findOnce()
+        s = textMatches(/.*mWNgYGBg.*|.*Sak.*/).depth(21).findOnce()
         s.parent().parent().child(s.parent().parent().childCount() - 1).click()
     }
     catch (err) {
