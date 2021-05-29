@@ -20,7 +20,7 @@ function registerKey() {
 }
 threads.start(registerKey)
 
-var url = 'm.tb.cn/h.4R1LANT'
+var url = 'm.tb.cn/h.4Hbw15w'
 
 app.startActivity({
     action: "VIEW",

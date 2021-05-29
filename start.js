@@ -43,9 +43,9 @@ function findTask() {
     var jumpButtonFind = textMatches(/去浏览|去搜索|去完成|签到|逛一逛|去逛逛/) // 找进入任务的按钮，10秒
     var jumpButtons = findTimeout(jumpButtonFind, 10000)
 
-    if(!jumpButtons) {
+    if (!jumpButtons) {
         return null
-    } 
+    }
 
     for (var i = 0; i < jumpButtons.length; i++) {
         var taskName
@@ -62,81 +62,16 @@ function findTask() {
                 sleep(8000)
                 return findTask()
             }
-            if (!taskName.match(/邀请|登录|组队|参与|施肥|浇水|特价版|小鸡|消除/)) {
-                console.log('进行“' + taskName + '”任务')
-                return jumpButtons[i]
+            if (!taskName.match(/邀请|登录|组队|参与|施肥|浇水|特价版|小鸡|消除|合伙/)) {
+                return [taskName, jumpButtons[i]]
             }
         }
     }
-
     return null
 }
 
-// 打开淘宝活动页面
-console.log('正在打开淘宝...')
-var url = 'pages.tmall.com/wow/hdwk/act/2020nhj-single'
-
-app.startActivity({
-    action: "VIEW",
-    data: "taobao://" + url
-})
-sleep(2000)
-
-console.log('等待页面加载...')
-
-check = textMatches(/免费种下|我/).findOne(20000) // 判断是否开始任务
-if (check == null) {
-    console.log('无法找到任务入口')
-    exit()
-}
-else if (check.text() == '免费种下') {
-    alert('请首先选择一个水果种下再运行脚本！')
-    exit()
-}
-else {
-    try {
-        s = textMatches(/.*mWNgYGBg.*|.*Sak.*/).depth(21).findOnce()
-        s.parent().parent().child(s.parent().parent().childCount() - 1).click()
-    }
-    catch (err) {
-        console.log(err)
-        console.log('无法进入任务列表，可能是淘宝更新了页面逻辑，请反馈')
-        exit()
-    }
-}
-
-while (true) {
-    console.log('寻找任务入口...')
-    var jumpButton = findTask()
-
-    if (jumpButton == null) {
-        // 没有任务之后领取奖励
-        var awardButtonFind = textMatches(/领取奖励/)
-        var awardButtons = findTimeout(awardButtonFind, 10000)
-
-        if (awardButtons) {
-            for (var i = 0; i < awardButtons.length; i++) {
-                console.log('领取累计任务奖励')
-                awardButtons[i].click()
-                console.log('等待5秒再次领取...')
-                sleep(5000)
-            }
-        }
-
-        console.log('没找到合适的任务。也许任务已经全部做完了。退出。')
-        console.log('请手动切换回主页面')
-        device.cancelKeepingAwake()
-        alert('别忘了在脚本主页领取年货节红包！')
-        exit()
-    }
-
-    console.log('随机延时后进入任务...')
-    sleep(random() * 5000)
-    jumpButton.click()
-
-    console.log('等待任务完成...')
-
-    if (descMatches(/.*浏览.*/).findOne(10000)) { // 等待浏览出现
+function liulan() {
+    if (textMatches(/.*浏览.*/).findOne(10000)) { // 等待浏览出现
         let v = className('android.support.v7.widget.RecyclerView').findOnce() // 滑动
         if (v) {
             sleep(1000)
@@ -148,7 +83,7 @@ while (true) {
 
     let finish_c = 0
     while (finish_c < 100) { // 0.5 * 100 = 50 秒，防止死循环
-        if (textMatches(/.*完成.*|.*失败.*|.*上限.*|.*开小差.*/).exists() || descMatches(/.*完成.*|.*失败.*|.*上限.*|.*开小差.*/).exists()) // 等待已完成出现，有可能失败
+        if (textMatches(/.*完成.*|.*失败.*|.*上限.*|.*开小差.*|.*休息会呗.*/).exists() || descMatches(/.*完成.*|.*失败.*|.*上限.*|.*开小差.*|.*休息会呗.*/).exists()) // 等待已完成出现，有可能失败
             break
         sleep(500)
         finish_c++
@@ -175,6 +110,71 @@ while (true) {
         }
     } else {
         back()
+    }
+}
+
+// 打开淘宝活动页面
+console.log('正在打开淘宝...')
+var url = 'pages.tmall.com/wow/z/hdwk/20210618/singlegame'
+
+app.startActivity({
+    action: "VIEW",
+    data: "taobao://" + url
+})
+sleep(2000)
+
+console.log('等待页面加载...')
+
+try {
+    s = text('领喵币').findOne(20000)
+    console.log('准备打开任务列表')
+    sleep(5000)
+    s.click()
+} catch (err) {
+    console.log(err)
+    console.log('无法进入任务列表，可能是淘宝更新了页面逻辑，请反馈')
+    exit()
+}
+
+while (true) {
+    console.log('寻找任务入口...')
+    var jumpButton = findTask()
+
+    if (jumpButton == null) {
+        // 没有任务之后领取奖励
+        var awardButtonFind = textMatches(/领取奖励/)
+        var awardButtons = findTimeout(awardButtonFind, 10000)
+
+        if (awardButtons) {
+            for (var i = 0; i < awardButtons.length; i++) {
+                console.log('领取累计任务奖励')
+                awardButtons[i].click()
+                console.log('等待5秒再次领取...')
+                sleep(5000)
+            }
+        }
+
+        console.log('没找到合适的任务。也许任务已经全部做完了。退出。')
+        console.log('请手动切换回主页面')
+        device.cancelKeepingAwake()
+        alert('别忘了在脚本主页领取618红包！')
+        exit()
+    }
+
+    if (jumpButton[0].match('去浏览店铺领喵币')) {
+        console.log('进行浏览店铺任务')
+        jumpButton[1].click()
+        while (!textContains('任务完成').exists()) {
+            console.log('进入店铺浏览')
+            text('逛店最多').findOne(15000).parent().click()
+            liulan()
+            sleep(5000)
+        }
+        back()
+    } else {
+        console.log('进行' + jumpButton[0] + '任务')
+        jumpButton[1].click()
+        liulan()
     }
 
     console.log('等待页面刷新...')

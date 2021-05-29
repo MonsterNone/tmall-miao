@@ -1,6 +1,6 @@
 "ui";
 
-const VERSION = 'N7'
+const VERSION = '2021618-1'
 
 ui.layout(
     <frame>
@@ -8,15 +8,15 @@ ui.layout(
             {/* <button id="tb" text="点击下载淘宝9.0版本（此版本目前无黑号检测）"  textColor="red" textSize="16sp" /> */}
             <button id="automationPermission" text="1. 授予无障碍权限" />
             <button id="consolePermission" text="2. 授予悬浮窗权限" />
-            <button id="discountTask" text="3. 领取年货节红包" />
+            <button id="discountTask" text="3. 领取618红包" />
             <button id="startTask" text="4. 开始每日任务" />
             {/* <button id="specialTask" text="5. 领取会场红包（0点领红包最大）" /> */}
             {/* <button id="caidan" text="5. 完成天猫开彩蛋任务" /> */}
-            <button id="jd" text="5. 领取京东年货节红包" />
+            <button id="jd" text="5. 领取京东618红包" />
             <button id="showQun" text="加入天猫活动助力群" />
             <button id="feedback" text="正版发布地址！小心病毒盗版！" />
             <button id="checkUpdate" text="检查更新" />
-            {/* <text text="使用脚本有机率导致任务喵币收益减少！目前使用9.0版淘宝可以绕过检测。使用脚本导致的任何可能结果与本人无关。" textStyle="bold|italic" textColor="red" textSize="18sp" /> */}
+            <text text="使用脚本有机率导致任务喵币收益减少！使用脚本导致的任何可能结果与本人无关。" textStyle="bold|italic" textColor="red" textSize="18sp" />
             <text text="部分机型无障碍权限授予部分可能出现bug，请关闭软件重新打开授予权限。" textStyle="italic" textColor="blue" />
             <text text="如果始终无法授予请重启手机尝试" />
             <text text="使用说明" textColor="red" />
@@ -90,12 +90,12 @@ ui.checkUpdate.click(function () {
 })
 
 ui.jd.click(function() {
-    app.openUrl('https://u.jd.com/tXtiedx')
+    app.openUrl('https://u.jd.com/z4cMT4D')
 })
 
 function autoPerReq() {
     if (!auto.service) {
-        toast('找到天猫年货节助手，勾选授予权限')
+        toast('找到天猫618助手，勾选授予权限')
     }
     auto.waitFor()
     toast('无障碍权限授予成功')
