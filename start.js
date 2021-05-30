@@ -48,9 +48,11 @@ function findTask() {
     }
 
     for (var i = 0; i < jumpButtons.length; i++) {
-        var taskName
+        var taskName, content
         try {
             taskName = jumpButtons[i].parent().child(0).child(0).text()
+            content = jumpButtons[i].parent().child(0).child(1).child(0).text()
+            console.log(content)
         } catch (err) {
             continue
         }
@@ -62,7 +64,7 @@ function findTask() {
                 sleep(8000)
                 return findTask()
             }
-            if (!taskName.match(/邀请|登录|组队|参与|施肥|浇水|特价版|小鸡|消除|合伙/)) {
+            if (!(taskName.match(/邀请|登录|组队|参与|施肥|浇水|特价版|小鸡|消除|合伙/) || content.match(/小互动/))) {
                 return [taskName, jumpButtons[i]]
             }
         }
@@ -126,10 +128,10 @@ sleep(2000)
 console.log('等待页面加载...')
 
 try {
-    s = text('领喵币').findOne(20000)
+    text('领喵币').findOne(20000)
     console.log('准备打开任务列表')
     sleep(5000)
-    s.click()
+    text('领喵币').findOnce().click()
 } catch (err) {
     console.log(err)
     console.log('无法进入任务列表，可能是淘宝更新了页面逻辑，请反馈')

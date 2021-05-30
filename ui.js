@@ -1,6 +1,6 @@
 "ui";
 
-const VERSION = '2021618-1'
+const VERSION = '2021618-2'
 
 ui.layout(
     <frame>
@@ -90,12 +90,18 @@ ui.checkUpdate.click(function () {
 })
 
 ui.jd.click(function() {
-    app.openUrl('https://u.jd.com/z4cMT4D')
+    setClip("30.0复制整段话 https://JKzjbFTD6e1VdB抢紅包，购痛快~最高18618元紅包等你来！#7Aae64urfa@打kai{婛岽}")
+    if (launchApp("京东")) {
+        toast('京口令已复制！正在打开京东...')
+    }
+    else {
+        app.openUrl('https://u.jd.com/z4cMT4D')
+    }
 })
 
 function autoPerReq() {
     if (!auto.service) {
-        toast('找到天猫618助手，勾选授予权限')
+        alert('找到天猫618助手，勾选授予权限', '小米手机在“更多已安装服务”中')
     }
     auto.waitFor()
     toast('无障碍权限授予成功')
