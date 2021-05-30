@@ -10,3 +10,7 @@
 基于Auto.JS平台，打包版APK下载地址 https://github.com/MonsterNone/tmall-miao/releases
 
 出现bug直接提issue，请附上机型、系统版本、截图、错误日志等
+
+---
+
+因为内含打开淘宝的操作，部分手机管家会报风险软件。除了无障碍操作和悬浮窗权限外，其他任何权限都可以拒绝授予。（推荐允许网络权限检查更新）
