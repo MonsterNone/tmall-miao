@@ -1,6 +1,6 @@
 "ui";
 
-const VERSION = '2021618-2'
+const VERSION = '2021618-3'
 
 ui.layout(
     <frame>
@@ -13,7 +13,7 @@ ui.layout(
             {/* <button id="specialTask" text="5. 领取会场红包（0点领红包最大）" /> */}
             {/* <button id="caidan" text="5. 完成天猫开彩蛋任务" /> */}
             <button id="jd" text="5. 领取京东618红包" />
-            <button id="showQun" text="加入天猫活动助力群" />
+            <button id="showQun" text="加入天猫活动组队助力群" />
             <button id="feedback" text="正版发布地址！小心病毒盗版！" />
             <button id="checkUpdate" text="检查更新" />
             <text text="使用脚本有机率导致任务喵币收益减少！使用脚本导致的任何可能结果与本人无关。" textStyle="bold|italic" textColor="red" textSize="18sp" />

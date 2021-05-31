@@ -61,7 +61,7 @@ sleep(2000)
 
 console.log('等待页面加载...')
 text('玩法规则').findOne(15000) // 15秒等待页面加载
-alert('此页面无法自动操作，请手动领取。')
+alert('领红包无法自动操作，请手动领取。')
 
 console.log('领红包已完成')
 console.log('请手动切换回主页面')
