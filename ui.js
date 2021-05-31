@@ -1,6 +1,6 @@
 "ui";
 
-const VERSION = '2021618-5'
+const VERSION = '2021618-6'
 
 ui.layout(
     <frame>
@@ -34,9 +34,10 @@ ui.layout(
         <vertical id="qun" visibility="gone" bg="#ffffff">
             <img src="file://res/qun.png" />
             <button id="hideQun" style="Widget.AppCompat.Button.Colored" text="隐藏" />
+            <text text="由于微信号被恶意举报，无法拉群，新开了一个QQ群，欢迎加入！" />
             {/* <text text="每天9点，群公告准时发车" /> */}
-            <text text="截图后打开微信扫描二维码加入" />
-            <text text="如果二维码无法进入请添加小助手微信拉进群：zs2020618" />
+            {/* <text text="截图后打开微信扫描二维码加入" />
+            <text text="如果二维码无法进入请添加小助手微信拉进群：zs2020618" /> */}
         </vertical>
     </frame>
 )
