@@ -3,6 +3,8 @@ if (!auto.service) {
     exit()
 }
 
+alert('请把手机放稳，不要摇晃！', '不然有时候会跳出合伙赢喵币，导致任务阻塞')
+
 console.show()
 console.log('开始完成喵币任务...')
 console.log('按音量下键停止')
@@ -84,9 +86,14 @@ function liulan() {
 
     let finish_c = 0
     while (finish_c < 100) { // 0.5 * 100 = 50 秒，防止死循环
-        if (
-            textMatches(/.*完成.*|.*失败.*|.*上限.*|.*开小差.*|.*休息会呗.*/).exists() || ! text("浏览15秒").exists()) // 等待已完成出现，有可能失败
+        let finish_reg = /.*完成.*|.*失败.*|.*上限.*|.*开小差.*/
+        if ((textMatches(finish_reg).exists() || descMatches(finish_reg).exists()) && !text("浏览15秒").exists()) // 等待已完成出现，有可能失败
             break
+        if (textMatches(/.*休息会呗.*/).exists()) {
+            alert('触发淘宝验证', '请手动验证后返回淘宝首页，重新执行任务')
+            console.log('异常退出。')
+            exit()
+        }
         sleep(500)
         finish_c++
     }
