@@ -52,7 +52,6 @@ function findTask() {
         try {
             taskName = jumpButtons[i].parent().child(0).child(0).text()
             content = jumpButtons[i].parent().child(0).child(1).child(0).text()
-            console.log(content)
         } catch (err) {
             continue
         }
@@ -85,7 +84,8 @@ function liulan() {
 
     let finish_c = 0
     while (finish_c < 100) { // 0.5 * 100 = 50 秒，防止死循环
-        if (textMatches(/.*完成.*|.*失败.*|.*上限.*|.*开小差.*|.*休息会呗.*/).exists() || descMatches(/.*完成.*|.*失败.*|.*上限.*|.*开小差.*|.*休息会呗.*/).exists()) // 等待已完成出现，有可能失败
+        if (
+            textMatches(/.*完成.*|.*失败.*|.*上限.*|.*开小差.*|.*休息会呗.*/).exists() || ! text("浏览15秒").exists()) // 等待已完成出现，有可能失败
             break
         sleep(500)
         finish_c++
