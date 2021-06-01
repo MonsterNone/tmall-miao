@@ -1,6 +1,6 @@
 "ui";
 
-const VERSION = '2021618-6'
+const VERSION = '2021618-7'
 
 ui.layout(
     <frame>
@@ -8,8 +8,8 @@ ui.layout(
             {/* <button id="tb" text="点击下载淘宝9.0版本（此版本目前无黑号检测）"  textColor="red" textSize="16sp" /> */}
             <button id="automationPermission" text="1. 授予无障碍权限" />
             <button id="consolePermission" text="2. 授予悬浮窗权限" />
-            <button id="discountTask" text="3. 领取618红包" />
-            <button id="startTask" text="4. 开始每日任务" />
+            <button id="startTask" text="3. 开始每日任务" />
+            <button id="discountTask" text="4. 领取淘宝618红包" />
             {/* <button id="specialTask" text="5. 领取会场红包（0点领红包最大）" /> */}
             {/* <button id="caidan" text="5. 完成天猫开彩蛋任务" /> */}
             <button id="jd" text="5. 领取京东618红包" />
@@ -28,7 +28,7 @@ ui.layout(
             <text text="2. 免费！" />
             {/* <text autoLink="web" text="3. 项目地址https://github.com/MonsterNone/tmall-miao" /> */}
             {/* <text text="4. 运行中出现bug请附上详细控制台log、页面截图等提交issue" /> */}
-            {/* <text text="5. 由于调用淘宝打开页面，部分手机管家可能会误报为诱导软件，实际上本软件绝无任何病毒行为" /> */}
+            <text text="3. 由于调用淘宝打开页面，部分手机管家可能会误报为诱导软件，实际上本软件绝无任何病毒行为" />
             <text id="ver" line="2" />
         </vertical>
         <vertical id="qun" visibility="gone" bg="#ffffff">

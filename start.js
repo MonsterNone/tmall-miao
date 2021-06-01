@@ -42,7 +42,7 @@ function findTimeout(findF, timeout) {
 
 // 查找任务按钮
 function findTask() {
-    var jumpButtonFind = textMatches(/去浏览|去搜索|去完成|签到|逛一逛|去逛逛/) // 找进入任务的按钮，10秒
+    var jumpButtonFind = textMatches(/去浏览|去搜索|去完成|签到|逛一逛|去逛逛|去观看/) // 找进入任务的按钮，10秒
     var jumpButtons = findTimeout(jumpButtonFind, 10000)
 
     if (!jumpButtons) {
