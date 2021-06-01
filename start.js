@@ -65,7 +65,7 @@ function findTask() {
                 sleep(8000)
                 return findTask()
             }
-            if (!(taskName.match(/邀请|登录|组队|参与|施肥|浇水|特价版|小鸡|消除|合伙|穿搭|话费/) || content.match(/小互动/))) {
+            if (!(taskName.match(/邀请|登录|组队|参与|施肥|浇水|特价版|小鸡|消除|穿搭|话费/) || content.match(/小互动/))) {
                 return [taskName, jumpButtons[i]]
             }
         }
