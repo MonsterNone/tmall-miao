@@ -23,6 +23,7 @@ ui.layout(
             <text text="1. 运行脚本之前建议按首先点击授予权限" />
             <text text="2. 脚本运行过程中按 音量减 即可强制停止" />
             <text text="3. 部分每日任务需要手动完成" />
+            <text text="4. 运行前最好先将媒体音量关闭，直播任务可能会发出声音" />
             <text text="其他说明" textColor="red" />
             <text text="1. 本脚本基于Auto.JS（感谢原开发者）" />
             <text text="2. 免费！" />
