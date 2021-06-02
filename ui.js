@@ -1,6 +1,6 @@
 "ui";
 
-const VERSION = '2021618-7'
+const VERSION = '2021618-8'
 
 ui.layout(
     <frame>
@@ -12,7 +12,7 @@ ui.layout(
             <button id="discountTask" text="4. 领取淘宝618红包" />
             {/* <button id="specialTask" text="5. 领取会场红包（0点领红包最大）" /> */}
             {/* <button id="caidan" text="5. 完成天猫开彩蛋任务" /> */}
-            <button id="jd" text="5. 领取京东618红包" />
+            <button id="jd" text="5. 领取京东618红包（领完再进，每天三次）" />
             <button id="showQun" text="加入天猫活动组队助力群" />
             <button id="feedback" text="正版发布地址！小心病毒盗版！" />
             <button id="checkUpdate" text="检查更新" />
