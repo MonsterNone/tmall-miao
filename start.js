@@ -139,6 +139,8 @@ try {
     console.log('准备打开任务列表')
     sleep(5000)
     text('领喵币').findOnce().click()
+    console.log('准备搜索任务')
+    sleep(5000)
 } catch (err) {
     console.log(err)
     console.log('无法进入任务列表，可能是淘宝更新了页面逻辑，请反馈')
@@ -180,7 +182,12 @@ while (true) {
             sleep(5000)
         }
         back()
-    } else {
+    } else if (jumpButton[0].match(/合伙赚喵币/)) {
+        console.log('进行' + jumpButton[0] + '任务，10秒后返回')
+        sleep(10000)
+        back()
+    }
+    else {
         console.log('进行' + jumpButton[0] + '任务')
         jumpButton[1].click()
         liulan()
