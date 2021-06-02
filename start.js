@@ -65,7 +65,7 @@ function findTask() {
                 sleep(8000)
                 return findTask()
             }
-            if (!(taskName.match(/邀请|登录|组队|参与|施肥|浇水|特价版|小鸡|消除|穿搭|话费/) || content.match(/小互动/))) {
+            if (!(taskName.match(/邀请|登录|组队|参与|施肥|浇水|特价版|小鸡|消除|穿搭|话费|森林/) || content.match(/小互动/))) {
                 return [taskName, jumpButtons[i]]
             }
         }
@@ -182,7 +182,7 @@ while (true) {
             sleep(5000)
         }
         back()
-    } else if (jumpButton[0].match(/合伙赚喵币/)) {
+    } else if (jumpButton[0].match(/参与合伙赚喵币.*|参与星厨总动员.*/)) {
         console.log('进行' + jumpButton[0] + '任务，10秒后返回')
         sleep(10000)
         back()
