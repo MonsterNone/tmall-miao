@@ -8,12 +8,13 @@ ui.layout(
             {/* <button id="tb" text="点击下载淘宝9.0版本（此版本目前无黑号检测）"  textColor="red" textSize="16sp" /> */}
             <button id="automationPermission" text="1. 授予无障碍权限" />
             <button id="consolePermission" text="2. 授予悬浮窗权限" />
-            <button id="startTask" text="3. 开始每日任务" />
-            <button id="discountTask" text="4. 领取淘宝618红包" />
+            <button id="discountTask" text="3. 领取淘宝618红包" />
+            <button id="startTask" text="4. 开始每日喵币任务" />
             {/* <button id="specialTask" text="5. 领取会场红包（0点领红包最大）" /> */}
             {/* <button id="caidan" text="5. 完成天猫开彩蛋任务" /> */}
             <button id="jd" text="5. 领取京东618红包（领完再进，每天三次）" />
-            <button id="showQun" text="加入天猫活动组队助力群" />
+            <button id="showHb" text="消灭红包！旧的不去新的不来！" textColor="red" />
+            <button id="showQun" text="加入天猫活动助力群（群内有超高收益车队）" />
             <button id="feedback" text="正版发布地址！小心病毒盗版！" />
             <button id="checkUpdate" text="检查更新" />
             <text text="使用脚本有机率导致任务喵币收益减少！使用脚本导致的任何可能结果与本人无关。" textStyle="bold|italic" textColor="red" textSize="18sp" />
@@ -39,6 +40,13 @@ ui.layout(
             {/* <text text="每天9点，群公告准时发车" /> */}
             {/* <text text="截图后打开微信扫描二维码加入" />
             <text text="如果二维码无法进入请添加小助手微信拉进群：zs2020618" /> */}
+        </vertical>
+        <vertical id="hb" visibility="gone" bg="#ffffff" paddingTop="50" paddingLeft="20" paddingRight="20">
+            <text text="每日的红包使用掉，淘宝才会给你发新红包！5元惊喜红包不用完，绝对不会收到下一个5元！" textSize="18sp" textStyle="bold" textColor="red" />
+            <button id="get" text="先领红包，不领咋有的用哈哈" />
+            <button id="one" text="小红包：每日一元购" />
+            <button id="big" text="大红包：官方补贴清单" />
+            <button id="hideHb" style="Widget.AppCompat.Button.Colored" text="隐藏" />
         </vertical>
     </frame>
 )
@@ -99,6 +107,35 @@ ui.jd.click(function() {
     else {
         app.openUrl('https://u.jd.com/z4cMT4D')
     }
+})
+
+ui.showHb.click(function () {
+    ui.hb.visibility = 0
+})
+
+ui.hideHb.click(function () {
+    ui.hb.visibility = 8
+})
+
+ui.get.click(function () {
+    app.startActivity({
+        action: "VIEW",
+        data: "taobao://m.tb.cn/h.4Hbw15w"
+    })
+})
+
+ui.one.click(function () {
+    app.startActivity({
+        action: "VIEW",
+        data: "taobao://m.tb.cn/h.4uqf6PB"
+    })
+})
+
+ui.big.click(function () {
+    app.startActivity({
+        action: "VIEW",
+        data: "taobao://m.tb.cn/h.4uqfnYR"
+    })
 })
 
 function autoPerReq() {
