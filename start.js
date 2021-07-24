@@ -3,10 +3,10 @@ if (!auto.service) {
     exit()
 }
 
-alert('请把手机放稳，不要摇晃！', '不然有时候会跳出合伙赢喵币，导致任务阻塞')
+// alert('请把手机放稳，不要摇晃！', '不然有时候会跳出合伙赢喵币，导致任务阻塞')
 
 console.show()
-console.log('开始完成喵币任务...')
+console.log('开始完成奥运任务...')
 console.log('按音量下键停止')
 
 device.keepScreenDim(60 * 60 * 1000)
@@ -14,7 +14,7 @@ device.keepScreenDim(60 * 60 * 1000)
 function registerKey() {
     events.observeKey()
     events.onKeyDown('volume_down', function (event) {
-        console.log('喵币任务脚本停止了')
+        console.log('奥运任务脚本停止了')
         console.log('请手动切换回主页面')
         device.cancelKeepingAwake()
         exit()
@@ -42,7 +42,7 @@ function findTimeout(findF, timeout) {
 
 // 查找任务按钮
 function findTask() {
-    var jumpButtonFind = textMatches(/去浏览|去搜索|去完成|签到|逛一逛|去逛逛|去观看/) // 找进入任务的按钮，10秒
+    var jumpButtonFind = textMatches(/去浏览|去搜索|去完成|签到|逛一逛|去逛逛|去观看|去参赛/) // 找进入任务的按钮，10秒
     var jumpButtons = findTimeout(jumpButtonFind, 10000)
 
     if (!jumpButtons) {
@@ -55,17 +55,18 @@ function findTask() {
             taskName = jumpButtons[i].parent().child(0).child(0).text()
             content = jumpButtons[i].parent().child(0).child(1).child(0).text()
         } catch (err) {
+            console.log(err)
             continue
         }
         if (taskName) {
             if (taskName.match(/签到/)) {
-                console.log('进行“签到”任务')
+                console.log('进行签到任务')
                 sleep(1000)
                 jumpButtons[i].click()
                 sleep(8000)
                 return findTask()
             }
-            if (!(taskName.match(/邀请|登录|组队|参与|施肥|浇水|特价版|小鸡|消除|穿搭|话费|森林/) || content.match(/小互动/))) {
+            if (!(taskName.match(/邀请|登录|组队|参与|施肥|浇水|特价版|小鸡|消除|穿搭|话费|森林|点淘|人生|我的淘宝/) || content.match(/小互动/))) {
                 return [taskName, jumpButtons[i]]
             }
         }
@@ -74,15 +75,15 @@ function findTask() {
 }
 
 function liulan() {
-    if (textMatches(/.*浏览.*/).findOne(10000)) { // 等待浏览出现
-        let v = className('android.support.v7.widget.RecyclerView').findOnce() // 滑动
-        if (v) {
-            sleep(1000)
-            v.scrollForward()
-        }
-    }
+    // if (textMatches(/.*浏览.*/).findOne(10000)) { // 等待浏览出现
+    //     let v = className('android.support.v7.widget.RecyclerView').findOnce() // 滑动
+    //     if (v) {
+    //         sleep(1000)
+    //         v.scrollForward()
+    //     }
+    // }
 
-    sleep(5000) // 等待15秒
+    sleep(10000) // 等待15秒
 
     let finish_c = 0
     while (finish_c < 100) { // 0.5 * 100 = 50 秒，防止死循环
@@ -124,7 +125,7 @@ function liulan() {
 
 // 打开淘宝活动页面
 console.log('正在打开淘宝...')
-var url = 'pages.tmall.com/wow/z/hdwk/20210618/singlegame'
+var url = 'pages.tmall.com/wow/z/hdwk/game2020v2/olympicgame'
 
 app.startActivity({
     action: "VIEW",
@@ -135,10 +136,10 @@ sleep(2000)
 console.log('等待页面加载...')
 
 try {
-    text('领喵币').findOne(20000)
+    text('集能量').findOne(20000)
     console.log('准备打开任务列表')
     sleep(5000)
-    text('领喵币').findOnce().click()
+    text('集能量').findOnce().click()
     console.log('准备搜索任务')
     sleep(5000)
 } catch (err) {
@@ -168,11 +169,11 @@ while (true) {
         console.log('没找到合适的任务。也许任务已经全部做完了。退出。')
         console.log('请手动切换回主页面')
         device.cancelKeepingAwake()
-        alert('别忘了在脚本主页领取618红包！')
+        // alert('别忘了在脚本主页领取618红包！')
         exit()
     }
 
-    if (jumpButton[0].match('去浏览店铺领喵币')) {
+    if (jumpButton[0].match('去浏览店铺领能量')) {
         console.log('进行浏览店铺任务')
         jumpButton[1].click()
         while (!textContains('任务完成').exists()) {
@@ -182,12 +183,12 @@ while (true) {
             sleep(5000)
         }
         back()
-    } else if (jumpButton[0].match(/参与合伙赚喵币.*|参与星厨总动员.*/)) {
+    } else if (jumpButton[0].match(/.*金币小镇.*|浏览餐饮卡券.*|.*加油赛.*/)) {
         console.log('进行' + jumpButton[0] + '任务，10秒后返回')
+        jumpButton[1].click()
         sleep(10000)
         back()
-    }
-    else {
+    } else {
         console.log('进行' + jumpButton[0] + '任务')
         jumpButton[1].click()
         liulan()
