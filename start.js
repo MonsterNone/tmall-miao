@@ -42,7 +42,7 @@ function findTimeout(findF, timeout) {
 
 // 查找任务按钮
 function findTask() {
-    var jumpButtonFind = textMatches(/去浏览|去搜索|去完成|签到|逛一逛|去逛逛|去观看|去参赛/) // 找进入任务的按钮，10秒
+    var jumpButtonFind = textMatches(/去浏览|去搜索|去完成|签到|逛一逛|去逛逛|去观看|去参赛|去领取/) // 找进入任务的按钮，10秒
     var jumpButtons = findTimeout(jumpButtonFind, 10000)
 
     if (!jumpButtons) {
@@ -66,7 +66,7 @@ function findTask() {
                 sleep(8000)
                 return findTask()
             }
-            if (!(taskName.match(/邀请|登录|组队|参与|施肥|浇水|特价版|小鸡|消除|穿搭|话费|森林|点淘|人生|我的淘宝/) || content.match(/小互动/))) {
+            if (!(taskName.match(/邀请|登录|组队|参与|施肥|浇水|特价版|小鸡|消除|穿搭|森林|点淘|人生|我的淘宝/) || content.match(/小互动/))) {
                 return [taskName, jumpButtons[i]]
             }
         }
@@ -139,6 +139,9 @@ try {
     text('集能量').findOne(20000)
     console.log('准备打开任务列表')
     sleep(5000)
+    if(click('关闭')) {
+        sleep(2000)
+    }
     text('集能量').findOnce().click()
     console.log('准备搜索任务')
     sleep(5000)
@@ -187,6 +190,18 @@ while (true) {
         console.log('进行' + jumpButton[0] + '任务，10秒后返回')
         jumpButton[1].click()
         sleep(10000)
+        back()
+    } else if (jumpButton[0].match(/.*直播.*/)) {
+        console.log('进行直播任务')
+        sleep(15000)
+        var i = 0
+        while (i < 30) {
+            if (!(text('浏览15秒').exists() || desc('浏览15秒').exists())) {
+                break
+            }
+            i++
+            sleep(500)
+        }
         back()
     } else {
         console.log('进行' + jumpButton[0] + '任务')

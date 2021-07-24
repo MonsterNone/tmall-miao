@@ -1,6 +1,6 @@
 "ui";
 
-const VERSION = 'ChinaNo.1-1'
+const VERSION = 'ChinaNo.1-2'
 
 ui.layout(
     <frame>
