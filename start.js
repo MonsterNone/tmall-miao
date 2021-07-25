@@ -193,10 +193,11 @@ while (true) {
         back()
     } else if (jumpButton[0].match(/.*直播.*/)) {
         console.log('进行直播任务')
+        jumpButton[1].click()
         sleep(15000)
         var i = 0
         while (i < 30) {
-            if (!(text('浏览15秒').exists() || desc('浏览15秒').exists())) {
+            if (!(textContains('浏览15秒').exists() || descContains('浏览15秒').exists()) || textContains('任务已完成').exists()) {
                 break
             }
             i++
