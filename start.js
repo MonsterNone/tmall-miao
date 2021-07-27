@@ -102,6 +102,7 @@ function liulan() {
     if (finish_c > 99) {
         console.log('未检测到任务完成标识。退出。')
         console.log('如果你认为这是一个bug请截图反馈。')
+        console.log('一般情况下，二次运行脚本即可。')
         console.log('请手动切换回主页面')
         device.cancelKeepingAwake()
         exit()
@@ -147,7 +148,7 @@ try {
     sleep(5000)
 } catch (err) {
     console.log(err)
-    console.log('无法进入任务列表，可能是淘宝更新了页面逻辑，请反馈')
+    console.log('无法进入任务列表，如果你认为这是bug，请截图反馈')
     exit()
 }
 
@@ -186,12 +187,12 @@ while (true) {
             sleep(5000)
         }
         back()
-    } else if (jumpButton[0].match(/.*金币小镇.*|浏览餐饮卡券.*|.*加油赛.*/)) {
+    } else if (jumpButton[0].match(/.*金币小镇.*|浏览餐饮卡券.*|.*加油赛.*|.*赚星星.*/)) {
         console.log('进行' + jumpButton[0] + '任务，10秒后返回')
         jumpButton[1].click()
         sleep(10000)
         back()
-    } else if (jumpButton[0].match(/.*直播.*/)) {
+    } else if (jumpButton[0].match(/.*直播.*|.*观看.*/)) {
         console.log('进行直播任务')
         jumpButton[1].click()
         sleep(15000)

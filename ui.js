@@ -1,6 +1,6 @@
 "ui";
 
-const VERSION = 'ChinaNo.1-3'
+const VERSION = 'ChinaNo.1-4'
 
 ui.layout(
     <frame>
@@ -150,7 +150,7 @@ ui.checkUpdate.click(function () {
 
 function autoPerReq() {
     if (!auto.service) {
-        alert('找到天猫618助手，勾选授予权限', '小米手机在“更多已安装服务”中')
+        alert('找到天猫618助手，勾选授予权限', '部分机型在“已安装服务”中')
     }
     auto.waitFor()
     toast('无障碍权限授予成功')
@@ -175,7 +175,7 @@ function checkUpdate() {
         }
         var version = res.body.string()
         if (version != VERSION) {
-            var go = confirm("有新的版本，前往下载")
+            var go = confirm("有新的版本，前往下载" + version)
             if (go) {
                 app.openUrl('https://github.com/MonsterNone/tmall-miao/releases')
             }
