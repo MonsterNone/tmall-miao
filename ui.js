@@ -1,6 +1,6 @@
 "ui";
 
-const VERSION = '202111-2'
+const VERSION = '202111-3'
 
 ui.layout(
     <frame>
@@ -186,6 +186,7 @@ function checkUpdate() {
         if (version != VERSION) {
             var go = confirm("有新的版本，前往下载" + version)
             if (go) {
+                alert('如果打不开更新，请查看QQ群顶置公告至蓝奏云下载')
                 app.openUrl('https://github.com/MonsterNone/tmall-miao/releases')
             }
         } else {

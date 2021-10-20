@@ -61,7 +61,25 @@ if (!taskListButton) {
     console.log('未能打开任务列表，请关闭京东重新运行！')
     exit()
 }
-taskListButton = taskListButton.parent().child(9)
+taskListButton = taskListButton.parent().children()
+let flag
+for (let i = 7; i < taskListButton.length; i++) {
+    let item = taskListButton[i]
+    if (item.text().match(/消耗.*汪汪币/)) {
+        flag = i
+        continue
+    }
+    if (flag) {
+        if (item.clickable()) {
+            taskListButton = item
+            break
+        }
+    }
+}
+if (!taskListButton.clickable()) {
+    console.log('无法找到任务列表控件')
+    exit()
+}
 taskListButton.click()
 sleep(2000)
 
@@ -126,7 +144,7 @@ while (true) {
         taskText = item.text()
         item = item.parent().child(3)
         let b = item.bounds()
-        let color = images.pixel(img, b.left+b.width()/10, b.top+b.height()/2)
+        let color = images.pixel(img, b.left + b.width() / 10, b.top + b.height() / 2)
         if (colors.isSimilar(color, '#fe2a60')) {
             if (taskText.match(/成功入会/)) continue
             taskButton = item
