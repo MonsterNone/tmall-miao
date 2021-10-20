@@ -1,24 +1,25 @@
 "ui";
 
-const VERSION = 'ChinaNo.1-4'
+const VERSION = '202111-1'
 
 ui.layout(
     <frame>
         <vertical>
-            {/* <button id="tb" text="点击下载淘宝9.0版本（此版本目前无黑号检测）"  textColor="red" textSize="16sp" /> */}
             <button id="automationPermission" text="1. 授予无障碍权限" />
             <button id="consolePermission" text="2. 授予悬浮窗权限" />
-            {/* <button id="discountTask" text="3. 领取淘宝618红包" /> */}
-            <button id="startTask" text="3. 开始奥运任务" />
+            <button id="discountTask" text="3. 每日领取双十一淘宝红包" />
+            {/* <button id="discountTask" text="4. 每日领取双十一京东红包" /> */}
+            <button id="startTask" text="4. 开始淘宝任务（尚未开始）" />
+            <button id="startJDTask" text="4. 开始京东任务" /> 
             {/* <button id="specialTask" text="5. 领取会场红包（0点领红包最大）" /> */}
             {/* <button id="caidan" text="5. 完成天猫开彩蛋任务" /> */}
-            <button id="butie" text="天猫百亿补贴会场，真补贴，真划算" />
+            {/* <button id="butie" text="天猫百亿补贴会场，真补贴，真划算" /> */}
             {/* <button id="jd" text="5. 领取京东618红包（领完再进，每天三次）" /> */}
             {/* <button id="showHb" text="消灭红包！旧的不去新的不来！" textColor="red" /> */}
-            <button id="showQun" text="加入天猫活动助力群" />
+            <button id="showQun" text="加入双十一活动助力群" />
             <button id="feedback" text="正版发布地址！小心病毒盗版！" />
             <button id="checkUpdate" text="检查更新" />
-            <text text="使用脚本有机率导致任务收益减少！本脚本仅供学习参考，请勿用于非法用途，使用脚本导致的任何可能结果与本人无关。请使用新版淘宝运行，老版本部分任务会出现问题。" textStyle="bold|italic" textColor="red" textSize="18sp" />
+            <text text="使用脚本有机率导致任务收益减少！本脚本仅供学习参考，请勿用于非法用途，使用脚本导致的任何可能结果与本人无关。请使用新版淘宝/京东运行，老版本部分任务会出现问题。" textStyle="bold|italic" textColor="red" textSize="18sp" />
             <text text="部分机型无障碍权限授予部分可能出现bug，请关闭软件重新打开授予权限。" textStyle="italic" textColor="blue" />
             <text text="如果始终无法授予请重启手机尝试" />
             <text text="使用说明" textColor="red" />
@@ -32,15 +33,11 @@ ui.layout(
             {/* <text autoLink="web" text="3. 项目地址https://github.com/MonsterNone/tmall-miao" /> */}
             {/* <text text="4. 运行中出现bug请附上详细控制台log、页面截图等提交issue" /> */}
             <text text="3. 由于调用淘宝打开页面，部分手机管家可能会误报为诱导软件，实际上本软件绝无任何病毒行为" />
-            <text id="ver" line="2" />
+            <text id="ver" line="1" />
         </vertical>
         <vertical id="qun" visibility="gone" bg="#ffffff">
             <img src="file://res/qun.png" />
             <button id="hideQun" style="Widget.AppCompat.Button.Colored" text="隐藏" />
-            {/* <text text="由于微信号被恶意举报，无法拉群，新开了一个QQ群，欢迎加入！" /> */}
-            {/* <text text="每天9点，群公告准时发车" /> */}
-            {/* <text text="截图后打开微信扫描二维码加入" />
-            <text text="如果二维码无法进入请添加小助手微信拉进群：zs2020618" /> */}
         </vertical>
         {/* <vertical id="hb" visibility="gone" bg="#ffffff" paddingTop="50" paddingLeft="20" paddingRight="20">
             <text text="每日的红包使用掉，淘宝才会给你发新红包！5元惊喜红包不用完，绝对不会收到下一个5元！" textSize="18sp" textStyle="bold" textColor="red" />
@@ -49,10 +46,16 @@ ui.layout(
             <button id="big" text="大红包：官方补贴清单" />
             <button id="hideHb" style="Widget.AppCompat.Button.Colored" text="隐藏" />
         </vertical> */}
+        {/* <vertical id="hongbao" visibility="gone" bg="#ffffff" paddingTop="50" paddingLeft="20" paddingRight="20">
+            <button id="get" text="先领红包，不领咋有的用哈哈" />
+            <button id="one" text="小红包：每日一元购" />
+            <button id="big" text="大红包：官方补贴清单" />
+            <button id="hideHb" style="Widget.AppCompat.Button.Colored" text="隐藏" />
+        </vertical> */}
     </frame>
 )
 
-ui.ver.setText('\n版本：' + VERSION + '\n中国队加油！')
+ui.ver.setText('\n版本：' + VERSION)
 
 threads.start(checkUpdate)
 
@@ -69,21 +72,27 @@ ui.consolePermission.click(function () {
 })
 
 ui.startTask.click(function () {
-    engines.execScriptFile('./start.js')
+    alert('淘宝活动尚未开始，敬请期待！')
+    // engines.execScriptFile('./start.js')
 })
 
-ui.butie.click(function () {
-    const url = 'm.tb.cn/h.4yiqRfM'
-
-    app.startActivity({
-        action: "VIEW",
-        data: "taobao://" + url
-    })
+ui.startJDTask.click(function () {
+    engines.execScriptFile('./start_jd.js')
 })
 
-// ui.discountTask.click(function () {
-//     engines.execScriptFile('./discount.js')
+// ui.butie.click(function () {
+//     const url = 'm.tb.cn/h.4yiqRfM'
+
+//     app.startActivity({
+//         action: "VIEW",
+//         data: "taobao://" + url
+//     })
 // })
+
+ui.discountTask.click(function () {
+    alert('10.20日20点开始，手淘搜索密令【我要领红包7555】直达会场！')
+    // engines.execScriptFile('./discount.js')
+})
 
 // ui.specialTask.click(function() {
 //     engines.execScriptFile('./special.js')
