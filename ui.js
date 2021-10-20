@@ -1,6 +1,6 @@
 "ui";
 
-const VERSION = '202111-3'
+const VERSION = '202111-4'
 
 ui.layout(
     <frame>
@@ -176,7 +176,7 @@ function conPerReq() {
 
 function checkUpdate() {
     toast('正在检查更新')
-    var versionUrl = 'https://cdn.jsdelivr.net/gh/monsternone/tmall-miao@latest/version'
+    var versionUrl = 'https://raw.fastgit.org/MonsterNone/tmall-miao/master/version'
     http.get(versionUrl, {}, function (res, err) {
         if (err) {
             toast('检查更新出错，请手动前往项目地址查看')
