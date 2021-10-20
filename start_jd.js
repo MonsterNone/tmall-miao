@@ -56,7 +56,7 @@ sleep(2000)
 // scrollUp()
 
 console.log('打开任务列表')
-let taskListButton = textContains('消耗8000').findOne(20000)
+let taskListButton = textMatches(/.*消耗.*汪汪币/).findOne(20000)
 if (!taskListButton) {
     console.log('未能打开任务列表，请关闭京东重新运行！')
     exit()
