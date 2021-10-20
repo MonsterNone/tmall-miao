@@ -159,7 +159,7 @@ ui.checkUpdate.click(function () {
 
 function autoPerReq() {
     if (!auto.service) {
-        alert('找到天猫618助手，勾选授予权限', '部分机型在“已安装服务”中')
+        alert('找到双十一任务助手，勾选授予权限', '部分机型在“已安装服务”中')
     }
     auto.waitFor()
     toast('无障碍权限授予成功')

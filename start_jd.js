@@ -38,6 +38,7 @@ sleep(2000)
 // 进入活动
 console.log('等待页面加载...')
 const into = descContains('浮层活动').findOne(20000)
+sleep(2000)
 if (into == null) {
     console.log('无法找到活动入口，异常退出！')
     exit()
@@ -46,25 +47,25 @@ click(into.bounds().centerX(), into.bounds().centerY())
 click(into.bounds().centerX(), into.bounds().centerY())
 console.log('进入活动页面')
 
-textContains('每日签到抽最高').findOne(20000)
+if (!textContains('每日签到抽最高').findOne(20000)) {
+    console.log('未能进入活动，请重新运行！')
+    exit()
+}
 // scrollDown()
 sleep(2000)
 // scrollUp()
 
 console.log('打开任务列表')
-let taskListButton = textContains('每次消耗8000').findOne()
+let taskListButton = textContains('消耗8000').findOne(20000)
+if (!taskListButton) {
+    console.log('未能打开任务列表，请关闭京东重新运行！')
+    exit()
+}
 taskListButton = taskListButton.parent().child(9)
 taskListButton.click()
 sleep(2000)
 
 while (true) {
-    console.log('寻找未完成任务...')
-    let taskButtons = textMatches(/.*浏览并关注.*|.*浏览.*s.*|.*累计浏览.*|.*浏览可得.*/).find()
-    if (taskButtons.empty()) {
-        console.log('未找到浏览任务，退出')
-        break
-    }
-
     function timeTask() {
         taskButton.click()
         console.log('等待浏览任务完成...')
@@ -111,6 +112,13 @@ while (true) {
         sleep(5000)
     }
 
+    console.log('寻找未完成任务...')
+    let taskButtons = textMatches(/.*浏览并关注.*|.*浏览.*s.*|.*累计浏览.*|.*浏览可得.*/).find()
+    if (taskButtons.empty()) {
+        console.log('未找到浏览任务，退出')
+        break
+    }
+
     let taskButton, taskText
     let img = captureScreen()
     for (let i = 0; i < taskButtons.length; i++) {
@@ -118,8 +126,8 @@ while (true) {
         taskText = item.text()
         item = item.parent().child(3)
         let b = item.bounds()
-        let color = images.pixel(img, b.centerX(), b.centerY())
-        if (colors.isSimilar(color, '#fdf0f6', 5, 'diff')) {
+        let color = images.pixel(img, b.left+b.width()/10, b.top+b.height()/2)
+        if (colors.isSimilar(color, '#fe2a60')) {
             if (taskText.match(/成功入会/)) continue
             taskButton = item
             break
@@ -127,7 +135,8 @@ while (true) {
     }
 
     if (!taskButton) {
-        console.log('未找到任务，退出')
+        console.log('未找到可自动完成的任务，退出。')
+        console.log('入会任务、互动任务需要手动完成。')
         break
     }
 
