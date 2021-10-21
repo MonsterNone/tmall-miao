@@ -60,20 +60,21 @@ sleep(2000)
 // scrollUp()
 
 console.log('打开任务列表')
-let taskListButton = textMatches(/.*消耗.*汪汪币/).findOne(20000)
-if (!taskListButton) {
+let taskListButtons = textMatches(/.*消耗.*汪汪币/).findOne(20000)
+if (!taskListButtons) {
     console.log('未能打开任务列表，请关闭京东重新运行！')
     exit()
 }
-taskListButton = taskListButton.parent().children()
-if (taskListButton.empty()) {
+taskListButtons = taskListButtons.parent().children()
+if (taskListButtons.empty()) {
     console.log('未能打开任务列表，请关闭京东重试！')
     exit()
 }
 let flag
+let taskListButton
 console.log('开始寻找列表')
-for (let i = 7; i < taskListButton.length; i++) {
-    let item = taskListButton[i]
+for (let i = 7; i < taskListButtons.length; i++) {
+    let item = taskListButtons[i]
     if (item.text().match(/消耗.*汪汪币/)) {
         flag = i
         continue
@@ -83,11 +84,13 @@ for (let i = 7; i < taskListButton.length; i++) {
             console.log('找到控件')
             taskListButton = item
             break
+        } else {
+            console.log(item)
         }
     }
 }
 console.log('寻找列表结束')
-if (!taskListButton.clickable()) {
+if (!taskListButton || !taskListButton.clickable()) {
     console.log('无法找到任务列表控件')
     exit()
 }
