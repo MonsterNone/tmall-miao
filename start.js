@@ -88,7 +88,7 @@ function liulan() {
     let finish_c = 0
     while (finish_c < 80) { // 0.5 * 60 = 40 秒，防止死循环
         let finish_reg = /.*完成.*|.*失败.*|.*上限.*|.*开小差.*|.*发放.*/
-        if ((textMatches(finish_reg).exists() || descMatches(finish_reg).exists()) || textContains('任务已完成') && !text("浏览得奖励").exists()) // 等待已完成出现，有可能失败
+        if (((textMatches(finish_reg).exists() || descMatches(finish_reg).exists()) || textContains('任务已完成')) && !text("浏览得奖励").exists()) // 等待已完成出现，有可能失败
             break
         if (textMatches(/.*休息会呗.*/).exists()) {
             alert('触发淘宝验证', '请手动验证后返回淘宝首页，重新执行任务')
