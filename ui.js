@@ -1,6 +1,6 @@
 "ui";
 
-const VERSION = '202111-7'
+const VERSION = '202111-8'
 
 ui.layout(
     <frame>
