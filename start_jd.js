@@ -217,8 +217,8 @@ while (true) {
         sleep(500)
         console.show()
         console.log('等待返回...')
-        let r = textMatch(/.*累计任务奖.*|.*礼包.*/).findOne(8000)
-        if (!r.text().match(/累计任务奖/)) {
+        let r = textMatches(/.*累计任务奖.*|.*礼包.*/).findOne(8000)
+        if (r && !r.text().match(/累计任务奖/)) {
             back()
         }
         sleep(5000)
