@@ -69,7 +69,7 @@ try {
         console.log('未能打开任务列表，请关闭京东重新运行！')
         exit()
     }
-    if (taskListButtons.indexInParent <= 2) {
+    if (taskListButtons.indexInParent() <= 2) {
         taskListButtons = taskListButtons.parent().parent().children()
     } else {
         taskListButtons = taskListButtons.parent().children()
@@ -182,6 +182,7 @@ try {
             item = item.parent().child(3)
             let b = item.bounds()
             let color = images.pixel(img, b.left + b.width() / 10, b.top + b.height() / 2)
+            console.log(color, colors.isSimilar(color, '#fe2a60'))
             if (colors.isSimilar(color, '#fe2a60')) {
                 if (!join && taskText.match(/成功入会/)) continue
                 taskButton = item
