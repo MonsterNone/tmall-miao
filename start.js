@@ -68,7 +68,7 @@ try {
                     sleep(8000)
                     return findTask()
                 }
-                if (!(taskName.match(/领现金|扔喵糖|占领|邀请|登录|组队|参与|施肥|浇水|特价版|小鸡|消除|穿搭|森林|点淘|人生|我的淘宝/) || content.match(/小互动/))) {
+                if (!(taskName.match(/开88|领现金|扔喵糖|占领|邀请|登录|组队|参与|施肥|浇水|特价版|小鸡|消除|穿搭|森林|点淘|人生|我的淘宝/) || content.match(/小互动/))) {
                     return [taskName, jumpButtons[i]]
                 }
             }

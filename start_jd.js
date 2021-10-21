@@ -5,16 +5,17 @@ if (!auto.service) {
 
 if (!requestScreenCapture()) {
     alert('请求截图权限，用以查找按钮，请允许')
+    console.show()
     console.log("请求截图失败，退出");
     exit();
 } else {
+    console.show()
     console.log('截图请求成功')
 }
 
 
 const join = confirm('是否自动完成入会任务？', '入会将会自动授权手机号给京东商家')
 
-console.show()
 console.log('开始完成京东任务...')
 console.log('按音量下键停止')
 
@@ -63,12 +64,16 @@ try {
     // scrollUp()
 
     console.log('打开任务列表')
-    let taskListButtons = textMatches(/打卡领红包.*消耗.*/).findOne(20000)
+    let taskListButtons = textMatches(/.*消耗.*/).findOne(20000)
     if (!taskListButtons) {
         console.log('未能打开任务列表，请关闭京东重新运行！')
         exit()
     }
-    taskListButtons = taskListButtons.parent().children()
+    if (taskListButtons.indexInParent <= 2) {
+        taskListButtons = taskListButtons.parent().parent().children()
+    } else {
+        taskListButtons = taskListButtons.parent().children()
+    }
     if (taskListButtons.empty()) {
         console.log('未能打开任务列表，请关闭京东重试！')
         exit()
