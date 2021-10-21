@@ -1,27 +1,28 @@
 "ui";
 
-const VERSION = '202111-4'
+const VERSION = '202111-5'
 
 ui.layout(
     <frame>
         <vertical>
             <button id="automationPermission" text="1. 授予无障碍权限" />
             <button id="consolePermission" text="2. 授予悬浮窗权限" />
-            <button id="discountTask" text="3. 每日领取双十一淘宝红包" />
             {/* <button id="discountTask" text="4. 每日领取双十一京东红包" /> */}
-            <button id="startTask" text="4. 开始淘宝任务（尚未开始）" />
-            <button id="startJDTask" text="4. 开始京东任务" /> 
-            {/* <button id="specialTask" text="5. 领取会场红包（0点领红包最大）" /> */}
+            <button id="startTask" text="3. 开始淘宝任务" />
+            <button id="startJDTask" text="3. 开始京东任务" /> 
+            <button id="discountTask" text="4. 每日领取天猫双十一红包" />
+            {/* <button id="specialTask" text="5. 淘宝双十一主会场" /> */}
             {/* <button id="caidan" text="5. 完成天猫开彩蛋任务" /> */}
             {/* <button id="butie" text="天猫百亿补贴会场，真补贴，真划算" /> */}
             {/* <button id="jd" text="5. 领取京东618红包（领完再进，每天三次）" /> */}
             {/* <button id="showHb" text="消灭红包！旧的不去新的不来！" textColor="red" /> */}
+            <button id="showHC" text="双十一大促会场直达" textColor="red" />
             <button id="showQun" text="加入双十一活动助力群" />
-            <button id="feedback" text="正版发布地址！小心病毒盗版！" />
+            {/* <button id="feedback" text="正版发布地址！小心病毒盗版！" /> */}
             <button id="checkUpdate" text="检查更新" />
             <text text="使用脚本有机率导致任务收益减少！本脚本仅供学习参考，请勿用于非法用途，使用脚本导致的任何可能结果与本人无关。请使用新版淘宝/京东运行，老版本部分任务会出现问题。" textStyle="bold|italic" textColor="red" textSize="18sp" />
-            <text text="部分机型无障碍权限授予部分可能出现bug，请关闭软件重新打开授予权限。" textStyle="italic" textColor="blue" />
-            <text text="如果始终无法授予请重启手机尝试" />
+            {/* <text text="部分机型无障碍权限授予部分可能出现bug，请关闭软件重新打开授予权限。" textStyle="italic" textColor="blue" /> */}
+            {/* <text text="如果始终无法授予请重启手机尝试" /> */}
             <text text="使用说明" textColor="red" />
             <text text="1. 运行脚本之前建议按首先点击授予权限" />
             <text text="2. 脚本运行过程中按 音量减 即可强制停止" />
@@ -29,10 +30,10 @@ ui.layout(
             <text text="4. 运行前最好先将媒体音量关闭，直播任务可能会发出声音" />
             <text text="其他说明" textColor="red" />
             <text text="1. 本脚本基于Auto.JS（感谢原开发者）" />
-            <text text="2. 免费！" />
+            {/* <text text="2. 免费！" /> */}
             {/* <text autoLink="web" text="3. 项目地址https://github.com/MonsterNone/tmall-miao" /> */}
             {/* <text text="4. 运行中出现bug请附上详细控制台log、页面截图等提交issue" /> */}
-            <text text="3. 由于调用淘宝打开页面，部分手机管家可能会误报为诱导软件，实际上本软件绝无任何病毒行为" />
+            <text text="2. 由于调用淘宝打开页面，部分手机管家可能会误报为诱导软件，实际上本软件绝无任何病毒行为" />
             <text id="ver" line="1" />
         </vertical>
         <vertical id="qun" visibility="gone" bg="#ffffff">
@@ -46,12 +47,12 @@ ui.layout(
             <button id="big" text="大红包：官方补贴清单" />
             <button id="hideHb" style="Widget.AppCompat.Button.Colored" text="隐藏" />
         </vertical> */}
-        {/* <vertical id="hongbao" visibility="gone" bg="#ffffff" paddingTop="50" paddingLeft="20" paddingRight="20">
-            <button id="get" text="先领红包，不领咋有的用哈哈" />
-            <button id="one" text="小红包：每日一元购" />
-            <button id="big" text="大红包：官方补贴清单" />
-            <button id="hideHb" style="Widget.AppCompat.Button.Colored" text="隐藏" />
-        </vertical> */}
+        <vertical id="huichang" visibility="gone" bg="#ffffff" paddingTop="50" paddingLeft="20" paddingRight="20">
+            <button id="yushou" text="双十一预售玩法会场" />
+            <button id="jianhuo" text="双十一预售尖货" />
+            <button id="chaoshi" text="天猫超市双十一" />
+            <button id="hideHC" style="Widget.AppCompat.Button.Colored" text="隐藏" />
+        </vertical>
     </frame>
 )
 
@@ -72,8 +73,8 @@ ui.consolePermission.click(function () {
 })
 
 ui.startTask.click(function () {
-    alert('淘宝活动尚未开始，敬请期待！')
-    // engines.execScriptFile('./start.js')
+    // alert('淘宝活动尚未开始，敬请期待！')
+    engines.execScriptFile('./start.js')
 })
 
 ui.startJDTask.click(function () {
@@ -90,8 +91,13 @@ ui.startJDTask.click(function () {
 // })
 
 ui.discountTask.click(function () {
-    alert('10.20日20点开始，手淘搜索密令【我要领红包7555】直达会场！')
-    // engines.execScriptFile('./discount.js')
+    toast('也可手淘搜索密令【我要领红包7555】直达会场！')
+    const url = 'm.tb.cn/h.ffKfhIt'
+
+    app.startActivity({
+        action: "VIEW",
+        data: "taobao://" + url
+    })
 })
 
 // ui.specialTask.click(function() {
@@ -106,9 +112,9 @@ ui.showQun.click(function () {
     ui.qun.visibility = 0
 })
 
-ui.feedback.click(function () {
-    app.openUrl('https://github.com/monsternone/tmall-miao')
-})
+// ui.feedback.click(function () {
+//     app.openUrl('https://github.com/monsternone/tmall-miao')
+// })
 
 ui.hideQun.click(function () {
     ui.qun.visibility = 8
@@ -131,6 +137,35 @@ ui.checkUpdate.click(function () {
 // ui.showHb.click(function () {
 //     ui.hb.visibility = 0
 // })
+
+ui.showHC.click(function () {
+    ui.huichang.visibility = 0
+})
+
+ui.yushou.click(function () {
+    app.startActivity({
+        action: "VIEW",
+        data: "taobao://m.tb.cn/h.f4JZbxe"
+    })
+})
+
+ui.jianhuo.click(function () {
+    app.startActivity({
+        action: "VIEW",
+        data: "taobao://m.tb.cn/h.fUMgEir"
+    })
+})
+
+ui.chaoshi.click(function () {
+    app.startActivity({
+        action: "VIEW",
+        data: "taobao://m.tb.cn/h.fVGMHKx"
+    })
+})
+
+ui.hideHC.click(function () {
+    ui.huichang.visibility = 8
+})
 
 // ui.hideHb.click(function () {
 //     ui.hb.visibility = 8

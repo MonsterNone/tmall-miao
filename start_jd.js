@@ -3,10 +3,12 @@ if (!auto.service) {
     exit()
 }
 
-alert('即将请求截图权限，用以查找按钮，请允许')
 if (!requestScreenCapture()) {
+    alert('请求截图权限，用以查找按钮，请允许')
     console.log("请求截图失败，退出");
     exit();
+} else {
+    console.log('截图请求成功')
 }
 
 const join = confirm('是否自动完成入会任务？', '入会将会自动授权手机号给京东商家')
@@ -64,7 +66,12 @@ if (!taskListButton) {
     exit()
 }
 taskListButton = taskListButton.parent().children()
+if (taskListButton.empty()) {
+    console.log('未能打开任务列表，请关闭京东重试！')
+    exit()
+}
 let flag
+console.log('开始寻找列表')
 for (let i = 7; i < taskListButton.length; i++) {
     let item = taskListButton[i]
     if (item.text().match(/消耗.*汪汪币/)) {
@@ -73,11 +80,13 @@ for (let i = 7; i < taskListButton.length; i++) {
     }
     if (flag) {
         if (item.clickable()) {
+            console.log('找到控件')
             taskListButton = item
             break
         }
     }
 }
+console.log('寻找列表结束')
 if (!taskListButton.clickable()) {
     console.log('无法找到任务列表控件')
     exit()
@@ -172,7 +181,8 @@ while (true) {
 
     if (!taskButton) {
         console.log('未找到可自动完成的任务，退出。')
-        console.log('入会任务、互动任务需要手动完成。')
+        console.log('入会任务、互动任务、品牌墙需要手动完成。')
+        console.log('小米机型无法找到任务，需要给予脚本“后台弹出页面”权限。')
         break
     }
 
@@ -190,6 +200,7 @@ while (true) {
         if (!check) {
             console.log('无法找到入会按钮，返回')
             back()
+            continue
         }
         sleep(2000)
         check = check.parent().child(0).bounds()
@@ -202,9 +213,9 @@ while (true) {
         click(j.centerX(), j.centerY())
         sleep(500)
         console.show()
-        console.log('等待自动返回...')
-        if (!textContains('累计任务奖励').findOne(8000)) { // 部分任务会自动返回
-            console.log('手动返回')
+        console.log('等待返回...')
+        let r = textMatch(/.*累计任务奖.*|.*礼包.*/).findOne(8000)
+        if (!r.text().match(/累计任务奖/)) {
             back()
         }
         sleep(5000)
