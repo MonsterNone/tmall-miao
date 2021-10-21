@@ -72,7 +72,6 @@ try {
     if (taskListButtons.indexInParent() <= 2) {
         taskListButtons = taskListButtons.parent()
     }
-    let index = taskListButtons.indexInParent()
     taskListButtons = taskListButtons.parent().children()
     if (taskListButtons.empty()) {
         console.log('未能打开任务列表，请关闭京东重试！')
@@ -81,10 +80,10 @@ try {
     let flag
     let taskListButton
     console.log('开始寻找列表')
-    for (let i = index; i < taskListButtons.length; i++) {
+    for (let i = 0; i < taskListButtons.length; i++) {
         let item = taskListButtons[i]
         console.log(item)
-        if (item.text().match(/消耗.*汪汪币/)) {
+        if ((item.text() && item.text().match(/消耗.*汪汪币/)) || (item.desc() && item.desc().match(/消耗.*汪汪币/))) {
             flag = i
             continue
         }
