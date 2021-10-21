@@ -73,8 +73,9 @@ if (taskListButtons.empty()) {
 let flag
 let taskListButton
 console.log('开始寻找列表')
-for (let i = 7; i < taskListButtons.length; i++) {
+for (let i = 0; i < taskListButtons.length; i++) {
     let item = taskListButtons[i]
+    console.log(item)
     if (item.text().match(/消耗.*汪汪币/)) {
         flag = i
         continue
@@ -84,8 +85,6 @@ for (let i = 7; i < taskListButtons.length; i++) {
             console.log('找到控件')
             taskListButton = item
             break
-        } else {
-            console.log(item)
         }
     }
 }
@@ -203,6 +202,7 @@ while (true) {
         if (!check) {
             console.log('无法找到入会按钮，返回')
             back()
+            sleep(5000)
             continue
         }
         sleep(2000)
