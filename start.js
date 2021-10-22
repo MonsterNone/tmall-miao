@@ -152,13 +152,26 @@ try {
     console.log('等待页面加载...')
 
     try {
-        text('赚喵糖').findOne(20000)
+        textMatches(/.*赚.*?糖.*/).findOne(20000)
         console.log('准备打开任务列表')
         sleep(5000)
         // if(click('关闭')) {
         //     sleep(2000)
         // }
-        text('赚喵糖').findOnce().click()
+        let c = textMatches(/.*赚.*?糖.*/).findOnce()
+        if (c) {
+            console.log('打开任务列表')
+            c.click()
+        } else {
+            console.log('默认方式打开失败，二次尝试')
+            c = descMatches(/.*赚.*?糖.*/).findOnce()
+            if (c) {
+                c.click()
+            } else {
+                console.log('无法找到任务列表按钮')
+                exit()
+            }
+        }
         console.log('准备搜索任务')
         sleep(5000)
     } catch (err) {
