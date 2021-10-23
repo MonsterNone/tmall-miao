@@ -45,6 +45,7 @@ try {
 
     // 进入活动
     console.log('等待页面加载...')
+    console.log('请让京东处于App首页')
     const into = descContains('浮层活动').findOne(20000)
     sleep(2000)
     if (into == null) {
@@ -132,7 +133,8 @@ try {
             for (let i = 0; i < items.length; i++) {
                 if (cart) {
                     console.log('加购并浏览')
-                    items[i].parent().parent().child(5).click()
+                    let tmp = items[i].parent().parent()
+                    tmp.child(tmp.childCount()-1).click()
                 } else {
                     console.log('浏览商品页')
                     items[i].parent().parent().child(4).click()
