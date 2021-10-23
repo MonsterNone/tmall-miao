@@ -117,12 +117,13 @@ try {
         }
 
         if (finish_c > 79) {
-            console.log('未检测到任务完成标识。退出。')
-            console.log('如果你认为这是一个bug请截图反馈。')
-            console.log('一般情况下，二次运行脚本即可。')
-            console.log('请手动切换回主页面')
-            device.cancelKeepingAwake()
-            exit()
+            console.log('未检测到任务完成标识。返回。')
+            // console.log('如果你认为这是一个bug请截图反馈。')
+            // console.log('一般情况下，二次运行脚本即可。')
+            // console.log('请手动切换回主页面')
+            // device.cancelKeepingAwake()
+            // exit()
+            return back()
         }
 
         console.log('任务完成，返回')
