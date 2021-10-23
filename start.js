@@ -68,7 +68,7 @@ try {
                     sleep(8000)
                     return findTask()
                 }
-                if (!(taskName.match(/开88|领现金|扔喵糖|占领|邀请|登录|组队|参与|施肥|浇水|特价版|小鸡|消除|穿搭|森林|点淘|人生|我的淘宝/) || content.match(/小互动/))) {
+                if (!(taskName.match(/斗地主|消消乐|流浪猫|开88|领现金|扔喵糖|占领|邀请|登录|组队|参与|施肥|浇水|特价版|小鸡|消除|穿搭|森林|点淘|人生|我的淘宝/) || content.match(/小互动/))) {
                     return [taskName, jumpButtons[i]]
                 }
             }
@@ -94,7 +94,9 @@ try {
                 (textMatches(finish_reg).exists() ||
                     descMatches(finish_reg).exists() ||
                     textContains('任务已完成').exists() ||
-                    textContains('喵糖已发放').exists()) &&
+                    textContains('喵糖已发放').exists() ||
+                    descContains('任务已完成').exists() ||
+                    descContains('喵糖已发放').exists()) &&
                 !text("浏览得奖励").exists()
             ) // 等待已完成出现，有可能失败
             {
@@ -198,7 +200,7 @@ try {
                 }
             }
 
-            console.log('没找到合适的任务。也许任务已经全部做完了。退出。')
+            console.log('没找到合适的任务。也许任务已经全部做完了。退出。互动任务不会自动完成。')
             console.log('请手动切换回主页面')
             device.cancelKeepingAwake()
             alert('别忘了在脚本主页领取双十一红包！')
