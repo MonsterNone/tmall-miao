@@ -1,6 +1,6 @@
 "ui";
 
-const VERSION = '202111-16'
+const VERSION = '202111-17'
 
 ui.layout(
     <frame>
@@ -51,6 +51,7 @@ ui.layout(
             <button id="yushou" text="双十一预售玩法会场" />
             <button id="jianhuo" text="双十一预售尖货" />
             <button id="chaoshi" text="天猫超市双十一" />
+            <button id="jd" text="京东双十一预售会场" />
             <button id="hideHC" style="Widget.AppCompat.Button.Colored" text="隐藏" />
         </vertical>
     </frame>
@@ -161,6 +162,10 @@ ui.chaoshi.click(function () {
         action: "VIEW",
         data: "taobao://m.tb.cn/h.fVGMHKx"
     })
+})
+
+ui.jd.click(function () {
+    app.openUrl('https://u.jd.com/3Kp7cKm')
 })
 
 ui.hideHC.click(function () {
