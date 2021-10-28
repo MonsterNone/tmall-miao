@@ -51,7 +51,7 @@ ui.layout(
             <button id="yushou" text="双十一预售玩法会场" />
             <button id="jianhuo" text="双十一预售尖货" />
             <button id="chaoshi" text="天猫超市双十一" />
-            <button id="jd-huichang" text="京东双十一预售会场" />
+            <button id="jdHuichang" text="京东双十一预售会场" />
             <button id="hideHC" style="Widget.AppCompat.Button.Colored" text="隐藏" />
         </vertical>
     </frame>
@@ -164,7 +164,7 @@ ui.chaoshi.click(function () {
     })
 })
 
-ui.jd-huichang.click(function () {
+ui.jdHuichang.click(function () {
     app.openUrl('https://u.jd.com/3Kp7cKm')
 })
 
