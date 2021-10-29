@@ -56,7 +56,7 @@ try {
     click(into.bounds().centerX(), into.bounds().centerY())
     console.log('进入活动页面')
 
-    if (!textContains('每日签到抽最高').findOne(20000)) {
+    if (!textContains('每日签到抽最高').findOne(20000) && !descContains('每日签到抽最高').findOne(20000)) {
         console.log('未能进入活动，请重新运行！')
         exit()
     }
