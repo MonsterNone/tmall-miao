@@ -31,9 +31,9 @@ ui.layout(
             <text text="其他说明" textColor="red" />
             <text text="1. 本脚本基于Auto.JS（感谢原开发者）" />
             {/* <text text="2. 免费！" /> */}
-            {/* <text autoLink="web" text="3. 项目地址https://github.com/MonsterNone/tmall-miao" /> */}
-            {/* <text text="4. 运行中出现bug请附上详细控制台log、页面截图等提交issue" /> */}
             <text text="2. 由于调用淘宝打开页面，部分手机管家可能会误报为诱导软件，实际上本软件绝无任何病毒行为" />
+            <text autoLink="web" text="3. 开源项目地址https://github.com/MonsterNone/tmall-miao" />
+            {/* <text text="4. 运行中出现bug请附上详细控制台log、页面截图等提交issue" /> */}
             <text id="ver" line="1" />
         </vertical>
         <vertical id="qun" visibility="gone" bg="#ffffff">
