@@ -5,6 +5,18 @@ if (!auto.service) {
 
 // alert('请把手机放稳，不要摇晃！', '不然有时候会跳出合伙赢喵币，导致任务阻塞')
 
+if (confirm('是否需要自动调整媒体音量为0', '以免直播任务发出声音。需要修改系统设置权限。')) {
+    try {
+        device.setMusicVolume(0)
+        toast('成功设置媒体音量为0')
+    } catch(err) {
+        alert('首先需要开启权限，请开启后再次运行脚本')
+        exit()
+    }
+} else {
+    toast('不修改媒体音量')
+}
+
 console.show()
 console.log('开始完成喵糖任务...')
 console.log('按音量下键停止')
