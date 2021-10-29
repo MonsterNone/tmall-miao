@@ -68,7 +68,7 @@ try {
                     sleep(8000)
                     return findTask()
                 }
-                if (!(taskName.match(/斗地主|消消乐|流浪猫|开88|领现金|扔喵糖|占领|邀请|登录|组队|参与|施肥|浇水|特价版|小鸡|消除|穿搭|森林|点淘|人生|我的淘宝/) || content.match(/小互动/))) {
+                if (!(taskName.match(/斗地主|消消乐|流浪猫|开88|扔喵糖|占领|邀请|登录|组队|参与|施肥|浇水|特价版|小鸡|消除|穿搭|森林|点淘|人生|我的淘宝/) || content.match(/小互动/))) {
                     return [taskName, jumpButtons[i]]
                 }
             }
@@ -100,11 +100,6 @@ try {
                 !text("浏览得奖励").exists()
             ) // 等待已完成出现，有可能失败
             {
-                console.log(textMatches(finish_reg).exists())
-                console.log(descMatches(finish_reg).exists())
-                console.log(textContains('任务已完成').exists())
-                console.log(textContains('喵糖已发放').exists())
-                console.log(text("浏览得奖励").exists())
                 break
             }
             if (textMatches(/.*休息会呗.*/).exists()) {
@@ -128,16 +123,21 @@ try {
 
         console.log('任务完成，返回')
 
-        if (currentActivity() == 'com.taobao.tao.TBMainActivity') {
-            var backButton = descContains('返回618列车').findOnce() // 有可能是浏览首页，有可能无法点击
-            if (backButton) {
-                if (!backButton.parent().parent().parent().click()) {
-                    back()
-                }
-            } else {
-                back()
-            }
-        } else {
+        // if (currentActivity() == 'com.taobao.tao.TBMainActivity') {
+        //     var backButton = descContains('返回618列车').findOnce() // 有可能是浏览首页，有可能无法点击
+        //     if (backButton) {
+        //         if (!backButton.parent().parent().parent().click()) {
+        //             back()
+        //         }
+        //     } else {
+        //         back()
+        //     }
+        // } else {
+        //     back()
+        // }
+        back()
+        if (!text('做任务赢奖励').findOne(5000)) {
+            console.log('似乎没有返回，二次尝试')
             back()
         }
     }
@@ -157,7 +157,7 @@ try {
     try {
         textMatches(/.*赚.*?糖.*/).findOne(20000)
         console.log('准备打开任务列表')
-        sleep(5000)
+        sleep(2000)
         // if(click('关闭')) {
         //     sleep(2000)
         // }
@@ -176,7 +176,10 @@ try {
             }
         }
         console.log('准备搜索任务')
-        sleep(5000)
+        if (!text('做任务赢奖励').findOne(10000)) {
+            throw '未检测到任务列表标识，判定进入失败！'
+        }
+        sleep(2000)
     } catch (err) {
         console.log(err)
         console.log('无法进入任务列表，如果你认为这是bug，请截图反馈')
@@ -203,9 +206,7 @@ try {
 
             console.log('没找到合适的任务。也许任务已经全部做完了。退出。互动任务不会自动完成。')
             console.log('请手动切换回主页面')
-            device.cancelKeepingAwake()
-            alert('别忘了在脚本主页领取双十一红包！')
-            exit()
+            break
         }
 
         if (jumpButton[0].match('去浏览店铺领能量')) {
@@ -215,7 +216,7 @@ try {
                 console.log('进入店铺浏览')
                 text('逛店最多').findOne(15000).parent().click()
                 liulan()
-                sleep(5000)
+                sleep(2000)
             }
             back()
         } else if (jumpButton[0].match(/.*浏览餐饮卡券.*|.*加油赛.*|.*赚星星.*/)) {
@@ -223,21 +224,17 @@ try {
             jumpButton[1].click()
             sleep(10000)
             back()
+        } else if (jumpButton[0].match(/领现金/)) {
+            console.log('进行' + jumpButton[0] + '任务')
+            jumpButton[1].click()
+            let into = text('打开链接').findOne(10000)
+            if (!into) {
+                console.log('无法找到进入领现金的按钮！')
+                exit()
+            }
+            into.click()
+            liulan()
         }
-        // else if (jumpButton[0].match(/.*直播.*|.*观看.*/)) {
-        //     console.log('进行直播任务')
-        //     jumpButton[1].click()
-        //     sleep(15000)
-        //     var i = 0
-        //     while (i < 30) {
-        //         if (!(textContains('浏览15秒').exists() || descContains('浏览15秒').exists()) || textContains('任务已完成').exists()) {
-        //             break
-        //         }
-        //         i++
-        //         sleep(500)
-        //     }
-        //     back()
-        // }
         else {
             console.log('进行' + jumpButton[0] + '任务')
             jumpButton[1].click()
@@ -245,8 +242,14 @@ try {
         }
 
         console.log('等待页面刷新...')
-        sleep(5000)
+        sleep(2000)
     }
+
+    device.cancelKeepingAwake()
+    alert('别忘了在脚本主页领取双十一红包！')
 } catch (err) {
-    console.error(err)
+    device.cancelKeepingAwake()
+    if (!err.toString().match(/null/)) {
+        console.error(err)
+    }
 }
