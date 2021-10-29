@@ -83,7 +83,6 @@ try {
     console.log('开始寻找列表')
     for (let i = 0; i < taskListButtons.length; i++) {
         let item = taskListButtons[i]
-        console.log(item)
         if ((item.text() && item.text().match(/消耗.*汪汪币/)) || (item.desc() && item.desc().match(/消耗.*汪汪币/))) {
             flag = i
             continue
@@ -183,7 +182,7 @@ try {
             item = item.parent().child(3)
             let b = item.bounds()
             let color = images.pixel(img, b.left + b.width() / 10, b.top + b.height() / 2)
-            console.log(color, colors.isSimilar(color, '#fe2a60'))
+            console.log(colors.toString(color), colors.isSimilar(color, '#fe2a60'))
             if (colors.isSimilar(color, '#fe2a60')) {
                 if (!join && taskText.match(/成功入会/)) continue
                 taskButton = item
@@ -193,6 +192,7 @@ try {
 
         if (!taskButton) {
             console.log('未找到可自动完成的任务，退出。')
+            console.log('如果活动页有弹窗遮挡，烦请手动关闭。')
             console.log('入会任务、互动任务、品牌墙需要手动完成。')
             console.log('小米机型无法找到任务，需要给予脚本“后台弹出页面”权限。')
             break
@@ -253,5 +253,8 @@ try {
     device.cancelKeepingAwake()
     // alert('任务完成！')
 } catch (err) {
-    console.error(err)
+    device.cancelKeepingAwake()
+    if (err.toString() != 'JavaException: com.stardust.autojs.runtime.exception.ScriptInterruptedException: null') {
+        console.error(err)
+    }
 }
