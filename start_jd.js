@@ -101,7 +101,7 @@ try {
         exit()
     }
     taskListButton.click()
-    sleep(2000)
+    sleep(5000)
 
     while (true) {
         function timeTask() {
