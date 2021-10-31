@@ -36,6 +36,13 @@ threads.start(registerKey)
 
 // 全局try catch，应对无法显示报错
 try {
+
+    // 自定义去取消亮屏的退出方法
+    function quit() {
+        device.cancelKeepingAwake()
+        exit()
+    }
+
     // 自定义一个findTimeout，find_f是原本的查询器 text('sss').find()
     function findTimeout(findF, timeout) {
         function findSth() {
@@ -80,7 +87,7 @@ try {
                     sleep(8000)
                     return findTask()
                 }
-                if (!(taskName.match(/斗地主|消消乐|流浪猫|开88|扔喵糖|占领|邀请|登录|组队|参与|施肥|浇水|特价版|小鸡|消除|穿搭|森林|点淘|人生|我的淘宝/) || content.match(/小互动/))) {
+                if (!(taskName.match(/话费|斗地主|消消乐|流浪猫|开88|扔喵糖|占领|邀请|登录|组队|参与|施肥|浇水|特价版|小鸡|消除|穿搭|森林|点淘|人生|我的淘宝/) || content.match(/小互动/))) {
                     return [taskName, jumpButtons[i]]
                 }
             }
@@ -117,7 +124,7 @@ try {
             if (textMatches(/.*休息会呗.*/).exists()) {
                 alert('触发淘宝验证', '请手动验证后返回淘宝首页，重新执行任务')
                 console.log('异常退出。')
-                exit()
+                quit()
             }
             sleep(500)
             finish_c++
@@ -129,7 +136,7 @@ try {
             // console.log('一般情况下，二次运行脚本即可。')
             // console.log('请手动切换回主页面')
             // device.cancelKeepingAwake()
-            // exit()
+            // quit()
             return back()
         }
 
@@ -184,7 +191,7 @@ try {
                 c.click()
             } else {
                 console.log('无法找到任务列表按钮')
-                exit()
+                quit()
             }
         }
         console.log('准备搜索任务')
@@ -195,7 +202,7 @@ try {
     } catch (err) {
         console.log(err)
         console.log('无法进入任务列表，如果你认为这是bug，请截图反馈')
-        exit()
+        quit()
     }
 
     while (true) {
@@ -218,7 +225,8 @@ try {
 
             console.log('没找到合适的任务。也许任务已经全部做完了。退出。互动任务不会自动完成。')
             console.log('请手动切换回主页面')
-            break
+            alert('任务已完成', '别忘了在脚本主页领取双十一红包！')
+            quit()
         }
 
         if (jumpButton[0].match('去浏览店铺领能量')) {
@@ -242,7 +250,7 @@ try {
             let into = text('打开链接').findOne(10000)
             if (!into) {
                 console.log('无法找到进入领现金的按钮！')
-                exit()
+                quit()
             }
             into.click()
             liulan()
@@ -256,9 +264,6 @@ try {
         console.log('等待页面刷新...')
         sleep(2000)
     }
-
-    device.cancelKeepingAwake()
-    alert('别忘了在脚本主页领取双十一红包！')
 } catch (err) {
     device.cancelKeepingAwake()
     if (!err.toString().match(/null/)) {
