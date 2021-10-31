@@ -1,20 +1,19 @@
 "ui";
 
-const VERSION = '202111-19'
+const VERSION = '202111-20'
 
 ui.layout(
     <frame>
         <vertical>
             <button id="automationPermission" text="1. 授予无障碍权限" />
             <button id="consolePermission" text="2. 授予悬浮窗权限" />
-            {/* <button id="discountTask" text="4. 每日领取双十一京东红包" /> */}
-            <button id="startTask" text="3-1. 开始淘宝任务" />
-            <button id="startJDTask" text="3-2. 开始京东任务" /> 
-            <button id="discountTask" text="4-1. 每日领取天猫双十一红包" />
+            <button id="discountTask" text="3-1. 每日领取天猫双十一红包" />
+            <button id="jd" text="3-2. 领取京东618红包（领完再进，每天三次）" />
+            <button id="startTask" text="4-1. 开始淘宝任务" />
+            <button id="startJDTask" text="4-2. 开始京东任务" /> 
             {/* <button id="specialTask" text="5. 淘宝双十一主会场" /> */}
             {/* <button id="caidan" text="5. 完成天猫开彩蛋任务" /> */}
             {/* <button id="butie" text="天猫百亿补贴会场，真补贴，真划算" /> */}
-            <button id="jd" text="4-2. 领取京东618红包（领完再进，每天三次）" />
             {/* <button id="showHb" text="消灭红包！旧的不去新的不来！" textColor="red" /> */}
             <button id="showHC" text="双十一大促会场直达" textColor="red" />
             <button id="showQun" text="加入双十一活动助力群" />
