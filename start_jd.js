@@ -33,6 +33,24 @@ function registerKey() {
 }
 threads.start(registerKey)
 
+// 自定义一个findTextDescMatchesTimeout
+function findTextDescMatchesTimeout(reg, timeout) {
+    function findSth() {
+        result = textMatches(reg) || descMatches(reg)
+        if (result) {
+            return
+        }
+        sleep(50)
+        findSth()
+    }
+
+    let result = null
+    let thread = threads.start(findSth)
+    thread.join(timeout)
+
+    return result
+}
+
 // 全局try catch，应对无法显示报错
 try {
 
@@ -63,7 +81,7 @@ try {
     click(into.bounds().centerX(), into.bounds().centerY())
     console.log('进入活动页面')
 
-    if (!textContains('每日签到抽最高').findOne(20000) && !descContains('每日签到抽最高').findOne(20000)) {
+    if (!findTextDescMatchesTimeout(/.*每日签到抽最高.*/, 20000)) {
         console.log('未能进入活动，请重新运行！')
         quit()
     }
@@ -108,7 +126,7 @@ try {
         quit()
     }
     taskListButton.click()
-    if (!textMatches(/.*累计任务奖.*|.*礼包.*/).findOne(5000)) {
+    if (!findTextDescMatchesTimeout(/.*累计任务奖.*/, 5000)) {
         console.log('似乎没能打开任务列表，退出')
         quit()
     }
