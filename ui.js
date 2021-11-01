@@ -7,10 +7,10 @@ ui.layout(
         <vertical>
             <button id="automationPermission" text="1. 授予无障碍权限" />
             <button id="consolePermission" text="2. 授予悬浮窗权限" />
-            <button id="discountTask" text="3-1. 每日领取天猫双十一红包" />
-            <button id="jd" text="3-2. 领取京东618红包（领完再进，每天三次）" />
-            <button id="startTask" text="4-1. 开始淘宝任务" />
-            <button id="startJDTask" text="4-2. 开始京东任务" /> 
+            <button id="startTask" text="3-1. 开始淘宝任务" />
+            <button id="startJDTask" text="3-2. 开始京东任务" /> 
+            <button id="discountTask" text="4-1. 每日领取天猫双十一红包" />
+            <button id="jd" text="4-2. 领取京东双十一红包（领完再进，每天三次）" />
             {/* <button id="specialTask" text="5. 淘宝双十一主会场" /> */}
             {/* <button id="caidan" text="5. 完成天猫开彩蛋任务" /> */}
             {/* <button id="butie" text="天猫百亿补贴会场，真补贴，真划算" /> */}
@@ -48,9 +48,11 @@ ui.layout(
         </vertical> */}
         <vertical id="huichang" visibility="gone" bg="#ffffff" paddingTop="50" paddingLeft="20" paddingRight="20">
             <button id="yushou" text="双十一预售玩法会场" />
-            <button id="jianhuo" text="双十一预售尖货" />
+            <button id="jianhuo" text="双十一尖货清单" />
+            <button id="rexiao" text="双十一热销爆款" />
             <button id="chaoshi" text="天猫超市双十一" />
-            <button id="jdHuichang" text="京东双十一预售会场" />
+            <button id="jdHuichang" text="京东双十一主会场" />
+            <button id="jdJiaDian" text="京东双十一家电会场" />
             <button id="hideHC" style="Widget.AppCompat.Button.Colored" text="隐藏" />
         </vertical>
     </frame>
@@ -163,8 +165,19 @@ ui.chaoshi.click(function () {
     })
 })
 
+ui.rexiao.click(function () {
+    app.startActivity({
+        action: "VIEW",
+        data: "taobao://m.tb.cn/h.fgEASrd"
+    })
+})
+
 ui.jdHuichang.click(function () {
     app.openUrl('https://u.jd.com/3Kp7cKm')
+})
+
+ui.jdJiaDian.click(function () {
+    app.openUrl('https://u.jd.com/yCb1owd')
 })
 
 ui.hideHC.click(function () {
