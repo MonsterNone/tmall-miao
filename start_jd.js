@@ -130,7 +130,7 @@ try {
         console.log('似乎没能打开任务列表，退出')
         quit()
     }
-    sleep(5000)
+    sleep(8000) // 等待动画
 
     while (true) {
         function timeTask() {
@@ -277,7 +277,7 @@ try {
             console.show()
             console.log('等待返回...')
             let r = findTextDescMatchesTimeout(/.*累计任务奖.*|.*礼包.*/, 8000)
-            if (r && ((r.text() && !r.text().match(/累计任务奖/)) || (r.desc() && !r.desc().match(/累计任务奖/))) ) {
+            if (r && ((r.text() && !r.text().match(/累计任务奖/)) || (r.desc() && !r.desc().match(/累计任务奖/)))) {
                 back()
             }
             sleep(5000)
@@ -293,7 +293,9 @@ try {
                 sleep(5000)
                 console.log('直接返回')
                 back()
-                sleep(5000)
+                let r = findTextDescMatchesTimeout(/.*累计任务奖.*/, 8000)
+                if (!r) back()
+                sleep(3000)
             }
         } else {
             console.log('未知任务类型，默认为浏览任务', taskText)
