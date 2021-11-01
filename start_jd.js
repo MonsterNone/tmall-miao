@@ -36,7 +36,7 @@ threads.start(registerKey)
 // 自定义一个findTextDescMatchesTimeout
 function findTextDescMatchesTimeout(reg, timeout) {
     function findSth() {
-        result = textMatches(reg) || descMatches(reg)
+        result = textMatches(reg).findOnce() || descMatches(reg).findOnce()
         if (result) {
             return
         }
