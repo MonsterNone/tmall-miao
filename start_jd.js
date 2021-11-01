@@ -126,7 +126,7 @@ try {
         quit()
     }
     taskListButton.click()
-    if (!findTextDescMatchesTimeout(/.*累计任务奖.*/, 5000)) {
+    if (!findTextDescMatchesTimeout(/.*累计任务奖.*/, 8000)) {
         console.log('似乎没能打开任务列表，退出')
         quit()
     }
@@ -159,7 +159,7 @@ try {
                 if (cart) {
                     console.log('加购并浏览')
                     let tmp = items[i].parent().parent()
-                    tmp.child(tmp.childCount()-1).click()
+                    tmp.child(tmp.childCount() - 1).click()
                 } else {
                     console.log('浏览商品页')
                     items[i].parent().parent().child(4).click()
@@ -205,7 +205,7 @@ try {
             item = item.parent().child(3)
             let b = item.bounds()
             let x = b.left + b.width() / 15
-            let y =  b.top + b.height() / 2
+            let y = b.top + b.height() / 2
             let color = images.pixel(img, x, y)
             let compare = colors.isSimilar(color, '#fe2860')
             console.log(taskText, colors.toString(color), x, y, compare)
@@ -231,20 +231,20 @@ try {
 
             console.log('完成浏览任务，返回')
             back()
-            let r = textMatches(/.*累计任务奖.*/).findOne(8000)
+            let r = findTextDescMatchesTimeout(/.*累计任务奖.*/, 8000)
             if (!r) back()
-            sleep(5000)
+            sleep(3000)
         } else if (taskText.match(/累计浏览/)) {
             console.log('进行累计浏览任务')
-            
+
             if (taskText.match(/加购/)) itemTask(true)
             else itemTask(false)
 
             console.log('完成浏览商品，返回')
             back()
-            let r = textMatches(/.*累计任务奖.*/).findOne(8000)
+            let r = findTextDescMatchesTimeout(/.*累计任务奖.*/, 8000)
             if (!r) back()
-            sleep(5000)
+            sleep(3000)
         } else if (join && taskText.match(/入会/)) {
             console.log('进行入会任务，等待加载...')
             taskButton.click()
@@ -259,9 +259,9 @@ try {
             } else if (check.text().match(/我的特权/)) {
                 console.log('已经入会，返回')
                 back()
-                let r = textMatches(/.*累计任务奖.*/).findOne(8000)
+                let r = findTextDescMatchesTimeout(/.*累计任务奖.*/, 8000)
                 if (!r) back()
-                sleep(5000)
+                sleep(3000)
                 continue
             }
             sleep(2000)
@@ -276,8 +276,8 @@ try {
             sleep(500)
             console.show()
             console.log('等待返回...')
-            let r = textMatches(/.*累计任务奖.*|.*礼包.*/).findOne(8000)
-            if (r && !r.text().match(/累计任务奖/)) {
+            let r = findTextDescMatchesTimeout(/.*累计任务奖.*|.*礼包.*/, 8000)
+            if (r && ((r.text() && !r.text().match(/累计任务奖/)) || (r.desc() && !r.desc().match(/累计任务奖/))) ) {
                 back()
             }
             sleep(5000)
@@ -301,9 +301,9 @@ try {
 
             console.log('完成浏览任务，返回')
             back()
-            let r = textMatches(/.*累计任务奖.*/).findOne(8000)
+            let r = findTextDescMatchesTimeout(/.*累计任务奖.*/, 8000)
             if (!r) back()
-            sleep(5000)
+            sleep(3000)
         }
 
     }
