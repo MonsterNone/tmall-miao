@@ -3,7 +3,7 @@ if (!auto.service) {
     exit()
 }
 
-if (!requestScreenCapture()) {
+if (!requestScreenCapture(false)) {
     alert('请求截图权限，用以查找按钮，请允许')
     console.show()
     console.log("请求截图失败，退出");
@@ -66,11 +66,12 @@ try {
         console.log('未找到京东App，请先下载！')
         quit()
     }
-    sleep(2000)
 
     // 进入活动
     console.log('等待页面加载...')
-    console.log('请让京东处于App首页')
+    if (currentActivity() != 'com.jingdong.app.mall.MainFrameActivity') {
+        console.log('请让京东处于App首页')
+    }
     const into = descContains('浮层活动').findOne(20000)
     sleep(2000)
     if (into == null) {
@@ -130,7 +131,27 @@ try {
         console.log('似乎没能打开任务列表，退出')
         quit()
     }
-    sleep(8000) // 等待动画
+
+    // 为了稳定页面布局
+    (() => {
+        console.log('进行一次试探性寻找')
+        let taskButtons = textMatches(/.*浏览并关注.*|.*浏览.*s.*|.*累计浏览.*|.*浏览可得.*|.*逛晚会.*/).find()
+        if (taskButtons.empty()) {
+            console.log('未找到浏览任务，退出')
+            quit()
+        }
+        let item = taskButtons[0]
+        taskText = item.text()
+        item = item.parent().child(3)
+        console.log('进入，稍后返回')
+        item.click()
+        sleep(5000)
+        console.log('返回')
+        back()
+        let r = findTextDescMatchesTimeout(/.*累计任务奖.*/, 8000)
+        if (!r) back()
+        sleep(3000)
+    })()
 
     while (true) {
         function timeTask() {
