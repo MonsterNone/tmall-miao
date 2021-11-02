@@ -35,20 +35,14 @@ threads.start(registerKey)
 
 // 自定义一个findTextDescMatchesTimeout
 function findTextDescMatchesTimeout(reg, timeout) {
-    function findSth() {
-        result = textMatches(reg).findOnce() || descMatches(reg).findOnce()
-        if (result) {
-            return
-        }
+    let c = 0
+    while (c < timeout / 50) {
+        let result = textMatches(reg).findOnce() || descMatches(reg).findOnce()
+        if (result) return result
         sleep(50)
-        findSth()
+        c++
     }
-
-    let result = null
-    let thread = threads.start(findSth)
-    thread.join(timeout)
-
-    return result
+    return null
 }
 
 // 全局try catch，应对无法显示报错
@@ -66,6 +60,8 @@ try {
         console.log('未找到京东App，请先下载！')
         quit()
     }
+
+    sleep(2000)
 
     // 进入活动
     console.log('等待页面加载...')
@@ -263,7 +259,7 @@ try {
 
             console.log('完成浏览商品，返回')
             back()
-            let r = findTextDescMatchesTimeout(/.*累计任务奖.*/, 8000)
+            let r = textMatches(/.*累计任务奖.*/).findOne(8000)
             if (!r) back()
             sleep(3000)
         } else if (join && taskText.match(/入会/)) {

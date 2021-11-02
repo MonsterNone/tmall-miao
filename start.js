@@ -9,7 +9,7 @@ if (confirm('是否需要自动调整媒体音量为0', '以免直播任务发�
     try {
         device.setMusicVolume(0)
         toast('成功设置媒体音量为0')
-    } catch(err) {
+    } catch (err) {
         alert('首先需要开启权限，请开启后再次运行脚本')
         exit()
     }
@@ -45,20 +45,14 @@ try {
 
     // 自定义一个findTimeout，find_f是原本的查询器 text('sss').find()
     function findTimeout(findF, timeout) {
-        function findSth() {
-            result = findF.find()
-            if (result.nonEmpty()) {
-                return
-            }
+        let c = 0
+        while (c < timeout / 50) {
+            let result = findF.find()
+            if (result.nonEmpty()) return result
             sleep(50)
-            findSth()
+            c++
         }
-
-        var result
-        var thread = threads.start(findSth)
-        thread.join(timeout)
-
-        return result.nonEmpty() ? result : null
+        return null
     }
 
     // 查找任务按钮
@@ -254,8 +248,7 @@ try {
             }
             into.click()
             liulan()
-        }
-        else {
+        } else {
             console.log('进行' + jumpButton[0] + '任务')
             jumpButton[1].click()
             liulan()
