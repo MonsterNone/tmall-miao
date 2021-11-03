@@ -3,6 +3,18 @@ if (!auto.service) {
     exit()
 }
 
+if (confirm('是否需要自动调整媒体音量为0', '以免直播任务发出声音。需要修改系统设置权限。')) {
+    try {
+        device.setMusicVolume(0)
+        toast('成功设置媒体音量为0')
+    } catch (err) {
+        alert('首先需要开启权限，请开启后再次运行脚本')
+        exit()
+    }
+} else {
+    toast('不修改媒体音量')
+}
+
 if (!requestScreenCapture(false)) {
     alert('请求截图权限，用以查找按钮，请允许')
     console.show()
