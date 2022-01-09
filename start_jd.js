@@ -241,7 +241,7 @@ try {
             let x = b.left + b.width() / 15
             let y = b.top + b.height() / 2
             let color = images.pixel(img, x, y)
-            let compare = colors.isSimilar(color, '#d6413f', 4, 'hs')
+            let compare = colors.isSimilar(color, '#d6413f') || colors.isSimilar(color, '#d54c4c')
             console.log(taskText, colors.toString(color), x, y, compare)
             if (compare) {
                 if (!join && taskText.match(/成功入会/)) continue
