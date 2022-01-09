@@ -251,7 +251,7 @@ try {
             let x = b.left + b.width() / 15
             let y = b.top + b.height() / 2
             let color = images.pixel(img, x, y)
-            let compare = colors.isSimilar(color, '#d6413f') || colors.isSimilar(color, '#d54c4c')
+            let compare = colors.isSimilar(color, '#d6413f') || colors.isSimilar(color, '#d54c4c') || colors.isSimilar(color, '#d03b3b')
             console.log(taskText, colors.toString(color), x, y, compare)
             if (compare) {
                 if (!join && taskText.match(/成功入会/)) continue
@@ -318,7 +318,7 @@ try {
             try {
                 let j = text('确认授权并加入店铺会员').findOnce().bounds()
                 click(j.centerX(), j.centerY())
-            } catch(err) {
+            } catch (err) {
                 console.log('入会任务出现异常！停止完成入会任务。')
                 join = 0
                 sleep(500)
