@@ -1,22 +1,23 @@
 "ui";
 
-const VERSION = '202111-25'
+const VERSION = '2022Nian-1'
 
 ui.layout(
     <frame>
         <vertical>
             <button id="automationPermission" text="1. 授予无障碍权限" />
             <button id="consolePermission" text="2. 授予悬浮窗权限" />
-            <button id="startTask" text="3-1. 开始淘宝任务" />
+            <text text="3-1. 目前淘宝年货节任务过于简单，暂不设计自动完成" />
+            {/* <button id="startTask" text="3-1. 开始淘宝任务" /> */}
             <button id="startJDTask" text="3-2. 开始京东任务" /> 
-            <button id="discountTask" text="4-1. 每日领取天猫双十一红包" />
-            <button id="jd" text="4-2. 领取京东双十一红包（领完再进，每天三次）" />
-            {/* <button id="specialTask" text="5. 淘宝双十一主会场" /> */}
+            <button id="discountTask" text="4-1. 领取天猫年货现金红包" />
+            <button id="jd" text="4-2. 领取京东年货现金红包（领完再进，每天三次）" />
+            {/* <button id="specialTask" text="5. 淘宝年货节主会场" /> */}
             {/* <button id="caidan" text="5. 完成天猫开彩蛋任务" /> */}
             {/* <button id="butie" text="天猫百亿补贴会场，真补贴，真划算" /> */}
             {/* <button id="showHb" text="消灭红包！旧的不去新的不来！" textColor="red" /> */}
-            <button id="showHC" text="双十一大促会场直达" textColor="red" />
-            <button id="showQun" text="加入双十一活动助力群" />
+            <button id="showHC" text="年货节大促会场直达" textColor="red" />
+            <button id="showQun" text="加入年货节活动助力群" />
             {/* <button id="feedback" text="正版发布地址！小心病毒盗版！" /> */}
             <button id="checkUpdate" text="检查更新" />
             <text text="使用脚本有机率导致任务收益减少！本脚本仅供学习参考，请勿用于非法用途，使用脚本导致的任何可能结果与本人无关。请使用新版淘宝/京东运行，老版本部分任务会出现问题。" textStyle="bold|italic" textColor="red" textSize="18sp" />
@@ -47,12 +48,13 @@ ui.layout(
             <button id="hideHb" style="Widget.AppCompat.Button.Colored" text="隐藏" />
         </vertical> */}
         <vertical id="huichang" visibility="gone" bg="#ffffff" paddingTop="50" paddingLeft="20" paddingRight="20">
-            <button id="yushou" text="双十一预售玩法会场" />
-            <button id="jianhuo" text="双十一尖货清单" />
-            <button id="rexiao" text="双十一热销爆款" />
-            <button id="chaoshi" text="天猫超市双十一" />
-            <button id="jdHuichang" text="京东双十一主会场" />
-            <button id="jdJiaDian" text="京东双十一家电会场" />
+            {/* <button id="yushou" text="年货节预售玩法会场" /> */}
+            {/* <button id="jianhuo" text="年货节尖货清单" /> */}
+            <button id="jdHuichang" text="京东年货节主会场" />
+            <button id="jdJiaDian" text="京东年货节家电会场" />
+            <button id="jdShouJi" text="京东手机年货节" />
+            <button id="rexiao" text="天猫年货节热销爆款" />
+            <button id="chaoshi" text="天猫超市年货节" />
             <button id="hideHC" style="Widget.AppCompat.Button.Colored" text="隐藏" />
         </vertical>
     </frame>
@@ -74,10 +76,10 @@ ui.consolePermission.click(function () {
     threads.start(conPerReq)
 })
 
-ui.startTask.click(function () {
-    // alert('淘宝活动尚未开始，敬请期待！')
-    engines.execScriptFile('./start.js')
-})
+// ui.startTask.click(function () {
+//     // alert('淘宝活动尚未开始，敬请期待！')
+//     engines.execScriptFile('./start.js')
+// })
 
 ui.startJDTask.click(function () {
     engines.execScriptFile('./start_jd.js')
@@ -93,8 +95,8 @@ ui.startJDTask.click(function () {
 // })
 
 ui.discountTask.click(function () {
-    toast('也可手淘搜索密令【我要领红包7555】直达会场！')
-    const url = 'm.tb.cn/h.ffKfhIt'
+    // toast('也可手淘搜索密令【我要领红包7555】直达会场！')
+    const url = 'm.tb.cn/h.fkkgNPR'
 
     app.startActivity({
         action: "VIEW",
@@ -132,8 +134,12 @@ ui.jd.click(function() {
     //     toast('京口令已复制！正在打开京东...')
     // }
     // else {
-    app.openUrl('https://u.jd.com/3M9ntsn')
+    // app.openUrl('https://u.jd.com/3M9ntsn')
     // }
+    app.startActivity({
+        action: "VIEW",
+        data: 'openApp.jdMobile://virtual?params={"category":"jump","des":"m","sourceValue":"babel-act","sourceType":"babel","url":"https://u.jd.com/SwItj61","M_sourceFrom":"h5auto","msf_type":"auto"}'
+    })
 })
  
 // ui.showHb.click(function () {
@@ -144,40 +150,56 @@ ui.showHC.click(function () {
     ui.huichang.visibility = 0
 })
 
-ui.yushou.click(function () {
-    app.startActivity({
-        action: "VIEW",
-        data: "taobao://m.tb.cn/h.f4JZbxe"
-    })
-})
+// ui.yushou.click(function () {
+//     app.startActivity({
+//         action: "VIEW",
+//         data: "taobao://m.tb.cn/h.f4JZbxe"
+//     })
+// })
 
-ui.jianhuo.click(function () {
-    app.startActivity({
-        action: "VIEW",
-        data: "taobao://m.tb.cn/h.fUMgEir"
-    })
-})
+// ui.jianhuo.click(function () {
+//     app.startActivity({
+//         action: "VIEW",
+//         data: "taobao://m.tb.cn/h.fUMgEir"
+//     })
+// })
 
 ui.chaoshi.click(function () {
     app.startActivity({
         action: "VIEW",
-        data: "taobao://m.tb.cn/h.fVGMHKx"
+        data: "taobao://m.tb.cn/h.fQkZUOC"
     })
 })
 
 ui.rexiao.click(function () {
     app.startActivity({
         action: "VIEW",
-        data: "taobao://m.tb.cn/h.fgEASrd"
+        data: "taobao://m.tb.cn/h.f9lvBww"
     })
 })
 
 ui.jdHuichang.click(function () {
-    app.openUrl('https://u.jd.com/3Kp7cKm')
+    const url = 'https://u.jd.com/SdI6og1'
+    app.startActivity({
+        action: "VIEW",
+        data: 'openApp.jdMobile://virtual?params={"category":"jump","des":"m","sourceValue":"babel-act","sourceType":"babel","url":"'+ url +'","M_sourceFrom":"h5auto","msf_type":"auto"}'
+    })
 })
 
 ui.jdJiaDian.click(function () {
-    app.openUrl('https://u.jd.com/yCb1owd')
+    const url = 'https://u.jd.com/StIdhJi'
+    app.startActivity({
+        action: "VIEW",
+        data: 'openApp.jdMobile://virtual?params={"category":"jump","des":"m","sourceValue":"babel-act","sourceType":"babel","url":"'+ url +'","M_sourceFrom":"h5auto","msf_type":"auto"}'
+    })
+})
+
+ui.jdShouJi.click(function () {
+    const url = 'https://u.jd.com/StIs1jh'
+    app.startActivity({
+        action: "VIEW",
+        data: 'openApp.jdMobile://virtual?params={"category":"jump","des":"m","sourceValue":"babel-act","sourceType":"babel","url":"'+ url +'","M_sourceFrom":"h5auto","msf_type":"auto"}'
+    })
 })
 
 ui.hideHC.click(function () {
@@ -211,7 +233,7 @@ ui.hideHC.click(function () {
 
 function autoPerReq() {
     if (!auto.service) {
-        alert('找到双十一任务助手，勾选授予权限', '部分机型在“已安装服务”中')
+        alert('找到年货节任务助手，勾选授予权限', '部分机型在“已安装服务”中')
     }
     auto.waitFor()
     toast('无障碍权限授予成功')

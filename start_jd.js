@@ -26,7 +26,7 @@ if (!requestScreenCapture(false)) {
 }
 
 
-const join = confirm('是否自动完成入会任务？', '入会将会自动授权手机号给京东商家')
+let join = confirm('是否自动完成入会任务？', '入会将会自动授权手机号给京东商家')
 
 console.log('开始完成京东任务...')
 console.log('按音量下键停止')
@@ -68,29 +68,34 @@ try {
 
     // 打开京东
     console.log('正在打开京东App...')
-    if (!launch('com.jingdong.app.mall')) {
-        console.log('未找到京东App，请先下载！')
-        quit()
-    }
+    // if (!launch('com.jingdong.app.mall')) {
+    //     console.log('未找到京东App，请先下载！')
+    //     quit()
+    // }
 
-    sleep(2000)
+    // sleep(2000)
 
-    // 进入活动
-    console.log('等待页面加载...')
-    if (currentActivity() != 'com.jingdong.app.mall.MainFrameActivity') {
-        console.log('请让京东处于App首页')
-    }
-    const into = descContains('浮层活动').findOne(20000)
-    sleep(2000)
-    if (into == null) {
-        console.log('无法找到活动入口，异常退出！')
-        quit()
-    }
-    click(into.bounds().centerX(), into.bounds().centerY())
-    click(into.bounds().centerX(), into.bounds().centerY())
-    console.log('进入活动页面')
+    // // 进入活动
+    // console.log('等待页面加载...')
+    // if (currentActivity() != 'com.jingdong.app.mall.MainFrameActivity') {
+    //     console.log('请让京东处于App首页')
+    // }
+    // const into = descContains('浮层活动').findOne(20000)
+    // sleep(2000)
+    // if (into == null) {
+    //     console.log('无法找到活动入口，异常退出！')
+    //     quit()
+    // }
+    // click(into.bounds().centerX(), into.bounds().centerY())
+    // click(into.bounds().centerX(), into.bounds().centerY())
+    // console.log('进入活动页面')
 
-    if (!findTextDescMatchesTimeout(/.*每日签到抽最高.*/, 20000)) {
+    app.startActivity({
+        action: "VIEW",
+        data: 'openApp.jdMobile://virtual?params={"category":"jump","des":"m","sourceValue":"babel-act","sourceType":"babel","url":"https://wbbny.m.jd.com/babelDiy/Zeus/41AJZXRUJeTqdBK9bPoPgUJiodcU/index.html?babelChannel=","M_sourceFrom":"h5auto","msf_type":"auto"}'
+    })
+
+    if (!findTextDescMatchesTimeout(/.*闯关分红包.*/, 20000)) {
         console.log('未能进入活动，请重新运行！')
         quit()
     }
@@ -117,7 +122,7 @@ try {
     console.log('开始寻找列表')
     for (let i = 0; i < taskListButtons.length; i++) {
         let item = taskListButtons[i]
-        if ((item.text() && item.text().match(/消耗.*汪汪币/)) || (item.desc() && item.desc().match(/消耗.*汪汪币/))) {
+        if ((item.text() && item.text().match(/消耗.*爆竹/)) || (item.desc() && item.desc().match(/消耗.*爆竹/))) {
             flag = i
             continue
         }
@@ -142,7 +147,7 @@ try {
 
     // 为了稳定页面布局
     (() => {
-        console.log('进行一次试探性寻找')
+        console.log('进行一次试探性寻找，稳定页面布局')
         let taskButtons = textMatches(/.*浏览并关注.*|.*浏览.*s.*|.*累计浏览.*|.*浏览可得.*|.*逛晚会.*/).find()
         if (taskButtons.empty()) {
             console.log('未找到浏览任务，退出')
@@ -167,7 +172,7 @@ try {
             console.log('等待浏览任务完成...')
             let c = 0
             while (c < 40) { // 0.5 * 40 = 20 秒，防止死循环
-                let finish_reg = /获得.*?汪汪币|任务已达上限/
+                let finish_reg = /获得.*?爆竹|已达上限/
                 if ((textMatches(finish_reg).exists() || descMatches(finish_reg).exists())) // 等待已完成出现，有可能失败
                     break
                 sleep(500)
@@ -197,7 +202,7 @@ try {
                 console.log('返回')
                 back()
                 sleep(5000)
-                if (i >= 4) {
+                if (i > 4) {
                     break
                 }
             }
@@ -208,7 +213,7 @@ try {
             console.log('等待进入店铺列表...')
             textContains('每逛').findOne(10000)
             sleep(2000)
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < 4; i++) {
                 let shop = textContains('.jpg!q70').findOnce()
                 console.log('浏览店铺页')
                 shop.parent().parent().click()
@@ -236,7 +241,7 @@ try {
             let x = b.left + b.width() / 15
             let y = b.top + b.height() / 2
             let color = images.pixel(img, x, y)
-            let compare = colors.isSimilar(color, '#fe2860')
+            let compare = colors.isSimilar(color, '#d6413f')
             console.log(taskText, colors.toString(color), x, y, compare)
             if (compare) {
                 if (!join && taskText.match(/成功入会/)) continue
@@ -294,21 +299,26 @@ try {
                 continue
             }
             sleep(2000)
-            check = check.parent().child(0).bounds()
+            check = check.parent().child(5).bounds()
             console.log('即将勾选授权，自动隐藏控制台')
             console.hide()
             sleep(500)
             click(check.centerX(), check.centerY())
             sleep(500)
-            let j = text('确认授权并加入店铺会员').findOnce().bounds()
-            click(j.centerX(), j.centerY())
+            try {
+                let j = text('确认授权并加入店铺会员').findOnce().bounds()
+                click(j.centerX(), j.centerY())
+            } catch(err) {
+                console.log('入会任务出现异常！停止完成入会任务。')
+                join = 0
+                sleep(500)
+            }
             sleep(500)
             console.show()
+            back()
             console.log('等待返回...')
-            let r = findTextDescMatchesTimeout(/.*累计任务奖.*|.*礼包.*/, 8000)
-            if (r && ((r.text() && !r.text().match(/累计任务奖/)) || (r.desc() && !r.desc().match(/累计任务奖/)))) {
-                back()
-            }
+            let r = findTextDescMatchesTimeout(/.*累计任务奖.*/, 8000)
+            if (!r) back()
             sleep(5000)
         } else if (taskText.match(/浏览可得|浏览并关注|晚会/)) {
             let taskName = taskButton.parent().child(1).text()
