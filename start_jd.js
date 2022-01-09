@@ -202,6 +202,11 @@ try {
                 console.log('返回')
                 back()
                 sleep(5000)
+                let r = textContains('.jpg!q70').findOnce()
+                if (!r) {
+                    back()
+                    sleep(5000)
+                }
                 if (i > 4) {
                     break
                 }
@@ -221,6 +226,11 @@ try {
                 console.log('返回')
                 back()
                 sleep(5000)
+                let r = textContains('.jpg!q70').findOnce()
+                if (!r) {
+                    back()
+                    sleep(5000)
+                }
             }
         }
 
