@@ -68,12 +68,12 @@ try {
 
     // 打开京东
     console.log('正在打开京东App...')
-    // if (!launch('com.jingdong.app.mall')) {
-    //     console.log('未找到京东App，请先下载！')
-    //     quit()
-    // }
+    if (!launch('com.jingdong.app.mall')) {
+        console.log('未找到京东App，请先下载！')
+        quit()
+    }
 
-    // sleep(2000)
+    sleep(2000)
 
     // // 进入活动
     // console.log('等待页面加载...')
@@ -88,7 +88,7 @@ try {
     // }
     // click(into.bounds().centerX(), into.bounds().centerY())
     // click(into.bounds().centerX(), into.bounds().centerY())
-    // console.log('进入活动页面')
+    console.log('进入活动页面')
 
     app.startActivity({
         action: "VIEW",
@@ -241,7 +241,7 @@ try {
             let x = b.left + b.width() / 15
             let y = b.top + b.height() / 2
             let color = images.pixel(img, x, y)
-            let compare = colors.isSimilar(color, '#d6413f')
+            let compare = colors.isSimilar(color, '#d6413f', 4, 'hs')
             console.log(taskText, colors.toString(color), x, y, compare)
             if (compare) {
                 if (!join && taskText.match(/成功入会/)) continue
