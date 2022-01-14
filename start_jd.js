@@ -217,7 +217,10 @@ try {
         function itemTask(cart) {
             taskButton.click()
             console.log('等待进入商品列表...')
-            textContains('当前页点击浏览').findOne(10000)
+            if (!textContains('当前页点击浏览').findOne(10000)) {
+                console.log('未能进入商品列表。返回。')
+                return false
+            }
             sleep(2000)
             let items = textContains('.jpg!q70').find()
             for (let i = 0; i < items.length; i++) {
@@ -242,17 +245,30 @@ try {
                     break
                 }
             }
+            return true
         }
 
         function shopTask() {
             taskButton.click()
             console.log('等待进入店铺列表...')
-            textContains('每逛').findOne(10000)
+            if (!textContains('去完成').findOne(10000)) {
+                console.log('未能进入店铺列表。返回。')
+                return false
+            }
             sleep(2000)
-            for (let i = 0; i < 4; i++) {
-                let shop = textContains('.jpg!q70').findOnce()
+            for (let i = 0; i < 3; i++) {
+                // let shop = textContains('.jpg!q70').findOnce()
+                // shop.parent().parent().click()
                 console.log('浏览店铺页')
-                shop.parent().parent().click()
+                let t = textContains('去完成').findOnce()
+                if (!t) {
+                    if (textContains('已完成').findOnce()) {
+                        return true
+                    }
+                    console.log('无法找到逛店按钮')
+                    return false
+                }
+                t.click()
                 sleep(8000)
                 console.log('返回')
                 back()
@@ -263,6 +279,7 @@ try {
                     sleep(5000)
                 }
             }
+            return true
         }
 
         console.log('寻找未完成任务...')
@@ -331,24 +348,39 @@ try {
         } else if (taskText.match(/累计浏览/)) {
             console.log('进行累计浏览任务')
 
-            if (taskText.match(/加购/)) itemTask(true)
-            else itemTask(false)
-
-            console.log('完成浏览商品，返回')
+            let f
+            if (taskText.match(/加购/)) {
+                f = itemTask(true)
+            } else {
+                f = itemTask(false)
+            }
+            
+            if (f) console.log('完成浏览商品，返回')
             back()
             let r = textMatches(/.*累计任务奖.*/).findOne(8000)
             if (!r) back()
             sleep(3000)
+            if (!f) {
+                console.log('可能是控件还没刷新，尝试重新打开任务列表')
+                closeTaskList()
+                sleep(1000)
+                openTaskList()
+                continue
+            }
         } else if (join && taskText.match(/入会/)) {
             console.log('进行入会任务，等待加载...')
             taskButton.click()
-            let check = textMatches(/.*确认授权即同意.*|.*我的特权.*/).findOne(20000)
+            let check = textMatches(/.*确认授权即同意.*|.*我的特权.*/).findOne(10000)
             if (!check) {
                 console.log('无法找到入会按钮，返回')
                 back()
                 let r = textMatches(/.*累计任务奖.*/).findOne(8000)
                 if (!r) back()
                 sleep(5000)
+                console.log('可能是控件还没刷新，尝试重新打开任务列表')
+                closeTaskList()
+                sleep(1000)
+                openTaskList()
                 continue
             } else if (check.text().match(/我的特权/)) {
                 console.log('已经入会，返回')
@@ -383,9 +415,19 @@ try {
         } else if (taskText.match(/浏览可得|浏览并关注|晚会/)) {
             let taskName = taskButton.parent().child(1).text()
             if (taskName.match(/种草城/)) {
-                shopTask()
+                let f = shopTask()
+                if (f) console.log('完成店铺任务，返回')
                 back()
+                let r = findTextDescMatchesTimeout(/.*累计任务奖.*/, 8000)
+                if (!r) back()
                 sleep(5000)
+                if (!f) {
+                    console.log('可能是控件还没刷新，尝试重新打开任务列表')
+                    closeTaskList()
+                    sleep(1000)
+                    openTaskList()
+                    continue
+                }
             } else {
                 console.log('进行参观任务')
                 taskButton.click()
@@ -395,6 +437,12 @@ try {
                 let r = findTextDescMatchesTimeout(/.*累计任务奖.*/, 8000)
                 if (!r) back()
                 sleep(3000)
+                console.log('参观任务完成后强制重新打开任务列表')
+                sleep(3000)
+                closeTaskList()
+                sleep(1000)
+                openTaskList()
+                continue
             }
         } else {
             console.log('未知任务类型，默认为浏览任务', taskText)
