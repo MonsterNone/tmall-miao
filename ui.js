@@ -1,6 +1,6 @@
 "ui";
 
-const VERSION = '2022Nian-4'
+const VERSION = '2022Nian-5'
 
 ui.layout(
     <frame>
@@ -48,8 +48,8 @@ ui.layout(
             <button id="hideHb" style="Widget.AppCompat.Button.Colored" text="隐藏" />
         </vertical> */}
         <vertical id="huichang" visibility="gone" bg="#ffffff" paddingTop="50" paddingLeft="20" paddingRight="20">
-            {/* <button id="yushou" text="年货节预售玩法会场" /> */}
-            {/* <button id="jianhuo" text="年货节尖货清单" /> */}
+            {/* <button id="yushou" text="年货节惊爆价捡漏" /> */}
+            <button id="jianhuo" text="年货节内部爆款清单" />
             <button id="jdHuichang" text="京东年货节主会场" />
             <button id="jdJiaDian" text="京东年货节家电会场" />
             <button id="jdShouJi" text="京东手机年货节" />
@@ -153,16 +153,16 @@ ui.showHC.click(function () {
 // ui.yushou.click(function () {
 //     app.startActivity({
 //         action: "VIEW",
-//         data: "taobao://m.tb.cn/h.f4JZbxe"
+//         data: "taobao://m.tb.cn/h.fQ8FX3C"
 //     })
 // })
 
-// ui.jianhuo.click(function () {
-//     app.startActivity({
-//         action: "VIEW",
-//         data: "taobao://m.tb.cn/h.fUMgEir"
-//     })
-// })
+ui.jianhuo.click(function () {
+    app.startActivity({
+        action: "VIEW",
+        data: "taobao://m.tb.cn/h.fkiwuT1"
+    })
+})
 
 ui.chaoshi.click(function () {
     app.startActivity({
