@@ -281,7 +281,11 @@ try {
             let b = item.bounds()
             let x = b.left + b.width() / 15
             let y = b.top + b.height() / 2
-            let color = images.pixel(img, x, y)
+            if (x > img.getWidth() || y > img.getHeight()) {
+                console.log('此控件超出屏幕范围：', taskText)
+                continue
+            }
+            let color = img.pixel(x, y)
             let compare = colors.isSimilar(color, '#d6413f') || colors.isSimilar(color, '#d54c4c') || colors.isSimilar(color, '#d03b3b')
             console.log(taskText, colors.toString(color), x, y, compare)
             if (compare) {
