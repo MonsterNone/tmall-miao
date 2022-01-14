@@ -4,7 +4,7 @@ const VERSION = '2022Nian-5'
 
 ui.layout(
     <frame>
-        <vertical>
+        <vertical id="main" visibility="visible">
             <button id="automationPermission" text="1. 授予无障碍权限" />
             <button id="consolePermission" text="2. 授予悬浮窗权限" />
             <text text="3-1. 目前淘宝年货节任务过于简单，暂不设计自动完成" />
@@ -18,6 +18,7 @@ ui.layout(
             {/* <button id="showHb" text="消灭红包！旧的不去新的不来！" textColor="red" /> */}
             <button id="showHC" text="年货节大促会场直达" textColor="red" />
             <button id="showQun" text="加入年货节活动助力群" />
+            <button id="showQun2" text="加入内部优惠线报群" />
             {/* <button id="feedback" text="正版发布地址！小心病毒盗版！" /> */}
             <button id="checkUpdate" text="检查更新" />
             <text text="使用脚本有机率导致任务收益减少！本脚本仅供学习参考，请勿用于非法用途，使用脚本导致的任何可能结果与本人无关。请使用新版淘宝/京东运行，老版本部分任务会出现问题。" textStyle="bold|italic" textColor="red" textSize="18sp" />
@@ -32,13 +33,19 @@ ui.layout(
             <text text="1. 本脚本基于Auto.JS（感谢原开发者）" />
             {/* <text text="2. 免费！" /> */}
             <text text="2. 由于调用淘宝打开页面，部分手机管家可能会误报为诱导软件，实际上本软件绝无任何病毒行为" />
-            <text autoLink="web" text="3. 开源项目地址https://github.com/MonsterNone/tmall-miao" />
+            <text autoLink="web" text="3. 开源项目地址：https://github.com/MonsterNone/tmall-miao" />
             {/* <text text="4. 运行中出现bug请附上详细控制台log、页面截图等提交issue" /> */}
             <text id="ver" line="1" />
         </vertical>
         <vertical id="qun" visibility="gone" bg="#ffffff">
-            <img src="file://res/qun.png" />
+            <img id="jiaQun" src="file://res/qun.png" />
+            <text text="互助QQ群：533943195，点击图片自动跳转手机QQ添加" textSize="20sp" gravity="center" />
             <button id="hideQun" style="Widget.AppCompat.Button.Colored" text="隐藏" />
+        </vertical>
+        <vertical id="qun2" visibility="gone" bg="#ffffff">
+            <img id="jiaQun2" src="file://res/qun2.jpg" />
+            <text text="线报QQ群：740725146，点击图片自动跳转手机QQ添加" textSize="20sp" gravity="center" />
+            <button id="hideQun2" style="Widget.AppCompat.Button.Colored" text="隐藏" />
         </vertical>
         {/* <vertical id="hb" visibility="gone" bg="#ffffff" paddingTop="50" paddingLeft="20" paddingRight="20">
             <text text="每日的红包使用掉，淘宝才会给你发新红包！5元惊喜红包不用完，绝对不会收到下一个5元！" textSize="18sp" textStyle="bold" textColor="red" />
@@ -113,16 +120,42 @@ ui.discountTask.click(function () {
 // })
 
 ui.showQun.click(function () {
+    ui.main.visibility = 8
     ui.qun.visibility = 0
+})
+
+ui.showQun2.click(function () {
+    ui.main.visibility = 8
+    ui.qun2.visibility = 0
+})
+
+ui.hideQun.click(function () {
+    ui.qun.visibility = 8
+    ui.main.visibility = 0
+})
+
+ui.hideQun2.click(function () {
+    ui.qun2.visibility = 8
+    ui.main.visibility = 0
+})
+
+ui.jiaQun.click(function () {
+    app.startActivity({
+        action: 'VIEW',
+        data: 'mqqapi://card/show_pslcard?src_type=internal&version=1&uin=533943195&card_type=group&source=qrcode'
+    })
+})
+
+ui.jiaQun2.click(function () {
+    app.startActivity({
+        action: 'VIEW',
+        data: 'mqqapi://card/show_pslcard?src_type=internal&version=1&uin=740725146&card_type=group&source=qrcode'
+    })
 })
 
 // ui.feedback.click(function () {
 //     app.openUrl('https://github.com/monsternone/tmall-miao')
 // })
-
-ui.hideQun.click(function () {
-    ui.qun.visibility = 8
-})
 
 ui.checkUpdate.click(function () {
     threads.start(checkUpdate)
@@ -147,6 +180,7 @@ ui.jd.click(function() {
 // })
 
 ui.showHC.click(function () {
+    ui.main.visibility = 8
     ui.huichang.visibility = 0
 })
 
@@ -204,6 +238,7 @@ ui.jdShouJi.click(function () {
 
 ui.hideHC.click(function () {
     ui.huichang.visibility = 8
+    ui.main.visibility = 0
 })
 
 // ui.hideHb.click(function () {
