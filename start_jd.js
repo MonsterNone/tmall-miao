@@ -103,68 +103,97 @@ try {
     sleep(2000)
     // scrollUp()
 
-    console.log('打开任务列表')
-    let taskListButtons = textMatches(/.*消耗.*/).findOne(20000)
-    if (!taskListButtons) {
-        console.log('未能打开任务列表，请关闭京东重新运行！')
-        quit()
-    }
-    if (taskListButtons.indexInParent() <= 2) {
-        taskListButtons = taskListButtons.parent()
-    }
-    taskListButtons = taskListButtons.parent().children()
-    if (taskListButtons.empty()) {
-        console.log('未能打开任务列表，请关闭京东重试！')
-        quit()
-    }
-    let flag
-    let taskListButton
-    console.log('开始寻找列表')
-    for (let i = 0; i < taskListButtons.length; i++) {
-        let item = taskListButtons[i]
-        if ((item.text() && item.text().match(/消耗.*爆竹/)) || (item.desc() && item.desc().match(/消耗.*爆竹/))) {
-            flag = i
-            continue
-        }
-        if (flag) {
-            if (item.clickable()) {
-                console.log('找到控件')
-                taskListButton = item
-                break
-            }
-        }
-    }
-    console.log('寻找列表结束')
-    if (!taskListButton || !taskListButton.clickable()) {
-        console.log('无法找到任务列表控件')
-        quit()
-    }
-    taskListButton.click()
-    if (!findTextDescMatchesTimeout(/.*累计任务奖.*/, 8000)) {
-        console.log('似乎没能打开任务列表，退出')
-        quit()
-    }
 
-    // 为了稳定页面布局
-    (() => {
-        console.log('进行一次试探性寻找，稳定页面布局')
-        let taskButtons = textMatches(/.*浏览并关注.*|.*浏览.*s.*|.*累计浏览.*|.*浏览可得.*|.*逛晚会.*/).find()
-        if (taskButtons.empty()) {
-            console.log('未找到浏览任务，退出')
+    // 打开任务列表
+    function openTaskList() {
+        console.log('打开任务列表')
+        let taskListButtons = textMatches(/.*消耗.*/).findOne(20000)
+        if (!taskListButtons) {
+            console.log('未能打开任务列表，请关闭京东重新运行！')
             quit()
         }
-        let item = taskButtons[0]
-        taskText = item.text()
-        item = item.parent().child(3)
-        console.log('进入，稍后返回')
-        item.click()
-        sleep(5000)
-        console.log('返回')
-        back()
-        let r = findTextDescMatchesTimeout(/.*累计任务奖.*/, 8000)
-        if (!r) back()
-        sleep(3000)
-    })()
+        if (taskListButtons.indexInParent() <= 2) {
+            taskListButtons = taskListButtons.parent()
+        }
+        taskListButtons = taskListButtons.parent().children()
+        if (taskListButtons.empty()) {
+            console.log('未能打开任务列表，请关闭京东重试！')
+            quit()
+        }
+        let flag
+        let taskListButton
+        console.log('开始寻找列表')
+        for (let i = 0; i < taskListButtons.length; i++) {
+            let item = taskListButtons[i]
+            if ((item.text() && item.text().match(/消耗.*爆竹/)) || (item.desc() && item.desc().match(/消耗.*爆竹/))) {
+                flag = i
+                continue
+            }
+            if (flag) {
+                if (item.clickable()) {
+                    console.log('找到控件')
+                    taskListButton = item
+                    break
+                }
+            }
+        }
+        console.log('寻找列表结束')
+        if (!taskListButton || !taskListButton.clickable()) {
+            console.log('无法找到任务列表控件')
+            quit()
+        }
+        taskListButton.click()
+        if (!findTextDescMatchesTimeout(/.*累计任务奖.*/, 8000)) {
+            console.log('似乎没能打开任务列表，退出')
+            quit()
+        }
+        // 为了稳定页面布局
+        (() => {
+            console.log('进行一次试探性寻找，稳定页面布局')
+            let taskButtons = textMatches(/.*浏览并关注.*|.*浏览.*s.*|.*累计浏览.*|.*浏览可得.*|.*逛晚会.*/).find()
+            if (taskButtons.empty()) {
+                console.log('未找到浏览任务，退出')
+                quit()
+            }
+            let item = taskButtons[0]
+            taskText = item.text()
+            item = item.parent().child(3)
+            console.log('进入，稍后返回')
+            item.click()
+            sleep(5000)
+            console.log('返回')
+            back()
+            let r = findTextDescMatchesTimeout(/.*累计任务奖.*/, 8000)
+            if (!r) back()
+            sleep(3000)
+        })();
+    }
+
+    // 移除弹窗
+    function removePop() {
+        console.log('尝试关闭弹窗，如果未能自动关闭弹窗麻烦截图反馈')
+        let into = textMatches(/.*开启今日环游.*|.*继续环游.*/).findOnce()
+        if (into) {
+            console.log('关闭弹窗')
+            into.click()
+            return
+        }
+    }
+
+    // 关闭任务列表
+    function closeTaskList() {
+        console.log('关闭任务列表')
+        let jiangli = text('累计任务奖励').findOne(5000)
+        if (!jiangli) {
+            console.log('无法找到任务奖励标识')
+            return false
+        }
+        let closeBtn = jiangli.parent().parent().child(0)
+        return closeBtn.click()
+    }
+
+    openTaskList();
+    removePop();
 
     while (true) {
         function timeTask() {
@@ -180,7 +209,9 @@ try {
             }
             if (c > 39) {
                 console.log('未检测到任务完成标识。返回。')
+                return false
             }
+            return true
         }
 
         function itemTask(cart) {
@@ -207,7 +238,7 @@ try {
                     back()
                     sleep(5000)
                 }
-                if (i > 4) {
+                if (i >= 4) {
                     break
                 }
             }
@@ -265,18 +296,33 @@ try {
             console.log('如果活动页有弹窗遮挡，烦请手动关闭。')
             console.log('入会任务、互动任务、品牌墙需要手动完成。')
             console.log('小米机型无法找到任务，需要给予脚本“后台弹出页面”权限。')
-            alert('任务已完成', '别忘了在脚本主页领取双十一红包！')
+            alert('任务已完成', '别忘了在脚本主页领取年货节红包！')
             quit()
         }
 
         if (taskText.match(/浏览并关注.*s|浏览.*s/)) {
             console.log('进行', taskText)
-            timeTask()
+
+            if (!timeTask()) { // 如果没检测到完成标识
+                back()
+                let r = findTextDescMatchesTimeout(/.*累计任务奖.*/, 8000)
+                if (!r) {
+                    back()
+                }
+                console.log('可能是控件还没刷新，尝试重新打开任务列表')
+                sleep(3000)
+                closeTaskList()
+                sleep(1000)
+                openTaskList()
+                continue
+            }
 
             console.log('完成浏览任务，返回')
             back()
             let r = findTextDescMatchesTimeout(/.*累计任务奖.*/, 8000)
-            if (!r) back()
+            if (!r) {
+                back()
+            }
             sleep(3000)
         } else if (taskText.match(/累计浏览/)) {
             console.log('进行累计浏览任务')
@@ -361,6 +407,6 @@ try {
 } catch (err) {
     device.cancelKeepingAwake()
     if (err.toString() != 'JavaException: com.stardust.autojs.runtime.exception.ScriptInterruptedException: null') {
-        console.error(err)
+        console.error(new Error().stack, err)
     }
 }
