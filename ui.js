@@ -1,6 +1,6 @@
 "ui";
 
-const VERSION = '2022Nian-6'
+const VERSION = '2022Nian-7'
 
 ui.layout(
     <frame>
