@@ -224,7 +224,7 @@ try {
         function itemTask(cart) {
             taskButton.click()
             console.log('等待进入商品列表...')
-            if (!textContains('当前页点击浏览').findOne(10000)) {
+            if (!textContains('当前页点击浏览').findOne(10000) && !textContains('当前页浏览加购').findOnce(10000)) {
                 console.log('未能进入商品列表。返回。')
                 return false
             }
