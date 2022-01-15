@@ -178,6 +178,12 @@ try {
             into.click()
             return
         }
+        into = textMatches(/.*立即抽奖.*/).findOnce()
+        if (into) {
+            console.log('关闭弹窗')
+            into.parent().child(1).click()
+            return
+        }
     }
 
     // 关闭任务列表
@@ -194,6 +200,7 @@ try {
 
     openTaskList();
     removePop();
+    sleep(5000)
 
     while (true) {
         function timeTask() {
@@ -283,7 +290,7 @@ try {
         }
 
         console.log('寻找未完成任务...')
-        let taskButtons = textMatches(/.*浏览并关注.*|.*浏览.*s.*|.*累计浏览.*|.*浏览可得.*|.*逛晚会.*/).find()
+        let taskButtons = textMatches(/.*浏览并关注.*|.*浏览.*s.*|.*累计浏览.*|.*浏览可得.*|.*逛晚会.*|.*品牌墙.*/).find()
         if (taskButtons.empty()) {
             console.log('未找到浏览任务，退出')
             quit()
@@ -315,8 +322,9 @@ try {
         if (!taskButton) {
             console.log('未找到可自动完成的任务，退出。')
             console.log('如果活动页有弹窗遮挡，烦请手动关闭。')
-            console.log('入会任务、互动任务、品牌墙需要手动完成。')
             console.log('小米机型无法找到任务，需要给予脚本“后台弹出页面”权限。')
+            console.log('如果页面中任务列表未铺满屏幕，请重新运行一次脚本尝试。')
+            console.log('入会任务、互动任务、品牌墙需要手动完成。')
             alert('任务已完成', '别忘了在脚本主页领取年货节红包！')
             quit()
         }
@@ -354,7 +362,7 @@ try {
             } else {
                 f = itemTask(false)
             }
-            
+
             if (f) console.log('完成浏览商品，返回')
             back()
             let r = textMatches(/.*累计任务奖.*/).findOne(8000)
@@ -436,7 +444,6 @@ try {
                 back()
                 let r = findTextDescMatchesTimeout(/.*累计任务奖.*/, 8000)
                 if (!r) back()
-                sleep(3000)
                 console.log('参观任务完成后强制重新打开任务列表')
                 sleep(3000)
                 closeTaskList()
@@ -444,6 +451,26 @@ try {
                 openTaskList()
                 continue
             }
+        } else if (taskText.match(/品牌墙/)) {
+            console.log('进行品牌墙任务')
+            for (let i of [2, 4, 6]) { // 选三个
+                textContains('!q70').findOnce(i).click()
+                sleep(5000)
+                console.log('直接返回')
+                back()
+                let r = textContains('!q70').findOne(8000)
+                if (!r) back()
+                sleep(3000)
+            }
+            console.log('返回顶部')
+            let root = textContains('!q70').findOnce(2).parent().parent().parent().parent().parent().parent()
+            root.child(root.childCount() - 1).click()
+            console.log('品牌墙完成后强制重新打开任务列表')
+            sleep(3000)
+            closeTaskList()
+            sleep(1000)
+            openTaskList()
+            continue
         } else {
             console.log('未知任务类型，默认为浏览任务', taskText)
             timeTask()
