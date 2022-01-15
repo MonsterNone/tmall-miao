@@ -453,6 +453,8 @@ try {
             }
         } else if (taskText.match(/品牌墙/)) {
             console.log('进行品牌墙任务')
+            taskButton.click()
+            sleep(3000)
             for (let i of [2, 4, 6]) { // 选三个
                 textContains('!q70').findOnce(i).click()
                 sleep(5000)
