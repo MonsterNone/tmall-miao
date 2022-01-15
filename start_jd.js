@@ -248,7 +248,7 @@ try {
                     back()
                     sleep(5000)
                 }
-                if (i > 4) {
+                if (i >= 4 - 1) {
                     break
                 }
             }
