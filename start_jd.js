@@ -68,7 +68,7 @@ try {
 
     // 打开京东
     console.log('正在打开京东App...')
-    if (!launchPackage('com.jingdong.app.mall')) {
+    if (!launch('com.jingdong.app.mall')) {
         console.log('可能未安装京东App')
         // quit()
     }
