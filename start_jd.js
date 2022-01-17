@@ -66,39 +66,48 @@ try {
         exit()
     }
 
-    // 打开京东
-    console.log('正在打开京东App...')
-    if (!launch('com.jingdong.app.mall')) {
-        console.log('可能未安装京东App')
-        // quit()
+    function openAndInto() { // 打开京东
+        console.log('正在打开京东App...')
+        if (!launch('com.jingdong.app.mall')) {
+            console.log('可能未安装京东App')
+            // quit()
+        }
+
+        sleep(2000)
+
+        // // 进入活动
+        // console.log('等待页面加载...')
+        // if (currentActivity() != 'com.jingdong.app.mall.MainFrameActivity') {
+        //     console.log('请让京东处于App首页')
+        // }
+        // const into = descContains('浮层活动').findOne(20000)
+        // sleep(2000)
+        // if (into == null) {
+        //     console.log('无法找到活动入口，异常退出！')
+        //     quit()
+        // }
+        // click(into.bounds().centerX(), into.bounds().centerY())
+        // click(into.bounds().centerX(), into.bounds().centerY())
+        console.log('进入活动页面')
+
+        app.startActivity({
+            action: "VIEW",
+            data: 'openApp.jdMobile://virtual?params={"category":"jump","des":"m","sourceValue":"babel-act","sourceType":"babel","url":"https://wbbny.m.jd.com/babelDiy/Zeus/41AJZXRUJeTqdBK9bPoPgUJiodcU/index.html?babelChannel=","M_sourceFrom":"h5auto","msf_type":"auto"}'
+        })
     }
 
-    sleep(2000)
+    if (confirm('是否自动打开京东进入活动')) {
+        openAndInto()
+    } else {
+        alert('请关闭弹窗后立刻手动打开京东App并进入活动页面')
+    }
 
-    // // 进入活动
-    // console.log('等待页面加载...')
-    // if (currentActivity() != 'com.jingdong.app.mall.MainFrameActivity') {
-    //     console.log('请让京东处于App首页')
-    // }
-    // const into = descContains('浮层活动').findOne(20000)
-    // sleep(2000)
-    // if (into == null) {
-    //     console.log('无法找到活动入口，异常退出！')
-    //     quit()
-    // }
-    // click(into.bounds().centerX(), into.bounds().centerY())
-    // click(into.bounds().centerX(), into.bounds().centerY())
-    console.log('进入活动页面')
-
-    app.startActivity({
-        action: "VIEW",
-        data: 'openApp.jdMobile://virtual?params={"category":"jump","des":"m","sourceValue":"babel-act","sourceType":"babel","url":"https://wbbny.m.jd.com/babelDiy/Zeus/41AJZXRUJeTqdBK9bPoPgUJiodcU/index.html?babelChannel=","M_sourceFrom":"h5auto","msf_type":"auto"}'
-    })
 
     if (!findTextDescMatchesTimeout(/.*闯关分红包.*/, 20000)) {
         console.log('未能进入活动，请重新运行！')
         quit()
     }
+    console.log('成功进入活动')
     // scrollDown()
     sleep(2000)
     // scrollUp()
