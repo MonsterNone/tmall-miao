@@ -310,7 +310,7 @@ try {
                 continue
             }
             let color = img.pixel(x, y)
-            let compare = colors.isSimilar(color, '#d6413f') || colors.isSimilar(color, '#d54c4c') || colors.isSimilar(color, '#d03b3b')
+            let compare = colors.isSimilar(color, '#d6413f') || colors.isSimilar(color, '#d54c4c') || colors.isSimilar(color, '#d03b3b') || colors.isSimilar(color, '#c9403e')
             console.log(taskText, colors.toString(color), x, y, compare)
             if (compare) {
                 if (!join && taskText.match(/成功入会/)) continue
