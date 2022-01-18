@@ -100,6 +100,7 @@ try {
         openAndInto()
     } else {
         alert('请关闭弹窗后立刻手动打开京东App并进入活动页面')
+        console.log('请手动打开京东App并进入活动页面')
     }
 
 
@@ -187,10 +188,16 @@ try {
             into.click()
             return
         }
-        into = textMatches(/.*立即抽奖.*/).findOnce()
+        into = textMatches(/立即抽奖/).findOnce()
         if (into) {
             console.log('关闭弹窗')
             into.parent().child(1).click()
+            return
+        }
+        into = textMatches(/已累计签到/).findOnce()
+        if (into) {
+            console.log('关闭弹窗')
+            into.parent().parent().parent().parent().parent().child(1).click()
             return
         }
     }
@@ -312,15 +319,15 @@ try {
             taskText = item.text()
             item = item.parent().child(3)
             let b = item.bounds()
-            let x = b.left + b.width() / 15
-            let y = b.top + b.height() / 2
+            let x = b.left
+            let y = b.top
             if (x > img.getWidth() || y > img.getHeight()) {
                 console.log('此控件超出屏幕范围：', taskText)
                 continue
             }
-            let color = img.pixel(x, y)
-            let compare = colors.isSimilar(color, '#d6413f') || colors.isSimilar(color, '#d54c4c') || colors.isSimilar(color, '#d03b3b') || colors.isSimilar(color, '#c9403e')
-            console.log(taskText, colors.toString(color), x, y, compare)
+
+            let compare = images.findColorEquals(img, '#d03b3b', x, y, b.width(), b.height())
+            console.log(taskText, compare)
             if (compare) {
                 if (!join && taskText.match(/成功入会/)) continue
                 taskButton = item
