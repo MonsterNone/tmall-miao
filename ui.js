@@ -1,6 +1,6 @@
 "ui";
 
-const VERSION = '2022Nian-10'
+const VERSION = '2022Nian-11'
 
 ui.layout(
     <frame>
@@ -295,7 +295,7 @@ function checkUpdate() {
         if (version != VERSION) {
             var go = confirm("有新的版本，前往下载" + version)
             if (go) {
-                alert('如果打不开更新，请查看QQ群顶置公告至蓝奏云下载')
+                alert('如果打不开更新，请查看QQ群公告至蓝奏云下载')
                 app.openUrl('https://github.com/MonsterNone/tmall-miao/releases/latest')
             }
         } else {
