@@ -15,6 +15,12 @@
 
 ---
 
+打包版APK下载地址 https://github.com/MonsterNone/tmall-miao/releases/latest
+
+出现bug直接[提issue](https://github.com/MonsterNone/tmall-miao/issues)，请附上机型、系统版本、截图、错误日志等
+
+---
+
 ## 2022年货节V9及以后的版本适配MIUI13定制版安卓12
 
 意思就是V9以前原生安卓12运行完美流畅，到了MIUI13里就是跑不起来。。。
@@ -30,9 +36,9 @@
 
 ---
 
-基于Auto.JS平台，打包版APK下载地址 https://github.com/MonsterNone/tmall-miao/releases/latest
+基于Auto.JS 4.1.1开发，感谢原开发者https://github.com/hyb1996/Auto.js
 
-出现bug直接提issue，请附上机型、系统版本、截图、错误日志等
+> MIUI13用户建议用我的Fork，https://github.com/MonsterNone/Auto.js ，在换汤不换药的前提下支持截图功能
 
 ---
 
