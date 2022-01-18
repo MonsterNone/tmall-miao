@@ -38,7 +38,7 @@
 
 基于Auto.JS 4.1.1开发，感谢原开发者https://github.com/hyb1996/Auto.js
 
-> MIUI13用户建议用[我的Fork](https://github.com/MonsterNone/Auto.js/release/latest)，在换汤不换药的前提下支持截图功能
+> MIUI13用户建议用[我的Fork](https://github.com/MonsterNone/Auto.js/release/latest)，在换汤不换药的前提下勉强支持截图功能
 
 ---
 
