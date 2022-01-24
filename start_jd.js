@@ -63,7 +63,7 @@ function openAndInto() {
 
     app.startActivity({
         action: "VIEW",
-        data: 'openApp.jdMobile://virtual?params={"category":"jump","des":"m","sourceValue":"babel-act","sourceType":"babel","url":"https://wbbny.m.jd.com/babelDiy/Zeus/41AJZXRUJeTqdBK9bPoPgUJiodcU/index.html?babelChannel=","M_sourceFrom":"h5auto","msf_type":"auto"}'
+        data: 'openApp.jdMobile://virtual?params={"category":"jump","action":"to","des":"m","sourceValue":"JSHOP_SOURCE_VALUE","sourceType":"JSHOP_SOURCE_TYPE","url":"https://wbbny.m.jd.com/babelDiy/Zeus/41AJZXRUJeTqdBK9bPoPgUJiodcU/index.html","M_sourceFrom":"mxz","msf_type":"auto"}'
     })
 }
 
@@ -366,7 +366,7 @@ try {
     }
 
     console.log('等待活动页面加载')
-    if (!findTextDescMatchesTimeout(/.*闯关分红包.*/, 20000)) {
+    if (!findTextDescMatchesTimeout(/.*20站.*/, 20000)) {
         console.log('未能进入活动，请重新运行！')
         quit()
     }
