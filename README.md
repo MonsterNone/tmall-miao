@@ -13,6 +13,14 @@
 
 请勿将此项目的任何内容用于商业或非法目的，否则后果自负。
 
+因为内含打开淘宝的操作，部分手机管家会报风险软件。除了无障碍操作和悬浮窗权限外，其他任何权限都可以拒绝授予。Root权限非必须，请不要授权。推荐允许网络权限检查更新。小米手机必须打开后台弹出窗口权限，否则无法申请截屏权限。
+
+---
+
+打包版APK下载地址 https://github.com/MonsterNone/tmall-miao/releases/latest
+
+出现bug直接[提issue](https://github.com/MonsterNone/tmall-miao/issues)，请附上机型、系统版本、截图、错误日志等
+
 ---
 
 ## 2022年货节V9及以后的版本适配MIUI13定制版安卓12
@@ -30,9 +38,9 @@
 
 ---
 
-基于Auto.JS平台，打包版APK下载地址 https://github.com/MonsterNone/tmall-miao/releases/latest
+基于Auto.JS 4.1.1开发，感谢原开发者https://github.com/hyb1996/Auto.js
 
-出现bug直接提issue，请附上机型、系统版本、截图、错误日志等
+> MIUI13用户建议用[我的Fork](https://github.com/MonsterNone/Auto.js/releases/latest)，在换汤不换药的前提下勉强支持截图功能
 
 ---
 
