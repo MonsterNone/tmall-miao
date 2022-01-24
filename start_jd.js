@@ -15,17 +15,6 @@ if (confirm('是否需要自动调整媒体音量为0', '以免直播任务发�
     toast('不修改媒体音量')
 }
 
-if (!requestScreenCapture(false)) {
-    alert('请求截图权限，用以查找按钮，请允许')
-    console.show()
-    console.log("请求截图失败，退出");
-    exit();
-} else {
-    console.show()
-    console.log('截图请求成功')
-}
-
-
 let join = confirm('是否自动完成入会任务？', '入会将会自动授权手机号给京东商家')
 
 console.log('开始完成京东任务...')
@@ -33,14 +22,19 @@ console.log('按音量下键停止')
 
 device.keepScreenDim(30 * 60 * 1000) // 防止息屏30分钟
 
+// 自定义取消亮屏的退出方法
+function quit() {
+    device.cancelKeepingAwake()
+    exit()
+}
+
 // 监听音量下键
 function registerKey() {
     events.observeKey()
     events.onKeyDown('volume_down', function (event) {
         console.log('京东任务脚本停止了')
         console.log('请手动切换回主页面')
-        device.cancelKeepingAwake()
-        exit()
+        quit()
     })
 }
 threads.start(registerKey)
@@ -57,45 +51,313 @@ function findTextDescMatchesTimeout(reg, timeout) {
     return null
 }
 
+// 打开京东进入活动
+function openAndInto() {
+    console.log('正在打开京东App...')
+    if (!launch('com.jingdong.app.mall')) {
+        console.log('可能未安装京东App')
+    }
+
+    sleep(2000)
+    console.log('进入活动页面')
+
+    app.startActivity({
+        action: "VIEW",
+        data: 'openApp.jdMobile://virtual?params={"category":"jump","des":"m","sourceValue":"babel-act","sourceType":"babel","url":"https://wbbny.m.jd.com/babelDiy/Zeus/41AJZXRUJeTqdBK9bPoPgUJiodcU/index.html?babelChannel=","M_sourceFrom":"h5auto","msf_type":"auto"}'
+    })
+}
+
+// 打开任务列表
+function openTaskList() {
+    console.log('打开任务列表')
+    let taskListButtons = textMatches(/.*消耗.*/).findOne(20000)
+    if (!taskListButtons) {
+        console.log('未能打开任务列表，请关闭京东重新运行！')
+        quit()
+    }
+    if (taskListButtons.indexInParent() <= 2) {
+        taskListButtons = taskListButtons.parent()
+    }
+    taskListButtons = taskListButtons.parent().children()
+    if (taskListButtons.empty()) {
+        console.log('未能打开任务列表，请关闭京东重试！')
+        quit()
+    }
+    let flag
+    let taskListButton
+    console.log('开始寻找列表')
+    for (let i = 0; i < taskListButtons.length; i++) {
+        let item = taskListButtons[i]
+        if ((item.text() && item.text().match(/消耗.*爆竹/)) || (item.desc() && item.desc().match(/消耗.*爆竹/))) {
+            flag = i
+            continue
+        }
+        if (flag) {
+            if (item.clickable()) {
+                console.log('找到控件')
+                taskListButton = item
+                break
+            }
+        }
+    }
+    console.log('寻找列表结束')
+    if (!taskListButton || !taskListButton.clickable()) {
+        console.log('无法找到任务列表控件')
+        quit()
+    }
+    taskListButton.click()
+    if (!findTextDescMatchesTimeout(/.*累计任务奖.*/, 8000)) {
+        console.log('似乎没能打开任务列表，退出')
+        quit()
+    }
+}
+
+// 关闭任务列表
+function closeTaskList() {
+    console.log('关闭任务列表')
+    let jiangli = text('累计任务奖励').findOne(5000)
+    if (!jiangli) {
+        console.log('无法找到任务奖励标识')
+        return false
+    }
+    let closeBtn = jiangli.parent().parent().child(0)
+    return closeBtn.click()
+}
+
+// 重新打开任务列表
+function reopenTaskList() {
+    closeTaskList()
+    sleep(3000)
+    openTaskList()
+    sleep(5000)
+}
+
+// 获取未完成任务，根据数字标识，返回任务按钮、任务介绍、任务数量（数组）
+function getTaskByText() {
+    let tButton = null,
+        tText = null,
+        tCount = 0
+    console.log('寻找未完成任务...')
+    let taskButtons = textMatches(/.*浏览并关注.*|.*浏览.*s.*|.*累计浏览.*|.*浏览可得.*|.*逛晚会.*|.*品牌墙.*/).find()
+    if (taskButtons.empty()) { // 找不到任务，直接返回
+        return [null, null, 0]
+    }
+    for (let i = 0; i < taskButtons.length; i++) {
+        let item = taskButtons[i]
+        let tTitle = item.parent().child(1).text()
+        let r = tTitle.match(/(\d)\/(\d*)/)
+        if (!r) continue
+
+        tCount = (r[2] - r[1])
+
+        console.log(tTitle, tCount)
+        if (tCount) { // 如果数字相减不为0，证明没完成
+            if (!join && tText.match(/成功入会/)) continue
+            tButton = item.parent().child(3)
+            tText = item.text()
+            break
+        }
+    }
+    return [tButton, tText, tCount]
+}
+
+// 返回任务列表并检查是否成功，不成功重试一次，带有延时
+function backToList() {
+    back()
+    let r = findTextDescMatchesTimeout(/.*累计任务奖.*/, 8000)
+    if (!r) {
+        back()
+    }
+    sleep(3000)
+}
+
+// 浏览n秒的任务
+function timeTask() {
+    console.log('等待浏览任务完成...')
+    let c = 0
+    while (c < 40) { // 0.5 * 40 = 20 秒，防止死循环
+        let finish_reg = /获得.*?爆竹|已达上限/
+        if ((textMatches(finish_reg).exists() || descMatches(finish_reg).exists())) // 等待已完成出现，有可能失败
+            break
+        sleep(500)
+        c++
+    }
+    if (c > 39) {
+        console.log('未检测到任务完成标识。')
+        return false
+    }
+    return true
+}
+
+// 入会任务
+function joinTask() {
+    let check = textMatches(/.*确认授权即同意.*|.*我的特权.*/).findOne(8000)
+    if (!check) {
+        console.log('无法找到入会按钮，判定为已经入会')
+        return true
+    } else if (check.text().match(/我的特权/)) {
+        console.log('已经入会，返回')
+        return true
+    } else {
+        sleep(2000)
+        check = check.parent().child(5).bounds()
+        console.log('即将勾选授权，自动隐藏控制台')
+        console.hide()
+        sleep(500)
+        click(check.centerX(), check.centerY())
+        sleep(500)
+        try {
+            let j = text('确认授权并加入店铺会员').findOnce().bounds()
+            click(j.centerX(), j.centerY())
+            sleep(500)
+            console.show()
+            return true
+        } catch (err) {
+            console.log('入会任务出现异常！停止完成入会任务。')
+            join = 0
+            sleep(500)
+            console.show()
+            return false
+        }
+    }
+}
+
+// 浏览商品和加购的任务，cart参数为是否加购的flag
+function itemTask(cart) {
+    console.log('等待进入商品列表...')
+    if (!textContains('当前页').findOne(10000)) {
+        console.log('未能进入商品列表。')
+        return false
+    }
+    sleep(2000)
+    let items = textContains('.jpg!q70').find()
+    for (let i = 0; i < items.length; i++) {
+        if (cart) {
+            console.log('加购并浏览')
+            let tmp = items[i].parent().parent()
+            tmp.child(tmp.childCount() - 1).click()
+        } else {
+            console.log('浏览商品页')
+            items[i].parent().parent().child(4).click()
+        }
+        sleep(5000)
+        console.log('返回')
+        back()
+        sleep(5000)
+        let r = textContains('.jpg!q70').findOnce()
+        if (!r) {
+            back()
+            sleep(5000)
+        }
+        if (i >= 4 - 1) {
+            break
+        }
+    }
+    return true
+}
+
+// 逛店任务
+function shopTask() {
+    console.log('等待进入店铺列表...')
+    if (!textContains('去完成').findOne(10000)) {
+        console.log('未能进入店铺列表。返回。')
+        return false
+    }
+    sleep(2000)
+    for (let i = 0; i < 3; i++) {
+        // let shop = textContains('.jpg!q70').findOnce()
+        // shop.parent().parent().click()
+        console.log('浏览店铺页')
+        let t = textContains('去完成').findOnce()
+        if (!t) {
+            if (textContains('已完成').findOnce()) {
+                return true
+            }
+            console.log('无法找到逛店按钮')
+            return false
+        }
+        t.click()
+        sleep(8000)
+        console.log('返回')
+        back()
+        sleep(5000)
+        let r = textContains('.jpg!q70').findOnce()
+        if (!r) {
+            back()
+            sleep(5000)
+        }
+    }
+    return true
+}
+
+// 参观任务
+function viewTask() {
+    console.log('进行参观任务')
+    sleep(8000)
+    console.log('参观任务直接返回')
+    return true
+}
+
+// 品牌墙任务
+function wallTask() {
+    console.log('进行品牌墙任务')
+    sleep(3000)
+    for (let i of [2, 4, 6]) { // 选三个
+        console.log('打开一个')
+        textContains('!q70').findOnce(i).click()
+        sleep(5000)
+        console.log('直接返回')
+        back()
+        let r = textContains('!q70').findOne(8000)
+        if (!r) back()
+        sleep(3000)
+    }
+    console.log('返回顶部')
+    let root = textContains('!q70').findOnce(2).parent().parent().parent().parent().parent().parent()
+    root.child(root.childCount() - 1).click()
+    console.log('品牌墙完成后重新打开任务列表')
+    sleep(3000)
+    openTaskList()
+    return true
+}
+
+// 单个任务的function，自动进入任务、自动返回任务列表，返回boolean
+function doTask(tButton, tText) {
+    tButton.click()
+    let tFlag
+    if (tText.match(/浏览并关注.*s|浏览.*s/)) {
+        console.log('进行', tText)
+        tFlag = timeTask()
+    } else if (tText.match(/累计浏览/)) {
+        console.log('进行累计浏览任务')
+        if (tText.match(/加购/)) {
+            tFlag = itemTask(true)
+        } else {
+            tFlag = itemTask(false)
+        }
+    } else if (tText.match(/入会/)) {
+        console.log('进行入会任务')
+        tFlag = joinTask()
+    } else if (tText.match(/浏览可得|浏览并关注|晚会/)) {
+        let tTitle = tButton.parent().child(1).text()
+        if (tTitle.match(/种草城/)) {
+            tFlag = shopTask()
+        } else {
+            tFlag = viewTask()
+        }
+    } else if (tText.match(/品牌墙/)) {
+        tFlag = wallTask()
+        return tFlag // 品牌墙无需backToList，提前返回
+    } else {
+        console.log('未知任务类型，默认为浏览任务', tText)
+        tFlag = timeTask()
+    }
+    backToList()
+    return tFlag
+}
+
 // 全局try catch，应对无法显示报错
 try {
-
-    // 自定义去取消亮屏的退出方法
-    function quit() {
-        device.cancelKeepingAwake()
-        exit()
-    }
-
-    function openAndInto() { // 打开京东
-        console.log('正在打开京东App...')
-        if (!launch('com.jingdong.app.mall')) {
-            console.log('可能未安装京东App')
-            // quit()
-        }
-
-        sleep(2000)
-
-        // // 进入活动
-        // console.log('等待页面加载...')
-        // if (currentActivity() != 'com.jingdong.app.mall.MainFrameActivity') {
-        //     console.log('请让京东处于App首页')
-        // }
-        // const into = descContains('浮层活动').findOne(20000)
-        // sleep(2000)
-        // if (into == null) {
-        //     console.log('无法找到活动入口，异常退出！')
-        //     quit()
-        // }
-        // click(into.bounds().centerX(), into.bounds().centerY())
-        // click(into.bounds().centerX(), into.bounds().centerY())
-        console.log('进入活动页面')
-
-        app.startActivity({
-            action: "VIEW",
-            data: 'openApp.jdMobile://virtual?params={"category":"jump","des":"m","sourceValue":"babel-act","sourceType":"babel","url":"https://wbbny.m.jd.com/babelDiy/Zeus/41AJZXRUJeTqdBK9bPoPgUJiodcU/index.html?babelChannel=","M_sourceFrom":"h5auto","msf_type":"auto"}'
-        })
-    }
-
     if (confirm('是否自动打开京东进入活动')) {
         openAndInto()
     } else {
@@ -103,403 +365,48 @@ try {
         console.log('请手动打开京东App并进入活动页面')
     }
 
-
+    console.log('等待活动页面加载')
     if (!findTextDescMatchesTimeout(/.*闯关分红包.*/, 20000)) {
         console.log('未能进入活动，请重新运行！')
         quit()
     }
     console.log('成功进入活动')
-    // scrollDown()
     sleep(2000)
-    // scrollUp()
-
-
-    // 打开任务列表
-    function openTaskList() {
-        console.log('打开任务列表')
-        let taskListButtons = textMatches(/.*消耗.*/).findOne(20000)
-        if (!taskListButtons) {
-            console.log('未能打开任务列表，请关闭京东重新运行！')
-            quit()
-        }
-        if (taskListButtons.indexInParent() <= 2) {
-            taskListButtons = taskListButtons.parent()
-        }
-        taskListButtons = taskListButtons.parent().children()
-        if (taskListButtons.empty()) {
-            console.log('未能打开任务列表，请关闭京东重试！')
-            quit()
-        }
-        let flag
-        let taskListButton
-        console.log('开始寻找列表')
-        for (let i = 0; i < taskListButtons.length; i++) {
-            let item = taskListButtons[i]
-            if ((item.text() && item.text().match(/消耗.*爆竹/)) || (item.desc() && item.desc().match(/消耗.*爆竹/))) {
-                flag = i
-                continue
-            }
-            if (flag) {
-                if (item.clickable()) {
-                    console.log('找到控件')
-                    taskListButton = item
-                    break
-                }
-            }
-        }
-        console.log('寻找列表结束')
-        if (!taskListButton || !taskListButton.clickable()) {
-            console.log('无法找到任务列表控件')
-            quit()
-        }
-        taskListButton.click()
-        if (!findTextDescMatchesTimeout(/.*累计任务奖.*/, 8000)) {
-            console.log('似乎没能打开任务列表，退出')
-            quit()
-        }
-        // 为了稳定页面布局
-        (() => {
-            console.log('进行一次试探性寻找，稳定页面布局')
-            let taskButtons = textMatches(/.*浏览并关注.*|.*浏览.*s.*|.*累计浏览.*|.*浏览可得.*|.*逛晚会.*/).find()
-            if (taskButtons.empty()) {
-                console.log('未找到浏览任务，退出')
-                quit()
-            }
-            let item = taskButtons[0]
-            taskText = item.text()
-            item = item.parent().child(3)
-            console.log('进入，稍后返回')
-            item.click()
-            sleep(5000)
-            console.log('返回')
-            back()
-            let r = findTextDescMatchesTimeout(/.*累计任务奖.*/, 8000)
-            if (!r) back()
-            sleep(3000)
-        })();
-    }
-
-    // 移除弹窗
-    function removePop() {
-        console.log('尝试关闭弹窗，如果未能自动关闭弹窗麻烦截图反馈')
-        let into = textMatches(/.*开启今日环游.*|.*继续环游.*/).findOnce()
-        if (into) {
-            console.log('关闭弹窗')
-            into.click()
-            return
-        }
-        into = textMatches(/立即抽奖/).findOnce()
-        if (into) {
-            console.log('关闭弹窗')
-            into.parent().child(1).click()
-            return
-        }
-        into = textMatches(/已累计签到/).findOnce()
-        if (into) {
-            console.log('关闭弹窗')
-            into.parent().parent().parent().parent().parent().child(1).click()
-            return
-        }
-    }
-
-    // 关闭任务列表
-    function closeTaskList() {
-        console.log('关闭任务列表')
-        let jiangli = text('累计任务奖励').findOne(5000)
-        if (!jiangli) {
-            console.log('无法找到任务奖励标识')
-            return false
-        }
-        let closeBtn = jiangli.parent().parent().child(0)
-        return closeBtn.click()
-    }
 
     openTaskList();
-    removePop();
     sleep(5000)
 
+    // 完成所有任务的循环
     while (true) {
-        function timeTask() {
-            taskButton.click()
-            console.log('等待浏览任务完成...')
-            let c = 0
-            while (c < 40) { // 0.5 * 40 = 20 秒，防止死循环
-                let finish_reg = /获得.*?爆竹|已达上限/
-                if ((textMatches(finish_reg).exists() || descMatches(finish_reg).exists())) // 等待已完成出现，有可能失败
-                    break
-                sleep(500)
-                c++
-            }
-            if (c > 39) {
-                console.log('未检测到任务完成标识。返回。')
-                return false
-            }
-            return true
-        }
-
-        function itemTask(cart) {
-            taskButton.click()
-            console.log('等待进入商品列表...')
-            if (!textContains('当前页').findOne(10000)) {
-                console.log('未能进入商品列表。返回。')
-                return false
-            }
-            sleep(2000)
-            let items = textContains('.jpg!q70').find()
-            for (let i = 0; i < items.length; i++) {
-                if (cart) {
-                    console.log('加购并浏览')
-                    let tmp = items[i].parent().parent()
-                    tmp.child(tmp.childCount() - 1).click()
-                } else {
-                    console.log('浏览商品页')
-                    items[i].parent().parent().child(4).click()
-                }
-                sleep(5000)
-                console.log('返回')
-                back()
-                sleep(5000)
-                let r = textContains('.jpg!q70').findOnce()
-                if (!r) {
-                    back()
-                    sleep(5000)
-                }
-                if (i >= 4 - 1) {
-                    break
-                }
-            }
-            return true
-        }
-
-        function shopTask() {
-            taskButton.click()
-            console.log('等待进入店铺列表...')
-            if (!textContains('去完成').findOne(10000)) {
-                console.log('未能进入店铺列表。返回。')
-                return false
-            }
-            sleep(2000)
-            for (let i = 0; i < 3; i++) {
-                // let shop = textContains('.jpg!q70').findOnce()
-                // shop.parent().parent().click()
-                console.log('浏览店铺页')
-                let t = textContains('去完成').findOnce()
-                if (!t) {
-                    if (textContains('已完成').findOnce()) {
-                        return true
-                    }
-                    console.log('无法找到逛店按钮')
-                    return false
-                }
-                t.click()
-                sleep(8000)
-                console.log('返回')
-                back()
-                sleep(5000)
-                let r = textContains('.jpg!q70').findOnce()
-                if (!r) {
-                    back()
-                    sleep(5000)
-                }
-            }
-            return true
-        }
-
-        console.log('寻找未完成任务...')
-        let taskButtons = textMatches(/.*浏览并关注.*|.*浏览.*s.*|.*累计浏览.*|.*浏览可得.*|.*逛晚会.*|.*品牌墙.*/).find()
-        if (taskButtons.empty()) {
-            console.log('未找到浏览任务，退出')
-            quit()
-        }
-
-        let taskButton, taskText
-        let img = captureScreen()
-        for (let i = 0; i < taskButtons.length; i++) {
-            let item = taskButtons[i]
-            taskText = item.text()
-            item = item.parent().child(3)
-            let b = item.bounds()
-            let x = b.left
-            let y = b.top
-            if (x > img.getWidth() || y > img.getHeight()) {
-                console.log('此控件超出屏幕范围：', taskText)
-                continue
-            }
-
-            let compare = images.findColorEquals(img, '#d03b3b', x, y, b.width(), b.height())
-            console.log(taskText, compare)
-            if (compare) {
-                if (!join && taskText.match(/成功入会/)) continue
-                taskButton = item
-                break
-            }
-        }
+        let [taskButton, taskText, taskCount] = getTaskByText()
 
         if (!taskButton) {
             console.log('未找到可自动完成的任务，退出。')
             console.log('如果活动页有弹窗遮挡，烦请手动关闭。')
-            console.log('小米机型无法找到任务，需要给予脚本“后台弹出页面”权限。')
             console.log('如果页面中任务列表未铺满屏幕，请重新运行一次脚本尝试。')
             console.log('互动任务需要手动完成。')
             alert('任务已完成', '别忘了在脚本主页领取年货节红包！')
             quit()
         }
 
-        if (taskText.match(/浏览并关注.*s|浏览.*s/)) {
-            console.log('进行', taskText)
-
-            if (!timeTask()) { // 如果没检测到完成标识
-                back()
-                let r = findTextDescMatchesTimeout(/.*累计任务奖.*/, 8000)
-                if (!r) {
-                    back()
-                }
-                console.log('可能是控件还没刷新，尝试重新打开任务列表')
-                sleep(3000)
-                closeTaskList()
-                sleep(1000)
-                openTaskList()
-                continue
-            }
-
-            console.log('完成浏览任务，返回')
-            back()
-            let r = findTextDescMatchesTimeout(/.*累计任务奖.*/, 8000)
-            if (!r) {
-                back()
-            }
-            sleep(3000)
-        } else if (taskText.match(/累计浏览/)) {
-            console.log('进行累计浏览任务')
-
-            let f
-            if (taskText.match(/加购/)) {
-                f = itemTask(true)
-            } else {
-                f = itemTask(false)
-            }
-
-            if (f) console.log('完成浏览商品，返回')
-            back()
-            let r = textMatches(/.*累计任务奖.*/).findOne(8000)
-            if (!r) back()
-            sleep(3000)
-            if (!f) {
-                console.log('可能是控件还没刷新，尝试重新打开任务列表')
-                closeTaskList()
-                sleep(1000)
-                openTaskList()
-                continue
-            }
-        } else if (join && taskText.match(/入会/)) {
-            console.log('进行入会任务，等待加载...')
-            taskButton.click()
-            let check = textMatches(/.*确认授权即同意.*|.*我的特权.*/).findOne(10000)
-            if (!check) {
-                console.log('无法找到入会按钮，返回')
-                back()
-                let r = textMatches(/.*累计任务奖.*/).findOne(8000)
-                if (!r) back()
-                sleep(5000)
-                console.log('可能是控件还没刷新，尝试重新打开任务列表')
-                closeTaskList()
-                sleep(1000)
-                openTaskList()
-                continue
-            } else if (check.text().match(/我的特权/)) {
-                console.log('已经入会，返回')
-                back()
-                let r = findTextDescMatchesTimeout(/.*累计任务奖.*/, 8000)
-                if (!r) back()
-                sleep(3000)
-                continue
-            }
-            sleep(2000)
-            check = check.parent().child(5).bounds()
-            console.log('即将勾选授权，自动隐藏控制台')
-            console.hide()
-            sleep(500)
-            click(check.centerX(), check.centerY())
-            sleep(500)
-            try {
-                let j = text('确认授权并加入店铺会员').findOnce().bounds()
-                click(j.centerX(), j.centerY())
-            } catch (err) {
-                console.log('入会任务出现异常！停止完成入会任务。')
-                join = 0
-                sleep(500)
-            }
-            sleep(500)
-            console.show()
-            back()
-            console.log('等待返回...')
-            let r = findTextDescMatchesTimeout(/.*累计任务奖.*/, 8000)
-            if (!r) back()
-            sleep(5000)
-        } else if (taskText.match(/浏览可得|浏览并关注|晚会/)) {
-            let taskName = taskButton.parent().child(1).text()
-            if (taskName.match(/种草城/)) {
-                let f = shopTask()
-                if (f) console.log('完成店铺任务，返回')
-                back()
-                let r = findTextDescMatchesTimeout(/.*累计任务奖.*/, 8000)
-                if (!r) back()
-                sleep(5000)
-                if (!f) {
-                    console.log('可能是控件还没刷新，尝试重新打开任务列表')
-                    closeTaskList()
-                    sleep(1000)
-                    openTaskList()
-                    continue
-                }
-            } else {
-                console.log('进行参观任务')
-                taskButton.click()
-                sleep(5000)
-                console.log('直接返回')
-                back()
-                let r = findTextDescMatchesTimeout(/.*累计任务奖.*/, 8000)
-                if (!r) back()
-                console.log('参观任务完成后强制重新打开任务列表')
-                sleep(3000)
-                closeTaskList()
-                sleep(1000)
-                openTaskList()
-                continue
-            }
-        } else if (taskText.match(/品牌墙/)) {
-            console.log('进行品牌墙任务')
-            taskButton.click()
-            sleep(3000)
-            for (let i of [2, 4, 6]) { // 选三个
-                textContains('!q70').findOnce(i).click()
-                sleep(5000)
-                console.log('直接返回')
-                back()
-                let r = textContains('!q70').findOne(8000)
-                if (!r) back()
-                sleep(3000)
-            }
-            console.log('返回顶部')
-            let root = textContains('!q70').findOnce(2).parent().parent().parent().parent().parent().parent()
-            root.child(root.childCount() - 1).click()
-            console.log('品牌墙完成后强制重新打开任务列表')
-            sleep(3000)
-            closeTaskList()
-            sleep(1000)
-            openTaskList()
-            continue
-        } else {
-            console.log('未知任务类型，默认为浏览任务', taskText)
-            timeTask()
-
-            console.log('完成浏览任务，返回')
-            back()
-            let r = findTextDescMatchesTimeout(/.*累计任务奖.*/, 8000)
-            if (!r) back()
-            sleep(3000)
+        if (taskText.match(/品牌墙/)) { // 品牌墙0/3只需要一次完成
+            taskCount = 1
         }
 
+        // 根据taskCount进行任务，一类任务一起完成，完成后刷新任务列表
+        console.log('进行' + taskCount + '次“' + taskText + '”类任务')
+        for (let i = 0; i < taskCount; i++) {
+            console.log('第' + (i + 1) +'次')
+            let taskFlag = doTask(taskButton, taskText)
+            if (taskFlag) {
+                console.log('完成，进行下一个任务')
+            } else {
+                console.log('任务失败，尝试重新打开任务列表获取任务')
+                break // 直接退出，无需在此调用reopen
+            }
+        }
+        console.log('重新打开任务列表获取任务')
+        reopenTaskList()
     }
 } catch (err) {
     device.cancelKeepingAwake()
