@@ -17,6 +17,7 @@ if (confirm('是否需要自动调整媒体音量为0', '以免直播任务发�
 
 let join = confirm('是否自动完成入会任务？', '入会将会自动授权手机号给京东商家')
 
+console.show()
 console.log('开始完成京东任务...')
 console.log('按音量下键停止')
 
@@ -63,7 +64,7 @@ function openAndInto() {
 
     app.startActivity({
         action: "VIEW",
-        data: 'openApp.jdMobile://virtual?params={"category":"jump","action":"to","des":"m","sourceValue":"JSHOP_SOURCE_VALUE","sourceType":"JSHOP_SOURCE_TYPE","url":"https://wbbny.m.jd.com/babelDiy/Zeus/41AJZXRUJeTqdBK9bPoPgUJiodcU/index.html","M_sourceFrom":"mxz","msf_type":"auto"}'
+        data: 'openApp.jdMobile://virtual?params={"category":"jump","action":"to","des":"m","sourceValue":"JSHOP_SOURCE_VALUE","sourceType":"JSHOP_SOURCE_TYPE","url":"https://u.jd.com/PLYnJIC","M_sourceFrom":"mxz","msf_type":"auto"}'
     })
 }
 
@@ -385,7 +386,7 @@ try {
             console.log('如果活动页有弹窗遮挡，烦请手动关闭。')
             console.log('如果页面中任务列表未铺满屏幕，请重新运行一次脚本尝试。')
             console.log('互动任务需要手动完成。')
-            alert('任务已完成', '别忘了在脚本主页领取年货节红包！')
+            // alert('任务已完成', '别忘了在脚本主页领取年货节红包！')
             quit()
         }
 
