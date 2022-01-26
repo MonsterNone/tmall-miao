@@ -1,6 +1,6 @@
 "ui";
 
-const VERSION = '2022Nian-12'
+const VERSION = '2022Nian-13'
 
 ui.layout(
     <frame>
@@ -105,12 +105,8 @@ ui.startJDTask.click(function () {
 
 ui.discountTask.click(function () {
     // toast('也可手淘搜索密令【我要领红包7555】直达会场！')
-    const url = 'm.tb.cn/h.fkkgNPR'
-
-    app.startActivity({
-        action: "VIEW",
-        data: "taobao://" + url
-    })
+    const url = 'https://m.tb.cn/h.fkkgNPR'
+    openTbUrl(url)
 })
 
 // ui.specialTask.click(function() {
@@ -164,17 +160,22 @@ ui.checkUpdate.click(function () {
 })
 
 ui.jd.click(function() {
-    // setClip("30.0复制整段话 https://JKzjbFTD6e1VdB抢紅包，购痛快~最高18618元紅包等你来！#7Aae64urfa@打kai{婛岽}")
-    // if (launchApp("京东")) {
-    //     toast('京口令已复制！正在打开京东...')
-    // }
-    // else {
-    // app.openUrl('https://u.jd.com/3M9ntsn')
-    // }
-    app.startActivity({
-        action: "VIEW",
-        data: 'openApp.jdMobile://virtual?params={"category":"jump","des":"m","sourceValue":"babel-act","sourceType":"babel","url":"https://u.jd.com/SwItj61","M_sourceFrom":"h5auto","msf_type":"auto"}'
-    })
+    dialogs.build({
+        title: "是否使用复制京口令领取？",
+        content: "实测京口令领取红包更大，如果app未自动弹出口令请使用默认方式",
+        positive: "京口令方式",
+        negative: "默认方式"
+    }).on("positive", ()=>{
+        setClip("28:/！40ZkU2rLJVXAr！")
+        if (launch('com.jingdong.app.mall')) {
+            toast('京口令已复制，打开京东App领取')
+        } else {
+            toast('京口令已复制，请手动打开京东App领取')
+        }
+    }).on("negative", ()=>{
+        const url = 'https://u.jd.com/PIYvDAt'
+        openJdUrl(url)
+    }).show()
 })
  
 // ui.showHb.click(function () {
@@ -201,10 +202,8 @@ ui.showHC.click(function () {
 // })
 
 ui.chaoshi.click(function () {
-    app.startActivity({
-        action: "VIEW",
-        data: "taobao://m.tb.cn/h.fQkZUOC"
-    })
+    const url = 'https://m.tb.cn/h.fQkZUOC'
+    openTbUrl(url)
 })
 
 // ui.rexiao.click(function () {
@@ -216,42 +215,27 @@ ui.chaoshi.click(function () {
 
 ui.jdHuichang.click(function () {
     const url = 'https://u.jd.com/SdI6og1'
-    app.startActivity({
-        action: "VIEW",
-        data: 'openApp.jdMobile://virtual?params={"category":"jump","des":"m","sourceValue":"babel-act","sourceType":"babel","url":"'+ url +'","M_sourceFrom":"h5auto","msf_type":"auto"}'
-    })
+    openJdUrl(url)
 })
 
 ui.jdJiaDian.click(function () {
     const url = 'https://u.jd.com/StIdhJi'
-    app.startActivity({
-        action: "VIEW",
-        data: 'openApp.jdMobile://virtual?params={"category":"jump","des":"m","sourceValue":"babel-act","sourceType":"babel","url":"'+ url +'","M_sourceFrom":"h5auto","msf_type":"auto"}'
-    })
+    openJdUrl(url)
 })
 
 ui.jdShouJi.click(function () {
     const url = 'https://u.jd.com/StIs1jh'
-    app.startActivity({
-        action: "VIEW",
-        data: 'openApp.jdMobile://virtual?params={"category":"jump","des":"m","sourceValue":"babel-act","sourceType":"babel","url":"'+ url +'","M_sourceFrom":"h5auto","msf_type":"auto"}'
-    })
+    openJdUrl(url)
 })
 
 ui.jdJuJia.click(function() {
     const url = 'https://u.jd.com/PtYnnaG'
-    app.startActivity({
-        action: "VIEW",
-        data: 'openApp.jdMobile://virtual?params={"category":"jump","des":"m","sourceValue":"babel-act","sourceType":"babel","url":"'+ url +'","M_sourceFrom":"h5auto","msf_type":"auto"}'
-    })
+    openJdUrl(url)
 })
 
 ui.jdChunWan.click(function() {
     const url = 'https://u.jd.com/PIY8iug'
-    app.startActivity({
-        action: "VIEW",
-        data: 'openApp.jdMobile://virtual?params={"category":"jump","des":"m","sourceValue":"babel-act","sourceType":"babel","url":"'+ url +'","M_sourceFrom":"h5auto","msf_type":"auto"}'
-    })
+    openJdUrl(url)
 })
 
 ui.hideHC.click(function () {
@@ -303,15 +287,17 @@ function conPerReq() {
 
 function checkUpdate() {
     toast('正在检查更新')
-    var versionUrl = 'https://raw.fastgit.org/MonsterNone/tmall-miao/master/version'
+    const versionUrl = 'https://raw.fastgit.org/MonsterNone/tmall-miao/master/version'
     http.get(versionUrl, {}, function (res, err) {
         if (err) {
             toast('检查更新出错，请手动前往项目地址查看')
             return
         }
-        var version = res.body.string()
+        res = res.body.json()
+        const version = res.version
+        const log = res.log
         if (version != VERSION) {
-            var go = confirm("有新的版本，前往下载" + version)
+            var go = confirm("有新的版本，前往下载" + version, log)
             if (go) {
                 alert('如果打不开更新，请查看QQ群公告至蓝奏云下载')
                 app.openUrl('https://github.com/MonsterNone/tmall-miao/releases/latest')
@@ -319,5 +305,22 @@ function checkUpdate() {
         } else {
             toast('当前为最新版')
         }
+    })
+}
+
+// 唤起京东APP打开url的方法
+function openJdUrl(url) {
+    app.startActivity({
+        action: "VIEW",
+        data: 'openApp.jdMobile://virtual?params={"category":"jump","des":"m","sourceValue":"JSHOP_SOURCE_VALUE","sourceType":"JSHOP_SOURCE_TYPE","url":"'+ url +'","M_sourceFrom":"h5auto","msf_type":"auto"}'
+    })
+}
+
+// 唤起淘宝APP打开url的方法，此处url带不带http头都可
+function openTbUrl(url) {
+    url = url.replace(/https?:\/\//, '')
+    app.startActivity({
+        action: "VIEW",
+        data: "taobao://" + url
     })
 }
