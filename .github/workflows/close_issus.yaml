@@ -12,7 +12,7 @@ jobs:
       - uses: actions/stale@v4.1.0
         with:
           days-before-issue-stale: 30
-          days-before-issue-close: 14
-          stale-issue-label: "stale"
+          days-before-issue-close: 60
+          stale-issue-label: "陈旧的issue"
           stale-issue-message: "This issue is stale because it has been open for 30 days with no activity."
           close-issue-message: "This issue was closed because it has been inactive for 14 days since being marked as stale."
