@@ -56,11 +56,13 @@ ui.layout(
         </vertical> */}
         <vertical id="huichang" visibility="gone" bg="#ffffff" paddingTop="50" paddingLeft="20" paddingRight="20">
             {/* <button id="yushou" text="年货节惊爆价捡漏" /> */}
-            <button id="jianhuo" text="年货节内部爆款清单" />
+            {/* <button id="jianhuo" text="年货节内部爆款清单" /> */}
             <button id="jdHuichang" text="京东年货节主会场" />
             <button id="jdJiaDian" text="京东年货节家电会场" />
             <button id="jdShouJi" text="京东手机年货节" />
-            <button id="rexiao" text="天猫年货节热销爆款" />
+            <button id="jdJuJia" text="京东居家年货节，春节也送货" />
+            <button id="jdChunWan" text="京东春晚互动会场" />
+            {/* <button id="rexiao" text="天猫年货节热销爆款" /> */}
             <button id="chaoshi" text="天猫超市年货节" />
             <button id="hideHC" style="Widget.AppCompat.Button.Colored" text="隐藏" />
         </vertical>
@@ -191,12 +193,12 @@ ui.showHC.click(function () {
 //     })
 // })
 
-ui.jianhuo.click(function () {
-    app.startActivity({
-        action: "VIEW",
-        data: "taobao://m.tb.cn/h.fkiwuT1"
-    })
-})
+// ui.jianhuo.click(function () {
+//     app.startActivity({
+//         action: "VIEW",
+//         data: "taobao://m.tb.cn/h.fkiwuT1"
+//     })
+// })
 
 ui.chaoshi.click(function () {
     app.startActivity({
@@ -205,12 +207,12 @@ ui.chaoshi.click(function () {
     })
 })
 
-ui.rexiao.click(function () {
-    app.startActivity({
-        action: "VIEW",
-        data: "taobao://m.tb.cn/h.f9lvBww"
-    })
-})
+// ui.rexiao.click(function () {
+//     app.startActivity({
+//         action: "VIEW",
+//         data: "taobao://m.tb.cn/h.f9lvBww"
+//     })
+// })
 
 ui.jdHuichang.click(function () {
     const url = 'https://u.jd.com/SdI6og1'
@@ -230,6 +232,22 @@ ui.jdJiaDian.click(function () {
 
 ui.jdShouJi.click(function () {
     const url = 'https://u.jd.com/StIs1jh'
+    app.startActivity({
+        action: "VIEW",
+        data: 'openApp.jdMobile://virtual?params={"category":"jump","des":"m","sourceValue":"babel-act","sourceType":"babel","url":"'+ url +'","M_sourceFrom":"h5auto","msf_type":"auto"}'
+    })
+})
+
+ui.jdJuJia.click(function() {
+    const url = 'https://u.jd.com/PtYnnaG'
+    app.startActivity({
+        action: "VIEW",
+        data: 'openApp.jdMobile://virtual?params={"category":"jump","des":"m","sourceValue":"babel-act","sourceType":"babel","url":"'+ url +'","M_sourceFrom":"h5auto","msf_type":"auto"}'
+    })
+})
+
+ui.jdChunWan.click(function() {
+    const url = 'https://u.jd.com/PIY8iug'
     app.startActivity({
         action: "VIEW",
         data: 'openApp.jdMobile://virtual?params={"category":"jump","des":"m","sourceValue":"babel-act","sourceType":"babel","url":"'+ url +'","M_sourceFrom":"h5auto","msf_type":"auto"}'
