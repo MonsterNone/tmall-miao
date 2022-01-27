@@ -293,7 +293,12 @@ function checkUpdate() {
             toast('检查更新出错，请手动前往项目地址查看')
             return
         }
-        res = res.body.json()
+        try {
+            res = res.body.json()
+        } catch (err) {
+            toast('检查更新出错，请手动前往项目地址查看')
+            return
+        }
         const version = res.version
         const log = res.log
         if (version != VERSION) {
