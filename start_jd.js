@@ -153,9 +153,9 @@ function getTaskByText() {
 
         console.log(tTitle, tCount)
         if (tCount) { // 如果数字相减不为0，证明没完成
+            tText = item.text()
             if (!join && tText.match(/成功入会/)) continue
             tButton = item.parent().child(3)
-            tText = item.text()
             break
         }
     }
