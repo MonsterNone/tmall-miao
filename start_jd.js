@@ -402,6 +402,8 @@ try {
             console.log('未能进入活动，请重新运行！')
             quit()
         }
+        console.log('成功进入活动')
+        sleep(2000)
     }
 
     // 完成所有任务的循环
