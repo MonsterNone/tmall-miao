@@ -97,7 +97,7 @@ function openTaskList() {
         quit()
     }
     taskListButton.click()
-    if (!textMatches(/.*累计任务奖.*/).findOne(8000)) {
+    if (!textMatches(/.*累计任务奖.*|.*当前进度.*|.*赚金币.*/).findOne(8000)) {
         console.log('似乎没能打开任务列表，退出')
         quit()
     }
@@ -155,9 +155,11 @@ function getTaskByText() {
 
 // 返回任务列表并检查是否成功，不成功重试一次，带有延时
 function backToList() {
+    sleep(500)
     back()
     let r = findTextDescMatchesTimeout(/.*累计任务奖.*/, 8000)
     if (!r) {
+        console.log('返回失败，重试返回')
         back()
     }
     sleep(3000)
@@ -381,23 +383,26 @@ function doTask(tButton, tText) {
 
 // 全局try catch，应对无法显示报错
 try {
-    if (confirm('是否自动打开京东进入活动')) {
+    if (confirm('是否自动打开京东进入活动', '适用于多开或任务列表无法自动打开的情况')) {
         openAndInto()
+        console.log('等待活动页面加载')
+        if (!findTextDescMatchesTimeout(/.*去使用奖励.*/, 8000)) {
+            console.log('未能进入活动，请重新运行！')
+            quit()
+        }
+        console.log('成功进入活动')
+        sleep(2000)
+
+        openTaskList();
+        sleep(5000)
     } else {
-        alert('请关闭弹窗后立刻手动打开京东App并进入活动页面')
-        console.log('请手动打开京东App并进入活动页面')
+        alert('请关闭弹窗后立刻手动打开京东App进入活动页面，并打开任务列表', '限时20秒')
+        console.log('请手动打开京东App进入活动页面，并打开任务列表')
+        if (!textMatches(/.*累计任务奖.*|.*当前进度.*|.*赚金币.*/).findOne(20000)) {
+            console.log('未能进入活动，请重新运行！')
+            quit()
+        }
     }
-
-    console.log('等待活动页面加载')
-    if (!findTextDescMatchesTimeout(/.*去使用奖励.*/, 20000)) {
-        console.log('未能进入活动，请重新运行！')
-        quit()
-    }
-    console.log('成功进入活动')
-    sleep(2000)
-
-    openTaskList();
-    sleep(5000)
 
     // 完成所有任务的循环
     while (true) {

@@ -1,6 +1,6 @@
 "ui";
 
-const VERSION = '2022618-2'
+const VERSION = '2022618-3'
 
 ui.layout(
     <frame>
@@ -261,6 +261,7 @@ function autoPerReq() {
 
 function conPerReq() {
     toast('打开悬浮窗权限')
+    toast('华为/荣耀机型注意，请手动到设置-应用-权限中开启（仅首次运行需要）')
     console.show()
     console.log('悬浮窗权限授予成功！此窗口马上消失')
     sleep(1000)
