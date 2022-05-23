@@ -1,23 +1,22 @@
 "ui";
 
-const VERSION = '2022Nian-14'
+const VERSION = '2022618-1'
 
 ui.layout(
     <frame>
         <vertical id="main" visibility="visible">
             <button id="automationPermission" text="1. 授予无障碍权限" />
             <button id="consolePermission" text="2. 授予悬浮窗权限" />
-            <text text="3-1. 目前淘宝年货节任务过于简单，暂不设计自动完成" />
-            {/* <button id="startTask" text="3-1. 开始淘宝任务" /> */}
+            <button id="startTask" text="3-1. 淘宝活动尚未开始，敬请期待" />
             <button id="startJDTask" text="3-2. 开始京东任务" /> 
-            <button id="discountTask" text="4-1. 领取天猫年货现金红包" />
-            <button id="jd" text="4-2. 领取京东年货现金红包（领完再进，每天三次）" />
-            {/* <button id="specialTask" text="5. 淘宝年货节主会场" /> */}
+            {/* <button id="discountTask" text="4-1. 领取天猫年货现金红包" /> */}
+            {/* <button id="jd" text="4-2. 领取京东年货现金红包（领完再进，每天三次）" /> */}
+            {/* <button id="specialTask" text="5. 淘宝618主会场" /> */}
             {/* <button id="caidan" text="5. 完成天猫开彩蛋任务" /> */}
             {/* <button id="butie" text="天猫百亿补贴会场，真补贴，真划算" /> */}
             {/* <button id="showHb" text="消灭红包！旧的不去新的不来！" textColor="red" /> */}
-            <button id="showHC" text="年货节大促会场直达" textColor="red" />
-            <button id="showQun" text="加入年货节活动助力群" />
+            <button id="showHC" text="618大促会场直达" textColor="red" />
+            <button id="showQun" text="加入618活动助力群" />
             <button id="showQun2" text="加入内部优惠线报群" />
             {/* <button id="feedback" text="正版发布地址！小心病毒盗版！" /> */}
             <button id="checkUpdate" text="检查更新" />
@@ -55,15 +54,13 @@ ui.layout(
             <button id="hideHb" style="Widget.AppCompat.Button.Colored" text="隐藏" />
         </vertical> */}
         <vertical id="huichang" visibility="gone" bg="#ffffff" paddingTop="50" paddingLeft="20" paddingRight="20">
-            {/* <button id="yushou" text="年货节惊爆价捡漏" /> */}
-            {/* <button id="jianhuo" text="年货节内部爆款清单" /> */}
-            <button id="jdHuichang" text="京东年货节主会场" />
-            <button id="jdJiaDian" text="京东年货节家电会场" />
-            <button id="jdShouJi" text="京东手机年货节" />
-            <button id="jdJuJia" text="京东居家年货节，春节也送货" />
-            <button id="jdChunWan" text="京东春晚互动会场" />
-            {/* <button id="rexiao" text="天猫年货节热销爆款" /> */}
-            <button id="chaoshi" text="天猫超市年货节" />
+            {/* <button id="jianhuo" text="618内部爆款清单" /> */}
+            <button id="jdYouhui" text="京东618万券齐发会场，早鸟券包1分抢" />
+            <button id="jdRexiao" text="京东618爆款清单，预售定金膨胀至高5倍" />
+            <button id="jdHuichang" text="京东618主会场（23日20点开启）" />
+            <button id="rexiao" text="天猫热销爆款" />
+            <button id="chaoshi" text="天猫超市，抢15元超市优惠券" />
+            <button id="yushou" text="天猫618预售会场(24日20点开启)" />
             <button id="hideHC" style="Widget.AppCompat.Button.Colored" text="隐藏" />
         </vertical>
     </frame>
@@ -103,11 +100,11 @@ ui.startJDTask.click(function () {
 //     })
 // })
 
-ui.discountTask.click(function () {
-    // toast('也可手淘搜索密令【我要领红包7555】直达会场！')
-    const url = 'https://m.tb.cn/h.fkkgNPR'
-    openTbUrl(url)
-})
+// ui.discountTask.click(function () {
+//     // toast('也可手淘搜索密令【我要领红包7555】直达会场！')
+//     const url = 'https://m.tb.cn/h.fkkgNPR'
+//     openTbUrl(url)
+// })
 
 // ui.specialTask.click(function() {
 //     engines.execScriptFile('./special.js')
@@ -159,24 +156,24 @@ ui.checkUpdate.click(function () {
     threads.start(checkUpdate)
 })
 
-ui.jd.click(function() {
-    dialogs.build({
-        title: "是否使用复制京口令领取？",
-        content: "实测京口令领取红包更大，如果app未自动弹出口令请使用默认方式",
-        positive: "京口令方式",
-        negative: "默认方式"
-    }).on("positive", ()=>{
-        setClip("28:/！40ZkU2rLJVXAr！")
-        if (launch('com.jingdong.app.mall')) {
-            toast('京口令已复制，打开京东App领取')
-        } else {
-            toast('京口令已复制，请手动打开京东App领取')
-        }
-    }).on("negative", ()=>{
-        const url = 'https://u.jd.com/PIYvDAt'
-        openJdUrl(url)
-    }).show()
-})
+// ui.jd.click(function() {
+//     dialogs.build({
+//         title: "是否使用复制京口令领取？",
+//         content: "实测京口令领取红包更大，如果app未自动弹出口令请使用默认方式",
+//         positive: "京口令方式",
+//         negative: "默认方式"
+//     }).on("positive", ()=>{
+//         setClip("28:/！40ZkU2rLJVXAr！")
+//         if (launch('com.jingdong.app.mall')) {
+//             toast('京口令已复制，打开京东App领取')
+//         } else {
+//             toast('京口令已复制，请手动打开京东App领取')
+//         }
+//     }).on("negative", ()=>{
+//         const url = 'https://u.jd.com/PIYvDAt'
+//         openJdUrl(url)
+//     }).show()
+// })
  
 // ui.showHb.click(function () {
 //     ui.hb.visibility = 0
@@ -187,12 +184,10 @@ ui.showHC.click(function () {
     ui.huichang.visibility = 0
 })
 
-// ui.yushou.click(function () {
-//     app.startActivity({
-//         action: "VIEW",
-//         data: "taobao://m.tb.cn/h.fQ8FX3C"
-//     })
-// })
+ui.yushou.click(function () {
+    const url = 'https://m.tb.cn/h.ftic1Dx'
+    openTbUrl(url)
+})
 
 // ui.jianhuo.click(function () {
 //     app.startActivity({
@@ -202,39 +197,27 @@ ui.showHC.click(function () {
 // })
 
 ui.chaoshi.click(function () {
-    const url = 'https://m.tb.cn/h.fQkZUOC'
+    const url = 'https://m.tb.cn/h.fHizabu'
     openTbUrl(url)
 })
 
-// ui.rexiao.click(function () {
-//     app.startActivity({
-//         action: "VIEW",
-//         data: "taobao://m.tb.cn/h.f9lvBww"
-//     })
-// })
+ui.rexiao.click(function () {
+    const url = 'https://m.tb.cn/h.fsjk5jg'
+    openTbUrl(url)
+})
 
 ui.jdHuichang.click(function () {
-    const url = 'https://u.jd.com/SdI6og1'
+    const url = 'https://u.jd.com/JCbNy3t'
     openJdUrl(url)
 })
 
-ui.jdJiaDian.click(function () {
-    const url = 'https://u.jd.com/StIdhJi'
+ui.jdRexiao.click(function () {
+    const url = 'https://u.jd.com/JCb4AIS'
     openJdUrl(url)
 })
 
-ui.jdShouJi.click(function () {
-    const url = 'https://u.jd.com/StIs1jh'
-    openJdUrl(url)
-})
-
-ui.jdJuJia.click(function() {
-    const url = 'https://u.jd.com/PtYnnaG'
-    openJdUrl(url)
-})
-
-ui.jdChunWan.click(function() {
-    const url = 'https://u.jd.com/PIY8iug'
+ui.jdYouhui.click(function () {
+    const url = 'https://u.jd.com/JLbfhhN'
     openJdUrl(url)
 })
 
@@ -270,7 +253,7 @@ ui.hideHC.click(function () {
 
 function autoPerReq() {
     if (!auto.service) {
-        alert('找到年货节任务助手，勾选授予权限', '部分机型在“已安装服务”中')
+        alert('找到618任务助手，勾选授予权限', '部分机型在“已安装服务”中')
     }
     auto.waitFor()
     toast('无障碍权限授予成功')
@@ -304,7 +287,7 @@ function checkUpdate() {
         if (version != VERSION) {
             var go = confirm("有新的版本，前往下载" + version, log)
             if (go) {
-                alert('如果打不开更新，请查看QQ群公告至蓝奏云下载')
+                alert('如果打不开Github链接，请查看QQ群公告至蓝奏云下载')
                 app.openUrl('https://github.com/MonsterNone/tmall-miao/releases/latest')
             }
         } else {

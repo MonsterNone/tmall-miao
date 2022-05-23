@@ -64,7 +64,7 @@ function openAndInto() {
 
     app.startActivity({
         action: "VIEW",
-        data: 'openApp.jdMobile://virtual?params={"category":"jump","action":"to","des":"m","sourceValue":"JSHOP_SOURCE_VALUE","sourceType":"JSHOP_SOURCE_TYPE","url":"https://u.jd.com/PLYnJIC","M_sourceFrom":"mxz","msf_type":"auto"}'
+        data: 'openApp.jdMobile://virtual?params={"category":"jump","action":"to","des":"m","sourceValue":"JSHOP_SOURCE_VALUE","sourceType":"JSHOP_SOURCE_TYPE","url":"https://u.jd.com/JdbEbUe","M_sourceFrom":"mxz","msf_type":"auto"}'
     })
 }
 
@@ -76,38 +76,42 @@ function openTaskList() {
         console.log('未能打开任务列表，请关闭京东重新运行！')
         quit()
     }
-    if (taskListButtons.indexInParent() <= 2) {
-        taskListButtons = taskListButtons.parent()
-    }
-    taskListButtons = taskListButtons.parent().children()
-    if (taskListButtons.empty()) {
-        console.log('未能打开任务列表，请关闭京东重试！')
-        quit()
-    }
-    let flag
-    let taskListButton
-    console.log('开始寻找列表')
-    for (let i = 0; i < taskListButtons.length; i++) {
-        let item = taskListButtons[i]
-        if ((item.text() && item.text().match(/消耗.*爆竹/)) || (item.desc() && item.desc().match(/消耗.*爆竹/))) {
-            flag = i
-            continue
-        }
-        if (flag) {
-            if (item.clickable()) {
-                console.log('找到控件')
-                taskListButton = item
-                break
-            }
-        }
-    }
-    console.log('寻找列表结束')
+    // if (taskListButtons.indexInParent() <= 2) {
+    //     taskListButtons = taskListButtons.parent()
+    // }
+    // taskListButtons = taskListButtons.parent().parent().parent().parent().children()
+    // if (taskListButtons.empty()) {
+    //     console.log('未能打开任务列表，请关闭京东重试！')
+    //     quit()
+    // }
+    // let flag
+    // let taskListButton
+    // console.log('开始寻找列表')
+    // for (let i = 0; i < taskListButtons.length; i++) {
+    //     let item = taskListButtons[i]
+    //     if ((item.text() && item.text().match(/消耗.*爆竹/)) || (item.desc() && item.desc().match(/消耗.*爆竹/))) {
+    //         flag = i
+    //         continue
+    //     }
+    //     if (flag) {
+    //         if (item.clickable()) {
+    //             console.log('找到控件')
+    //             taskListButton = item
+    //             break
+    //         }
+    //     }
+    // }
+    // console.log('寻找列表结束')
+
+    taskListButtons = taskListButtons.parent().parent().parent().parent()
+    let taskListButton = taskListButtons.child(5)
+
     if (!taskListButton || !taskListButton.clickable()) {
         console.log('无法找到任务列表控件')
         quit()
     }
     taskListButton.click()
-    if (!findTextDescMatchesTimeout(/.*累计任务奖.*/, 8000)) {
+    if (!textMatches(/.*累计任务奖.*/).findOne(8000)) {
         console.log('似乎没能打开任务列表，退出')
         quit()
     }
@@ -121,7 +125,7 @@ function closeTaskList() {
         console.log('无法找到任务奖励标识')
         return false
     }
-    let closeBtn = jiangli.parent().parent().child(0)
+    let closeBtn = jiangli.parent().child(1)
     return closeBtn.click()
 }
 
@@ -139,7 +143,7 @@ function getTaskByText() {
         tText = null,
         tCount = 0
     console.log('寻找未完成任务...')
-    let taskButtons = textMatches(/.*浏览并关注.*|.*浏览.*s.*|.*累计浏览.*|.*浏览可得.*|.*逛晚会.*|.*品牌墙.*/).find()
+    let taskButtons = textMatches(/.*浏览并关注.*|.*浏览.*s.*|.*累计浏览.*|.*浏览可得.*|.*逛晚会.*|.*品牌墙.*|.*打卡.*/).find()
     if (taskButtons.empty()) { // 找不到任务，直接返回
         return [null, null, 0]
     }
@@ -155,6 +159,7 @@ function getTaskByText() {
         if (tCount) { // 如果数字相减不为0，证明没完成
             tText = item.text()
             if (!join && tText.match(/成功入会/)) continue
+            if (tText.match(/下单/)) continue
             tButton = item.parent().child(3)
             break
         }
@@ -177,7 +182,7 @@ function timeTask() {
     console.log('等待浏览任务完成...')
     let c = 0
     while (c < 40) { // 0.5 * 40 = 20 秒，防止死循环
-        let finish_reg = /获得.*?爆竹|已达上限/
+        let finish_reg = /获得.*?金币|已达上限/
         if ((textMatches(finish_reg).exists() || descMatches(finish_reg).exists())) // 等待已完成出现，有可能失败
             break
         sleep(500)
@@ -192,7 +197,7 @@ function timeTask() {
 
 // 入会任务
 function joinTask() {
-    let check = textMatches(/.*确认授权即同意.*|.*我的特权.*/).findOne(8000)
+    let check = textMatches(/.*确认授权即同意.*|.*我的特权.*|.*立即开卡.*/).findOne(8000)
     if (!check) {
         console.log('无法找到入会按钮，判定为已经入会')
         return true
@@ -201,20 +206,43 @@ function joinTask() {
         return true
     } else {
         sleep(2000)
-        check = check.parent().child(5).bounds()
-        console.log('即将勾选授权，自动隐藏控制台')
+        if (check.text().match(/立即开卡/)) {
+            let btn = check.bounds()
+            console.log('即将点击开卡，自动隐藏控制台')
+            console.hide()
+            sleep(500)
+            click(btn.centerX(), btn.centerY())
+            sleep(500)
+            check = textMatches(/.*确认授权即同意.*/).findOne(8000)
+            sleep(2000)
+        }
+        if (!check) {
+            console.log('无法找到入会按钮弹窗，加载失败')
+            return false
+        }
+        if (check.indexInParent() == 6) {
+            check = check.parent().child(5).bounds()
+        } else {
+            check = check.parent().parent().child(5).bounds()
+
+        }
+        console.log('即将勾选授权，自动隐藏控制台', check)
         console.hide()
         sleep(500)
         click(check.centerX(), check.centerY())
         sleep(500)
         try {
-            let j = text('确认授权并加入店铺会员').findOnce().bounds()
+            let j = textMatches(/^确认授权(并加入店铺会员)*$/).findOne(8000).bounds()
+            if (!j) {
+                console.log('无法找到入会按钮，失败')
+                return false
+            }
             click(j.centerX(), j.centerY())
             sleep(500)
             console.show()
             return true
         } catch (err) {
-            console.log('入会任务出现异常！停止完成入会任务。')
+            console.log('入会任务出现异常！停止完成入会任务。', err)
             join = 0
             sleep(500)
             console.show()
@@ -260,29 +288,34 @@ function itemTask(cart) {
 // 逛店任务
 function shopTask() {
     console.log('等待进入店铺列表...')
-    if (!textContains('去完成').findOne(10000)) {
+    let banner = textContains('喜欢').findOne(10000)
+    if (!banner) {
         console.log('未能进入店铺列表。返回。')
         return false
     }
+    let c = banner.text().match(/(\d)\/(\d*)/)
+    if (!c) {
+        c = 4 // 进行4次
+    } else {
+        c = c[2] - c[1]
+    }
     sleep(2000)
-    for (let i = 0; i < 3; i++) {
-        // let shop = textContains('.jpg!q70').findOnce()
-        // shop.parent().parent().click()
+    console.log('进行', c, '次')
+    let like = textContains('喜欢').boundsInside(1, 0, device.width, device.height).findOnce()
+    if (!like) {
+        console.log('未能找到喜欢按钮。返回。')
+        return false
+    }
+    let bound = [like.bounds().centerX(), like.bounds().centerY()]
+    console.log('喜欢按钮位于', bound)
+    for (let i = 0; i < c; i++) {
+        click(bound[0], bound[1])
         console.log('浏览店铺页')
-        let t = textContains('去完成').findOnce()
-        if (!t) {
-            if (textContains('已完成').findOnce()) {
-                return true
-            }
-            console.log('无法找到逛店按钮')
-            return false
-        }
-        t.click()
         sleep(8000)
         console.log('返回')
         back()
         sleep(5000)
-        let r = textContains('.jpg!q70').findOnce()
+        let r = textContains('喜欢').findOnce()
         if (!r) {
             back()
             sleep(5000)
@@ -324,7 +357,7 @@ function wallTask() {
 
 // 单个任务的function，自动进入任务、自动返回任务列表，返回boolean
 function doTask(tButton, tText) {
-    tButton.click()
+    let clickFlag = tButton.click()
     let tFlag
     if (tText.match(/浏览并关注.*s|浏览.*s/)) {
         console.log('进行', tText)
@@ -349,6 +382,9 @@ function doTask(tButton, tText) {
     } else if (tText.match(/品牌墙/)) {
         tFlag = wallTask()
         return tFlag // 品牌墙无需backToList，提前返回
+    } else if (tText.match(/打卡/)) {
+        tFlag = clickFlag // 打卡点击一次即可
+        return tFlag
     } else {
         console.log('未知任务类型，默认为浏览任务', tText)
         tFlag = timeTask()
@@ -367,7 +403,7 @@ try {
     }
 
     console.log('等待活动页面加载')
-    if (!findTextDescMatchesTimeout(/.*20站.*/, 20000)) {
+    if (!findTextDescMatchesTimeout(/.*去使用奖励.*/, 20000)) {
         console.log('未能进入活动，请重新运行！')
         quit()
     }
@@ -383,9 +419,8 @@ try {
 
         if (!taskButton) {
             console.log('未找到可自动完成的任务，退出。')
-            console.log('如果活动页有弹窗遮挡，烦请手动关闭。')
             console.log('如果页面中任务列表未铺满屏幕，请重新运行一次脚本尝试。')
-            console.log('互动任务需要手动完成。')
+            console.log('互动任务、下单任务需要手动完成。')
             // alert('任务已完成', '别忘了在脚本主页领取年货节红包！')
             alert('任务已完成', '互动任务手动完成之后还会有新任务，建议做完互动二次运行脚本')
             quit()
