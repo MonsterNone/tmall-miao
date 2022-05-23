@@ -76,35 +76,21 @@ function openTaskList() {
         console.log('未能打开任务列表，请关闭京东重新运行！')
         quit()
     }
-    // if (taskListButtons.indexInParent() <= 2) {
-    //     taskListButtons = taskListButtons.parent()
-    // }
-    // taskListButtons = taskListButtons.parent().parent().parent().parent().children()
-    // if (taskListButtons.empty()) {
-    //     console.log('未能打开任务列表，请关闭京东重试！')
-    //     quit()
-    // }
-    // let flag
-    // let taskListButton
-    // console.log('开始寻找列表')
-    // for (let i = 0; i < taskListButtons.length; i++) {
-    //     let item = taskListButtons[i]
-    //     if ((item.text() && item.text().match(/消耗.*爆竹/)) || (item.desc() && item.desc().match(/消耗.*爆竹/))) {
-    //         flag = i
-    //         continue
-    //     }
-    //     if (flag) {
-    //         if (item.clickable()) {
-    //             console.log('找到控件')
-    //             taskListButton = item
-    //             break
-    //         }
-    //     }
-    // }
-    // console.log('寻找列表结束')
+    taskListButtons = taskListButtons.parent().parent().parent().parent().children()
 
-    taskListButtons = taskListButtons.parent().parent().parent().parent()
-    let taskListButton = taskListButtons.child(5)
+    let taskListButton = null
+    let flag = 0
+    for (let i = 3; i<taskListButtons.length;i++) { // 从第4（4-1）个开始
+        if (taskListButtons[i].clickable()) {
+            if (flag) {
+                taskListButton = taskListButtons[i]
+                break
+            } else {
+                flag = 1
+                continue   
+            }
+        }
+    }
 
     if (!taskListButton || !taskListButton.clickable()) {
         console.log('无法找到任务列表控件')
