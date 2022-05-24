@@ -148,7 +148,7 @@ function openTaskList() {
 // 关闭任务列表
 function closeTaskList() {
     console.log('关闭任务列表')
-    let jiangli = findTextDescMatchesTimeout(/累计任务奖励/).findOne(5000)
+    let jiangli = findTextDescMatchesTimeout(/累计任务奖励/, 5000)
     if (!jiangli) {
         console.log('无法找到任务奖励标识')
         return false
