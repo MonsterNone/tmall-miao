@@ -135,6 +135,7 @@ function openTaskList() {
         console.log('似乎没能打开任务列表，使用备用方法尝试')
         let taskButtons = textMatches(/.*浏览并关注.*|.*浏览.*s.*|.*累计浏览.*|.*浏览可得.*|.*逛晚会.*|.*品牌墙.*|.*打卡.*/).findOne(8000)
         if (!taskButtons) {
+            console.log(currentActivity())
             console.log('实在是无法检测到任务列表，退出！')
         } else {
             console.log('找到任务列表，继续')
