@@ -69,6 +69,10 @@ ui.ver.setText('\n版本：' + VERSION)
 
 threads.start(checkUpdate)
 
+// 强制关闭稳定模式
+let pref = android.preference.PreferenceManager.getDefaultSharedPreferences(context);
+pref.edit().putBoolean("key_stable_mode", false).apply();
+
 // ui.tb.click(function () {
 //     app.openUrl('https://www.wandoujia.com/apps/32267/history_v253')
 // })
@@ -251,9 +255,6 @@ ui.hideHC.click(function () {
 // })
 
 function autoPerReq() {
-    // 强制关闭稳定模式
-    let pref = android.preference.PreferenceManager.getDefaultSharedPreferences(context);
-    pref.edit().putBoolean("key_stable_mode", false).apply();
     if (!auto.service) {
         alert('找到618任务助手，勾选授予权限', '部分机型在“已安装服务”中')
     }
