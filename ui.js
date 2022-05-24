@@ -1,6 +1,6 @@
 "ui";
 
-const VERSION = '2022618-3'
+const VERSION = '2022618-4'
 
 ui.layout(
     <frame>
@@ -30,9 +30,8 @@ ui.layout(
             <text text="4. 运行前最好先将媒体音量关闭，直播任务可能会发出声音" />
             <text text="其他说明" textColor="red" />
             <text text="1. 本脚本基于Auto.JS（感谢原开发者）" />
-            {/* <text text="2. 免费！" /> */}
-            <text text="2. 由于调用淘宝打开页面，部分手机管家可能会误报为诱导软件，实际上本软件绝无任何病毒行为" />
-            <text autoLink="web" text="3. 开源项目地址：https://github.com/MonsterNone/tmall-miao" />
+            <text autoLink="web" text="2. 免费！基础代码全部开源！项目地址：https://github.com/MonsterNone/tmall-miao" />
+            <text text="3. 由于调用淘宝打开页面，部分手机管家可能会误报为诱导软件，实际上本软件绝无任何病毒行为" />
             {/* <text text="4. 运行中出现bug请附上详细控制台log、页面截图等提交issue" /> */}
             <text id="ver" line="1" />
         </vertical>
@@ -55,9 +54,9 @@ ui.layout(
         </vertical> */}
         <vertical id="huichang" visibility="gone" bg="#ffffff" paddingTop="50" paddingLeft="20" paddingRight="20">
             {/* <button id="jianhuo" text="618内部爆款清单" /> */}
+            <button id="jdHuichang" text="京东618主会场" />
             <button id="jdYouhui" text="京东618万券齐发会场，早鸟券包1分抢" />
             <button id="jdRexiao" text="京东618爆款清单，预售定金膨胀至高5倍" />
-            <button id="jdHuichang" text="京东618主会场（23日20点开启）" />
             <button id="rexiao" text="天猫热销爆款" />
             <button id="chaoshi" text="天猫超市，抢15元超市优惠券" />
             <button id="yushou" text="天猫618预售会场(24日20点开启)" />
