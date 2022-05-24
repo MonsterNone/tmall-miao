@@ -242,18 +242,18 @@ function timeTask() {
 
 // 入会任务
 function joinTask() {
-    let check = textMatches(/.*确认授权即同意.*|.*我的特权.*|.*立即开卡.*/).findOne(8000)
+    let check = textMatches(/.*确认授权即同意.*|.*我的特权.*|.*立即开卡.*|.*解锁全部会员福利.*/).findOne(8000)
     if (!check) {
         console.log('无法找到入会按钮，判定为已经入会')
-        return false
+        return true
     } else if (check.text().match(/我的特权/)) {
         console.log('已经入会，返回')
         return true
     } else {
         sleep(2000)
-        if (check.text().match(/立即开卡/)) {
+        if (check.text().match(/.*立即开卡.*|.*解锁全部会员福利.*/)) {
             let btn = check.bounds()
-            console.log('即将点击开卡，自动隐藏控制台')
+            console.log('即将点击开卡/解锁福利，自动隐藏控制台')
             console.hide()
             sleep(500)
             click(btn.centerX(), btn.centerY())
