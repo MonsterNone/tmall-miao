@@ -131,7 +131,7 @@ function openTaskList() {
         quit()
     }
     taskListButton.click()
-    if (!findTextDescMatchesTimeout(/.*累计任务奖.*|.*当前进度.*|.*赚金币.*/, 8000)) {
+    if (!findTextDescMatchesTimeout(/累计任务奖励/, 8000)) {
         console.log('似乎没能打开任务列表，退出')
         quit()
     }
@@ -140,7 +140,7 @@ function openTaskList() {
 // 关闭任务列表
 function closeTaskList() {
     console.log('关闭任务列表')
-    let jiangli = text('累计任务奖励').findOne(5000)
+    let jiangli = findTextDescMatchesTimeout(/累计任务奖励/).findOne(5000)
     if (!jiangli) {
         console.log('无法找到任务奖励标识')
         return false
@@ -192,8 +192,8 @@ function getTaskByText() {
 function backToList() {
     sleep(500)
     back()
-    for (let i = 0; i < 2; i++) { // 尝试返回2次
-        if (!findTextDescMatchesTimeout(/.*累计任务奖.*|.*当前进度.*|.*赚金币.*/, 8000)) {
+    for (let i = 0; i < 3; i++) { // 尝试返回3次
+        if (!findTextDescMatchesTimeout(/累计任务奖励/, 5000)) {
             console.log('返回失败，重试返回')
             back()
             continue
@@ -449,7 +449,7 @@ try {
     } else {
         alert('请关闭弹窗后立刻手动打开京东App进入活动页面，并打开任务列表', '限时30秒')
         console.log('请手动打开京东App进入活动页面，并打开任务列表')
-        if (!findTextDescMatchesTimeout(/.*累计任务奖.*|.*当前进度.*|.*赚金币.*/, 30000)) {
+        if (!findTextDescMatchesTimeout(/累计任务奖励/, 30000)) {
             console.log('未能进入活动，请重新运行！')
             quit()
         }
