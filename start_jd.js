@@ -131,8 +131,15 @@ function openTaskList() {
         quit()
     }
     taskListButton.click()
-    if (!findTextDescMatchesTimeout(/累计任务奖励/, 8000)) {
-        console.log('似乎没能打开任务列表，退出')
+    if (!findTextDescMatchesTimeout(/累计任务奖励/, 10000)) {
+        console.log('似乎没能打开任务列表，使用备用方法尝试')
+        let taskButtons = textMatches(/.*浏览并关注.*|.*浏览.*s.*|.*累计浏览.*|.*浏览可得.*|.*逛晚会.*|.*品牌墙.*|.*打卡.*/).findOne(8000)
+        if (!taskButtons) {
+            console.log('实在是无法检测到任务列表，退出！')
+        } else {
+            console.log('找到任务列表，继续')
+            return
+        }
         quit()
     }
 }
@@ -165,24 +172,23 @@ function getTaskByText() {
         tTitle = null
     console.log('寻找未完成任务...')
     let taskButtons = textMatches(/.*浏览并关注.*|.*浏览.*s.*|.*累计浏览.*|.*浏览可得.*|.*逛晚会.*|.*品牌墙.*|.*打卡.*/).find()
-    if (taskButtons.empty()) { // 找不到任务，直接返回
-        return [null, null, 0]
-    }
-    for (let i = 0; i < taskButtons.length; i++) {
-        let item = taskButtons[i]
-        tTitle = item.parent().child(1).text()
-        let r = tTitle.match(/(\d)\/(\d*)/)
-        if (!r) continue
-
-        tCount = (r[2] - r[1])
-
-        console.log(tTitle, tCount)
-        if (tCount) { // 如果数字相减不为0，证明没完成
-            tText = item.text()
-            if (!autoJoin && tText.match(/成功入会/)) continue
-            if (tText.match(/下单/)) continue
-            tButton = item.parent().child(3)
-            break
+    if (!taskButtons.empty()) { // 如果找不到任务，直接返回
+        for (let i = 0; i < taskButtons.length; i++) {
+            let item = taskButtons[i]
+            tTitle = item.parent().child(1).text()
+            let r = tTitle.match(/(\d)\/(\d*)/)
+            if (!r) continue
+    
+            tCount = (r[2] - r[1])
+    
+            console.log(tTitle, tCount)
+            if (tCount) { // 如果数字相减不为0，证明没完成
+                tText = item.text()
+                if (!autoJoin && tText.match(/成功入会/)) continue
+                if (tText.match(/下单/)) continue
+                tButton = item.parent().child(3)
+                break
+            }
         }
     }
     return [tButton, tText, tCount, tTitle]
