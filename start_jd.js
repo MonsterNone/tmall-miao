@@ -334,7 +334,7 @@ function shopTask() {
 // 参观任务
 function viewTask() {
     console.log('进行参观任务')
-    sleep(8000)
+    sleep(5000)
     console.log('参观任务直接返回')
     return true
 }
@@ -379,7 +379,7 @@ function doTask(tButton, tText, tTitle) {
     } else if (tText.match(/入会/)) {
         if (tTitle.match(/逛/)) {
             console.log('判定为已经入会，直接参观')
-            viewTask()
+            tFlag = viewTask()
         } else {
             console.log('进行入会任务')
             tFlag = joinTask()
