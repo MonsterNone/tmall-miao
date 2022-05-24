@@ -3,9 +3,46 @@ if (!auto.service) {
     exit()
 }
 
-let autoOpen = confirm('是否自动打开京东进入活动', '适用于多开或任务列表无法自动打开的情况')
+console.show()
 
-if (confirm('是否需要自动调整媒体音量为0', '以免直播任务发出声音。需要修改系统设置权限。')) {
+function getSetting() {
+    let indices = []
+    autoOpen && indices.push(0)
+    autoMute && indices.push(1)
+    autoJoin && indices.push(2)
+
+    let settings = dialogs.multiChoice('任务设置', ['自动打开京东进入活动。多开或任务列表无法自动打开时取消勾选', '自动调整媒体音量为0。以免直播任务发出声音，首次选择需要修改系统设置权限', '自动完成入会任务。京东将授权手机号给商家，日后可能会收到推广短信'], indices)
+
+    if (settings.indexOf(0) != -1) {
+        storage.put('autoOpen', true)
+        autoOpen = true
+    } else {
+        storage.put('autoOpen', false)
+        autoOpen = false
+    }
+    if (settings.indexOf(1) != -1) {
+        storage.put('autoMute', true)
+        autoMute = true
+    } else {
+        storage.put('autoMute', false)
+        autoMute = false
+    }
+    if (settings.indexOf(2) != -1) {
+        storage.put('autoJoin', true)
+        autoJoin = true
+    } else {
+        storage.put('autoJoin', false)
+        autoJoin = false
+    }
+}
+
+let storage = storages.create("jd_task");
+let autoOpen = storage.get('autoOpen', true)
+let autoMute = storage.get('autoMute', true)
+let autoJoin = storage.get('autoJoin', true)
+getSetting()
+
+if (autoMute) {
     try {
         device.setMusicVolume(0)
         toast('成功设置媒体音量为0')
@@ -13,13 +50,8 @@ if (confirm('是否需要自动调整媒体音量为0', '以免直播任务发�
         alert('首先需要开启权限，请开启后再次运行脚本')
         exit()
     }
-} else {
-    toast('不修改媒体音量')
 }
 
-let join = confirm('是否自动完成入会任务？', '入会将会自动授权手机号给京东商家')
-
-console.show()
 console.log('开始完成京东任务...')
 console.log('按音量下键停止')
 
@@ -147,7 +179,7 @@ function getTaskByText() {
         console.log(tTitle, tCount)
         if (tCount) { // 如果数字相减不为0，证明没完成
             tText = item.text()
-            if (!join && tText.match(/成功入会/)) continue
+            if (!autoJoin && tText.match(/成功入会/)) continue
             if (tText.match(/下单/)) continue
             tButton = item.parent().child(3)
             break
@@ -179,7 +211,7 @@ function timeTask() {
     while (c < 40) { // 0.5 * 40 = 20 秒，防止死循环
         if ((textMatches(/获得.*?金币/).exists() || descMatches(/获得.*?金币/).exists())) // 等待已完成出现
             break
-        if ((textMatches(/已达上限/).exists() || descMatches(/已达上限/).exists())) {// 失败
+        if ((textMatches(/已达上限/).exists() || descMatches(/已达上限/).exists())) { // 失败
             console.log('上限，返回刷新任务列表')
             return false
         }
@@ -232,7 +264,7 @@ function joinTask() {
         } else {
             check = check.parent().parent().child(5).bounds()
         }
-        
+
         console.log('即将勾选授权，自动隐藏控制台', check)
         console.hide()
         sleep(500)
@@ -250,7 +282,7 @@ function joinTask() {
             return true
         } catch (err) {
             console.log('入会任务出现异常！停止完成入会任务。', err)
-            join = 0
+            autoJoin = 0
             sleep(500)
             console.show()
             return false
@@ -415,9 +447,9 @@ try {
         openTaskList();
         sleep(5000)
     } else {
-        alert('请关闭弹窗后立刻手动打开京东App进入活动页面，并打开任务列表', '限时20秒')
+        alert('请关闭弹窗后立刻手动打开京东App进入活动页面，并打开任务列表', '限时30秒')
         console.log('请手动打开京东App进入活动页面，并打开任务列表')
-        if (!findTextDescMatchesTimeout(/.*累计任务奖.*|.*当前进度.*|.*赚金币.*/, 20000)) {
+        if (!findTextDescMatchesTimeout(/.*累计任务奖.*|.*当前进度.*|.*赚金币.*/, 30000)) {
             console.log('未能进入活动，请重新运行！')
             quit()
         }
