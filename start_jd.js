@@ -82,14 +82,14 @@ function openTaskList() {
 
     let taskListButton = null
     let flag = 0
-    for (let i = 3; i<taskListButtons.length;i++) { // 从第4（4-1）个开始
+    for (let i = 3; i < taskListButtons.length; i++) { // 从第4（4-1）个开始
         if (taskListButtons[i].clickable()) {
             if (flag) {
                 taskListButton = taskListButtons[i]
                 break
             } else {
                 flag = 1
-                continue   
+                continue
             }
         }
     }
@@ -206,7 +206,7 @@ function joinTask() {
     let check = textMatches(/.*确认授权即同意.*|.*我的特权.*|.*立即开卡.*/).findOne(8000)
     if (!check) {
         console.log('无法找到入会按钮，判定为已经入会')
-        return true
+        return false
     } else if (check.text().match(/我的特权/)) {
         console.log('已经入会，返回')
         return true
@@ -231,8 +231,8 @@ function joinTask() {
             check = check.parent().child(5).bounds()
         } else {
             check = check.parent().parent().child(5).bounds()
-
         }
+        
         console.log('即将勾选授权，自动隐藏控制台', check)
         console.hide()
         sleep(500)
@@ -377,13 +377,8 @@ function doTask(tButton, tText, tTitle) {
             tFlag = itemTask(false)
         }
     } else if (tText.match(/入会/)) {
-        if (tTitle.match(/逛/)) {
-            console.log('判定为已经入会，直接参观')
-            tFlag = viewTask()
-        } else {
-            console.log('进行入会任务')
-            tFlag = joinTask()
-        }
+        console.log('进行入会任务')
+        tFlag = joinTask()
     } else if (tText.match(/浏览可得|浏览并关注|晚会/)) {
         let tTitle = tButton.parent().child(1).text()
         if (tTitle.match(/种草城/)) {
@@ -450,7 +445,7 @@ try {
         // 根据taskCount进行任务，一类任务一起完成，完成后刷新任务列表
         console.log('进行' + taskCount + '次“' + taskText + '”类任务')
         for (let i = 0; i < taskCount; i++) {
-            console.log('第' + (i + 1) +'次')
+            console.log('第' + (i + 1) + '次')
             let taskFlag = doTask(taskButton, taskText, taskTitle)
             if (taskFlag) {
                 console.log('完成，进行下一个任务')
