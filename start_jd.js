@@ -69,6 +69,7 @@ function registerKey() {
     events.onKeyDown('volume_down', function (event) {
         console.log('京东任务脚本停止了')
         console.log('请手动切换回主页面')
+        startCoin && console.log('本次任务开始时有' + startCoin + '金币')
         quit()
     })
 }
@@ -221,6 +222,7 @@ function backToList() {
     for (let i = 0; i < 3; i++) { // 尝试返回3次
         if (!findTextDescMatchesTimeout(/累计任务奖励/, 5000)) {
             console.log('返回失败，重试返回')
+            sleep(2000)
             back()
             continue
         } else {
@@ -497,6 +499,8 @@ function signTask() {
     return true
 }
 
+let startCoin = null  // 音量键需要
+
 // 全局try catch，应对无法显示报错
 try {
     if (autoOpen) {
@@ -523,7 +527,6 @@ try {
     }
 
 
-    let startCoin = null
     try {
         console.log('获取初始金币数量')
         startCoin = getCoin()
