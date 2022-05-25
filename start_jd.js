@@ -119,7 +119,12 @@ function getCoin() {
     if (coin) {
         return parseInt(coin)
     } else {
-        return false
+        coin = anchor.parent().child(3).text() // 有可能中间插了个控件
+        if (coin) {
+            return parseInt(coin)
+        } else {
+            return false
+        }
     }
 }
 
