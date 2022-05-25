@@ -57,7 +57,7 @@ ui.layout(
             <button id="jdHuichang" text="京东618主会场" />
             <button id="jdYouhui" text="京东618万券齐发会场，早鸟券包1分抢" />
             <button id="jdRexiao" text="京东618爆款清单，预售定金膨胀至高5倍" />
-            <button id="yushou" text="天猫618预售会场(24日20点开启)" />
+            <button id="yushou" text="天猫618预售争霸赛" />
             <button id="rexiao" text="天猫热销爆款" />
             <button id="chaoshi" text="天猫超市，抢15元超市优惠券" />
             <button id="hideHC" style="Widget.AppCompat.Button.Colored" text="隐藏" />
@@ -68,10 +68,6 @@ ui.layout(
 ui.ver.setText('\n版本：' + VERSION)
 
 threads.start(checkUpdate)
-
-// 强制关闭稳定模式
-let pref = android.preference.PreferenceManager.getDefaultSharedPreferences(context);
-pref.edit().putBoolean("key_stable_mode", false).apply();
 
 // ui.tb.click(function () {
 //     app.openUrl('https://www.wandoujia.com/apps/32267/history_v253')
