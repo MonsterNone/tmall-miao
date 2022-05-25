@@ -292,23 +292,16 @@ function joinTask() {
         sleep(500)
         click(check.centerX(), check.centerY())
         sleep(500)
-        try {
-            let j = textMatches(/^确认授权(并加入店铺会员)*$/).findOne(8000).bounds()
-            if (!j) {
-                console.log('无法找到入会按钮，失败')
-                return false
-            }
-            click(j.centerX(), j.centerY())
-            sleep(500)
-            console.show()
-            return true
-        } catch (err) {
-            console.log('入会任务出现异常！停止完成入会任务。', err)
-            autoJoin = 0
-            sleep(500)
-            console.show()
+        console.show()
+
+        let j = textMatches(/^确认授权(并加入店铺会员)*$/).findOne(5000)
+        if (!j) {
+            console.log('无法找到入会按钮，失败')
             return false
         }
+        click(j.bounds().centerX(), j.bounds().centerY())
+        sleep(500)
+        return true
     }
 }
 
@@ -530,7 +523,7 @@ try {
         console.log('获取初始金币数量')
         startCoin = getCoin()
         console.log('当前共有' + startCoin + '金币')
-    } catch(err) {
+    } catch (err) {
         console.log('获取金币失败，跳过', err)
     }
 
@@ -540,8 +533,8 @@ try {
 
         if (!taskButton) {
             console.log('领取累计奖励')
-            textContains('去领取').find().forEach(function(e, i) {
-                console.log('领取第'+(i+1)+'个累计奖励')
+            textContains('去领取').find().forEach(function (e, i) {
+                console.log('领取第' + (i + 1) + '个累计奖励')
                 e.click()
                 sleep(2000)
             })
@@ -554,7 +547,7 @@ try {
                 console.log('获取结束金币数量')
                 endCoin = getCoin()
                 console.log('当前共有' + endCoin + '金币')
-            } catch(err) {
+            } catch (err) {
                 console.log('获取金币失败，跳过', err)
             }
 
