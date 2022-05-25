@@ -105,7 +105,7 @@ function openAndInto() {
 // 获取金币数量
 function getCoin() {
     let anchor = className('android.view.View').filter(function (w) {
-        if ((w.desc() && w.desc().match(/分红/)) || (w.text() && w.text().match(/分红/))) {
+        if ((w.desc() && w.desc().match(/分红：.*份/)) || (w.text() && w.text().match(/分红：.*份/))) {
             return true
         } else {
             return false
@@ -272,6 +272,7 @@ function joinTask() {
             sleep(500)
             click(btn.centerX(), btn.centerY())
             sleep(500)
+            console.show()
             check = textMatches(/.*确认授权即同意.*/).findOne(8000)
             sleep(2000)
         }
@@ -530,7 +531,7 @@ try {
         startCoin = getCoin()
         console.log('当前共有' + startCoin + '金币')
     } catch(err) {
-        console.log('获取金币失败，跳过')
+        console.log('获取金币失败，跳过', err)
     }
 
     // 完成所有任务的循环
@@ -554,7 +555,7 @@ try {
                 endCoin = getCoin()
                 console.log('当前共有' + endCoin + '金币')
             } catch(err) {
-                console.log('获取金币失败，跳过')
+                console.log('获取金币失败，跳过', err)
             }
 
             console.log('没有可自动完成的任务了，退出。')
