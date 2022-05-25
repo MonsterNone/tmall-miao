@@ -40,8 +40,6 @@
 
 基于Auto.JS 4.1.1开发，感谢原开发者https://github.com/hyb1996/Auto.js
 
-> MIUI13用户建议用[我的Fork](https://github.com/MonsterNone/Auto.js/releases/latest)，在换汤不换药的前提下勉强支持截图功能
-
 ---
 
 因为内含打开淘宝的操作，部分手机管家会报风险软件。除了无障碍操作和悬浮窗权限外，其他任何权限都可以拒绝授予。（推荐允许网络权限检查更新）小米手机必须打开`后台弹出窗口`权限，否则无法申请截屏权限。
