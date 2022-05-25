@@ -172,9 +172,9 @@ function getTaskByText() {
             tTitle = item.parent().child(1).text()
             let r = tTitle.match(/(\d)\/(\d*)/)
             if (!r) continue
-    
+
             tCount = (r[2] - r[1])
-    
+
             console.log(tTitle, tCount)
             if (tCount) { // 如果数字相减不为0，证明没完成
                 tText = item.text()
@@ -432,6 +432,51 @@ function doTask(tButton, tText, tTitle) {
     return tFlag
 }
 
+function signTask() {
+    let anchor = className('android.view.View').filter(function (w) {
+        return w.clickable() && (w.text() == '去使用奖励' || w.desc() == '去使用奖励')
+    }).findOne(5000)
+
+    if (!anchor) {
+        console.log('未找到使用奖励按钮，签到失败')
+        return false
+    }
+
+    let anchor_index = anchor.indexInParent()
+    let sign = anchor.parent().child(anchor_index + 2) // 去使用的后两个
+    sign.click()
+
+    sign = textMatches(/.*点我签到.*|.*明天再来.*/).findOne(5000)
+    if (!sign) {
+        console.log('未找到签到按钮')
+        return false
+    }
+
+    if (sign.text().match(/明天再来/)) {
+        console.log('已经签到')
+    } else {
+        click(sign.bounds().centerX(), sign.bounds().centerY())
+        console.log('签到完成，关闭签到弹窗')
+
+        if (!next) {
+            console.log('找不到下一个红包提示语，未能自动关闭弹窗')
+            return false
+        }
+        console.log('关闭签到弹窗')
+        next.parent().child(0).click()
+    }
+
+    let title = text('每天签到领大额红包').findOne(5000)
+    if (!title) {
+        console.log('未找到标题，未能自动关闭签到页。')
+        return false
+    }
+    console.log('关闭签到页')
+    title.parent().child(0).click()
+
+    return true
+}
+
 // 全局try catch，应对无法显示报错
 try {
     if (autoOpen) {
@@ -462,8 +507,10 @@ try {
         let [taskButton, taskText, taskCount, taskTitle] = getTaskByText()
 
         if (!taskButton) {
-            console.log('未找到可自动完成的任务，退出。')
-            console.log('如果页面中任务列表未铺满屏幕，请重新运行一次脚本尝试。')
+            console.log('最后进行签到任务')
+            signTask()
+
+            console.log('没有可自动完成的任务了，退出。')
             console.log('互动任务、下单任务需要手动完成。')
             // alert('任务已完成', '别忘了在脚本主页领取年货节红包！')
             alert('任务已完成', '互动任务手动完成之后还会有新任务，建议做完互动二次运行脚本')
