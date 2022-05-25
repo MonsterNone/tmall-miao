@@ -102,6 +102,27 @@ function openAndInto() {
     })
 }
 
+// 获取金币数量
+function getCoin() {
+    let anchor = className('android.view.View').filter(function (w) {
+        if ((w.desc() && w.desc().match(/分红/)) || (w.text() && w.text().match(/分红/))) {
+            return true
+        } else {
+            return false
+        }
+    }).findOne(5000)
+    if (!anchor) {
+        console.log('找不到分红控件')
+        return false
+    }
+    let coin = anchor.parent().child(2).text()
+    if (coin) {
+        return parseInt(coin)
+    } else {
+        return false
+    }
+}
+
 // 打开任务列表
 function openTaskList() {
     console.log('打开任务列表')
@@ -502,6 +523,16 @@ try {
         sleep(2000)
     }
 
+
+    let startCoin = null
+    try {
+        console.log('获取初始金币数量')
+        startCoin = getCoin()
+        console.log('当前共有' + startCoin + '金币')
+    } catch(err) {
+        console.log('获取金币失败，跳过')
+    }
+
     // 完成所有任务的循环
     while (true) {
         let [taskButton, taskText, taskCount, taskTitle] = getTaskByText()
@@ -517,8 +548,23 @@ try {
             console.log('最后进行签到任务')
             signTask()
 
+            let endCoin = null
+            try {
+                console.log('获取结束金币数量')
+                endCoin = getCoin()
+                console.log('当前共有' + endCoin + '金币')
+            } catch(err) {
+                console.log('获取金币失败，跳过')
+            }
+
             console.log('没有可自动完成的任务了，退出。')
             console.log('互动任务、下单任务需要手动完成。')
+            if (startCoin && endCoin) {
+                console.log('本次运行获得' + (endCoin - startCoin) + '金币')
+            } else {
+                console.log('本次运行获得金币无法计算，具体原因请翻阅日志。')
+            }
+
             // alert('任务已完成', '别忘了在脚本主页领取年货节红包！')
             alert('任务已完成', '互动任务手动完成之后还会有新任务，建议做完互动二次运行脚本')
             quit()
