@@ -532,6 +532,8 @@ try {
         console.log('获取金币失败，跳过', err)
     }
 
+    sleep(2000)
+
     // 完成所有任务的循环
     while (true) {
         let [taskButton, taskText, taskCount, taskTitle] = getTaskByText()
