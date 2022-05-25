@@ -275,6 +275,7 @@ function joinTask() {
         if (check.text().match(/.*立即开卡.*|.*解锁全部会员福利.*/)) {
             let btn = check.bounds()
             console.log('即将点击开卡/解锁福利，自动隐藏控制台')
+            sleep(500)
             console.hide()
             sleep(500)
             click(btn.centerX(), btn.centerY())
@@ -294,7 +295,8 @@ function joinTask() {
             check = check.parent().parent().child(5).bounds()
         }
 
-        console.log('即将勾选授权，自动隐藏控制台', check)
+        console.log('即将勾选授权，自动隐藏控制台')
+        sleep(500)
         console.hide()
         sleep(500)
         click(check.centerX(), check.centerY())
@@ -499,7 +501,7 @@ function signTask() {
     return true
 }
 
-let startCoin = null  // 音量键需要
+let startCoin = null // 音量键需要
 
 // 全局try catch，应对无法显示报错
 try {
