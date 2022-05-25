@@ -1,6 +1,6 @@
 "ui";
 
-const VERSION = '2022618-6'
+const VERSION = '2022618-7'
 
 ui.layout(
     <frame>
@@ -60,6 +60,8 @@ ui.layout(
             <button id="yushou" text="天猫618预售争霸赛" />
             <button id="rexiao" text="天猫热销爆款" />
             <button id="chaoshi" text="天猫超市，抢15元超市优惠券" />
+            <button id="jdChaoshi" text="京东超市，上午下单下午收货，领券满200-20" />
+            <button id="jdBaihuo" text="京东新百货，美妆居家钟表运动，送货上门正品保障" />
             <button id="hideHC" style="Widget.AppCompat.Button.Colored" text="隐藏" />
         </vertical>
     </frame>
@@ -217,6 +219,16 @@ ui.jdRexiao.click(function () {
 
 ui.jdYouhui.click(function () {
     const url = 'https://u.jd.com/JLbfhhN'
+    openJdUrl(url)
+})
+
+ui.jdChaoshi.click(function () {
+    const url = 'https://u.jd.com/JwSw88P'
+    openJdUrl(url)
+})
+
+ui.jdBaihuo.click(function () {
+    const url = 'https://u.jd.com/JISziRw'
     openJdUrl(url)
 })
 
