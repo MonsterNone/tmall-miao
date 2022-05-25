@@ -507,6 +507,13 @@ try {
         let [taskButton, taskText, taskCount, taskTitle] = getTaskByText()
 
         if (!taskButton) {
+            console.log('领取累计奖励')
+            textContains('去领取').find().forEach(function(e, i) {
+                console.log('领取第'+(i+1)+'个累计奖励')
+                e.click()
+                sleep(2000)
+            })
+
             console.log('最后进行签到任务')
             signTask()
 
