@@ -289,20 +289,47 @@ function joinTask() {
             console.log('无法找到入会按钮弹窗，加载失败')
             return false
         }
+        
         if (check.indexInParent() == 6) {
-            check = check.parent().child(5).bounds()
+            check = check.parent().child(5)
         } else {
-            check = check.parent().parent().child(5).bounds()
+            check = check.parent().parent().child(5)
+        }
+
+        check = check.bounds()
+
+        let x = check.centerX()
+        let y = check.centerY()
+
+        console.log('检测是否有遮挡')
+        let float = className('android.widget.ImageView')
+            .filter(function (w) {
+                let b = w.bounds()
+                return b.left <= x && b.right >= x && b.top <= y && b.bottom >= y
+            }).find()
+
+        if (float.length > 1) {
+            console.log('有浮窗遮挡，尝试移除')
+            if (device.sdkInt >= 24) {
+                gesture(1000, [x, y], [x, y + 200])
+                console.log('已经进行移开操作，如果失败请反馈')
+            } else {
+                console.log('安卓版本低，无法自动移开浮窗，入会任务失败。至少需要安卓7.0。')
+                return false
+            }
+        } else {
+            console.log('未发现遮挡的浮窗，继续勾选')
         }
 
         console.log('即将勾选授权，自动隐藏控制台')
         sleep(500)
         console.hide()
         sleep(500)
-        click(check.centerX(), check.centerY())
+        click(x, y)
         sleep(500)
         console.show()
 
+        console.log('准备点击入会按钮')
         let j = textMatches(/^确认授权(并加入店铺会员)*$/).findOne(5000)
         if (!j) {
             console.log('无法找到入会按钮，失败')
@@ -310,6 +337,7 @@ function joinTask() {
         }
         click(j.bounds().centerX(), j.bounds().centerY())
         sleep(500)
+        console.log('入会完成，返回')
         return true
     }
 }
