@@ -289,7 +289,7 @@ function joinTask() {
             console.log('无法找到入会按钮弹窗，加载失败')
             return false
         }
-        
+
         if (check.indexInParent() == 6) {
             check = check.parent().child(5)
         } else {
@@ -508,14 +508,17 @@ function signTask() {
         console.log('已经签到')
     } else {
         click(sign.bounds().centerX(), sign.bounds().centerY())
+        sleep(1000)
         console.log('签到完成，关闭签到弹窗')
 
+        let next = textContains('下一个红包').findOne(5000)
         if (!next) {
             console.log('找不到下一个红包提示语，未能自动关闭弹窗')
             return false
         }
         console.log('关闭签到弹窗')
         next.parent().child(0).click()
+        sleep(1000)
     }
 
     let title = text('每天签到领大额红包').findOne(5000)
@@ -525,6 +528,25 @@ function signTask() {
     }
     console.log('关闭签到页')
     title.parent().child(0).click()
+    sleep(1000)
+
+    console.log('检测是否有通知权限弹窗')
+    if (textContains('通知权限').findOne(3000)) {
+        console.log('出现弹窗，关闭')
+        text('取消').click()
+        sleep(1000)
+        console.log('二次检测')
+        if (textContains('通知权限').findOne(3000)) {
+            console.log('出现弹窗，关闭')
+            text('取消').click()
+            sleep(1000)
+            console.log('完成')
+        } else {
+            console.log('没有弹窗，继续。')
+        }
+    } else {
+        console.log('没有弹窗，继续。')
+    }
 
     return true
 }
