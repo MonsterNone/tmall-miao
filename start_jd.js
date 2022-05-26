@@ -132,7 +132,7 @@ function getCoin() {
 // 打开任务列表
 function openTaskList() {
     console.log('打开任务列表')
-    let taskListButtons = text('消耗').findOne(20000)
+    let taskListButtons = text('分红+卡牌').findOne(20000)
     if (!taskListButtons) {
         console.log('未能打开任务列表，请关闭京东重新运行！')
         quit()
