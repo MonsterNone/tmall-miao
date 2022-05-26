@@ -498,6 +498,7 @@ function signTask() {
     let anchor_index = anchor.indexInParent()
     let sign = anchor.parent().child(anchor_index + 2) // 去使用的后两个
     sign.click()
+    sleep(3000)
 
     sign = textMatches(/.*点我签到.*|.*明天再来.*/).findOne(5000)
     if (!sign) {
@@ -510,25 +511,26 @@ function signTask() {
     } else {
         click(sign.bounds().centerX(), sign.bounds().centerY())
         sleep(1000)
-        console.log('签到完成，关闭签到弹窗')
+        console.log('签到完成')
 
-        let next = textContains('下一个红包').findOne(5000)
-        if (!next) {
-            console.log('找不到下一个红包提示语，未能自动关闭弹窗')
-        }
-        console.log('关闭签到弹窗')
-        next.parent().child(0).click()
-        sleep(1000)
+        // let next = textContains('下一个红包').findOne(5000)
+        // if (!next) {
+        //     console.log('找不到下一个红包提示语，未能自动关闭弹窗')
+        // } else {
+        //     console.log('关闭签到弹窗')
+        //     next.parent().child(0).click()
+        //     sleep(1000)
+        // }
     }
 
-    let title = text('每天签到领大额红包').findOne(5000)
-    if (!title) {
-        console.log('未找到标题，未能自动关闭签到页。')
-        return false
-    }
-    console.log('关闭签到页')
-    title.parent().child(0).click()
-    sleep(1000)
+    // let title = text('每天签到领大额红包').findOne(5000)
+    // if (!title) {
+    //     console.log('未找到标题，未能自动关闭签到页。')
+    //     return false
+    // }
+    // console.log('关闭签到页')
+    // title.parent().child(0).click()
+    // sleep(1000)
 
     console.log('检测是否有通知权限弹窗')
     if (textContains('通知权限').findOne(3000)) {
