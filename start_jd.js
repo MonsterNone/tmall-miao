@@ -158,6 +158,7 @@ function openTaskList() {
         quit()
     }
     taskListButton.click()
+    console.log('等待任务列表')
     if (!findTextDescMatchesTimeout(/累计任务奖励/, 10000)) {
         console.log('似乎没能打开任务列表，退出！')
         console.log('如果已经打开而未检测到，请删除101版本及以上的webview或使用国内应用市场版京东尝试。')
