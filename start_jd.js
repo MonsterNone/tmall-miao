@@ -13,6 +13,11 @@ function getSetting() {
 
     let settings = dialogs.multiChoice('任务设置', ['自动打开京东进入活动。多开或任务列表无法自动打开时取消勾选', '自动调整媒体音量为0。以免直播任务发出声音，首次选择需要修改系统设置权限', '自动完成入会任务。京东将授权手机号给商家，日后可能会收到推广短信'], indices)
 
+    if (settings.length == 0) {
+        toast('取消选择，任务停止')
+        exit()
+    }
+
     if (settings.indexOf(0) != -1) {
         storage.put('autoOpen', true)
         autoOpen = true
@@ -99,7 +104,7 @@ function openAndInto() {
 
     app.startActivity({
         action: "VIEW",
-        data: 'openApp.jdMobile://virtual?params={"category":"jump","action":"to","des":"m","sourceValue":"JSHOP_SOURCE_VALUE","sourceType":"JSHOP_SOURCE_TYPE","url":"https://u.jd.com/JdbEbUe","M_sourceFrom":"mxz","msf_type":"auto"}'
+        data: 'openApp.jdMobile://virtual?params={"category":"jump","action":"to","des":"m","sourceValue":"JSHOP_SOURCE_VALUE","sourceType":"JSHOP_SOURCE_TYPE","url":"https://u.jd.com/JCTuenU","M_sourceFrom":"mxz","msf_type":"auto"}'
     })
 }
 
@@ -337,7 +342,7 @@ function joinTask() {
             return false
         }
         click(j.bounds().centerX(), j.bounds().centerY())
-        sleep(500)
+        sleep(1000)
         console.log('入会完成，返回')
         return true
     }
@@ -650,6 +655,7 @@ try {
 } catch (err) {
     device.cancelKeepingAwake()
     if (err.toString() != 'JavaException: com.stardust.autojs.runtime.exception.ScriptInterruptedException: null') {
+        startCoin && console.log('本次任务开始时有' + startCoin + '金币')
         console.error(new Error().stack, err)
     }
 }
