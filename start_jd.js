@@ -132,7 +132,7 @@ function getCoin() {
 // 打开任务列表
 function openTaskList() {
     console.log('打开任务列表')
-    let taskListButtons = text('分红+卡牌').findOne(20000)
+    let taskListButtons = findTextDescMatchesTimeout(/分红：.*份/, 20000)
     if (!taskListButtons) {
         console.log('未能打开任务列表，请关闭京东重新运行！')
         quit()
@@ -514,7 +514,6 @@ function signTask() {
         let next = textContains('下一个红包').findOne(5000)
         if (!next) {
             console.log('找不到下一个红包提示语，未能自动关闭弹窗')
-            return false
         }
         console.log('关闭签到弹窗')
         next.parent().child(0).click()
