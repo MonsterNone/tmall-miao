@@ -298,6 +298,8 @@ function joinTask() {
 
         if (check.indexInParent() == 6) {
             check = check.parent().child(5)
+        } else if (check.text() == '确认授权即同意') {
+            check = check.parent().child(0)
         } else {
             check = check.parent().parent().child(5)
         }
