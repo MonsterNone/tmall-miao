@@ -137,7 +137,7 @@ function openTaskList() {
         console.log('未能打开任务列表，请关闭京东重新运行！')
         quit()
     }
-    taskListButtons = taskListButtons.parent().parent().parent().parent().children()
+    taskListButtons = taskListButtons.parent().children()
 
     let taskListButton = null
     let flag = 0
