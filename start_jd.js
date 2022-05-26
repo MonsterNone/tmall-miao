@@ -433,9 +433,9 @@ function viewTask() {
 function wallTask() {
     console.log('进行品牌墙任务')
     sleep(3000)
-    for (let i of [2, 4, 6]) { // 选三个
+    for (let i of [2, 4, 5, 7, 8]) { // 选5个
         console.log('打开一个')
-        textContains('!q70').findOnce(i).click()
+        textContains('!q70').boundsInside(0, 0, device.width, device.height).findOnce(i).click()
         sleep(5000)
         console.log('直接返回')
         back()
@@ -444,8 +444,8 @@ function wallTask() {
         sleep(3000)
     }
     console.log('返回顶部')
-    let root = textContains('!q70').findOnce(2).parent().parent().parent().parent().parent().parent()
-    root.child(root.childCount() - 1).click()
+    let root = textContains('到底了').findOnce().parent().parent()
+    root.child(root.childCount() - 2).click()
     console.log('品牌墙完成后重新打开任务列表')
     sleep(3000)
     openTaskList()
