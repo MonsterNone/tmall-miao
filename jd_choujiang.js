@@ -296,11 +296,12 @@ function doTask(task) {
             return rect.left > 0 && rect.top <= device.height
         })
 
-        if (!itemFilter.findOne(8000)) {
+        console.log('查找商品，等待至多20秒')
+        if (!itemFilter.findOne(20000)) {
             console.log('未能找到加购商品')
             return false
         }
-        console.log('查找商品')
+
         let items = itemFilter.find()
         if (items.empty() || items.length < 2) {
             console.log('查找商品失败')
