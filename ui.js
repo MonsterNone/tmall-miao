@@ -1,13 +1,13 @@
 "ui";
 
-const VERSION = '2022618-9'
+const VERSION = '2022618-10'
 
 ui.layout(
     <frame>
         <vertical id="main" visibility="visible">
             <button id="automationPermission" text="1. 授予无障碍权限" />
             <button id="consolePermission" text="2. 授予悬浮窗权限" />
-            <button id="startTask" text="3-1. 淘宝活动尚未开始，敬请期待" />
+            <button id="startTask" text="3-1. 淘宝活动尚未开始，敬请期待(5.29)" />
             <button id="startJDTask" text="3-2. 开始京东任务" /> 
             {/* <button id="discountTask" text="4-1. 领取天猫年货现金红包" /> */}
             {/* <button id="jd" text="4-2. 领取京东年货现金红包（领完再进，每天三次）" /> */}
@@ -57,7 +57,7 @@ ui.layout(
             <button id="jdYouhui" text="京东618万券齐发会场，早鸟券包1分抢" />
             <button id="jdRexiao" text="京东618爆款清单，预售定金膨胀至高5倍" />
             <button id="yushou" text="天猫618预售争霸赛" />
-            <button id="rexiao" text="天猫热销爆款" />
+            <button id="rexiao" text="618热销榜，单单有补贴" />
             <button id="chaoshi" text="天猫超市，抢15元超市优惠券" />
             <button id="jdChaoshi" text="京东超市，上午下单下午收货，领券满200-20" />
             <button id="jdBaihuo" text="京东新百货，美妆居家钟表运动，送货上门正品保障" />
@@ -82,10 +82,10 @@ ui.consolePermission.click(function () {
     threads.start(conPerReq)
 })
 
-// ui.startTask.click(function () {
-//     // alert('淘宝活动尚未开始，敬请期待！')
-//     engines.execScriptFile('./start.js')
-// })
+ui.startTask.click(function () {
+    alert('淘宝活动尚未开始', '5.29天猫活动上线，敬请关注脚本更新')
+    // engines.execScriptFile('./start.js')
+})
 
 ui.startJDTask.click(function () {
     engines.execScriptFile('./start_jd.js')
@@ -202,7 +202,7 @@ ui.chaoshi.click(function () {
 })
 
 ui.rexiao.click(function () {
-    const url = 'https://m.tb.cn/h.fsjk5jg'
+    const url = 'https://m.tb.cn/h.fGzYnPr'
     openTbUrl(url)
 })
 
