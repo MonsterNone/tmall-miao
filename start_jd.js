@@ -575,7 +575,6 @@ try {
         sleep(2000)
 
         openTaskList();
-        sleep(5000)
     } else {
         alert('请关闭弹窗后立刻手动打开京东App进入活动页面，并打开任务列表', '限时30秒')
         console.log('请手动打开京东App进入活动页面，并打开任务列表')
@@ -584,9 +583,9 @@ try {
             quit()
         }
         console.log('成功进入活动')
-        sleep(2000)
     }
 
+    sleep(5000)
 
     try {
         console.log('获取初始金币数量')
