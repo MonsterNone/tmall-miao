@@ -9,6 +9,7 @@ ui.layout(
             <button id="consolePermission" text="2. 授予悬浮窗权限" />
             <button id="startTask" text="3-1. 淘宝活动尚未开始，敬请期待(5.29)" />
             <button id="startJDTask" text="3-2. 开始京东任务" /> 
+            <button id="startJDChoujiang" text="3-3. 进行京东热爱奇旅抽奖任务(beta)" /> 
             {/* <button id="discountTask" text="4-1. 领取天猫年货现金红包" /> */}
             {/* <button id="jd" text="4-2. 领取京东年货现金红包（领完再进，每天三次）" /> */}
             {/* <button id="specialTask" text="5. 淘宝618主会场" /> */}
@@ -89,6 +90,10 @@ ui.startTask.click(function () {
 
 ui.startJDTask.click(function () {
     engines.execScriptFile('./start_jd.js')
+})
+
+ui.startJDChoujiang.click(function () {
+    engines.execScriptFile('./jd_choujiang.js')
 })
 
 // ui.butie.click(function () {
