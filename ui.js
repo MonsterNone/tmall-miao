@@ -1,6 +1,6 @@
 "ui";
 
-const VERSION = '2022618-10'
+const VERSION = require('version.js').VERSION
 
 ui.layout(
     <frame>

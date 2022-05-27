@@ -3,6 +3,15 @@ if (!auto.service) {
     exit()
 }
 
+let showVersion
+try {
+    showVersion = require('version.js').showVersion
+} catch(err) {
+    showVersion = function () {
+        console.log('无法加载version.js，获取版本失败。')
+    }
+}
+
 // alert('请把手机放稳，不要摇晃！', '不然有时候会跳出合伙赢喵币，导致任务阻塞')
 
 if (confirm('是否需要自动调整媒体音量为0', '以免直播任务发出声音。需要修改系统设置权限。')) {
@@ -18,6 +27,7 @@ if (confirm('是否需要自动调整媒体音量为0', '以免直播任务发�
 }
 
 console.show()
+showVersion()
 console.log('开始完成喵糖任务...')
 console.log('按音量下键停止')
 
@@ -262,4 +272,5 @@ try {
     if (!err.toString().match(/null/)) {
         console.error(err)
     }
+    showVersion()
 }

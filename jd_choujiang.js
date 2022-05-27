@@ -3,7 +3,17 @@ if (!auto.service) {
     exit()
 }
 
+let showVersion
+try {
+    showVersion = require('version.js').showVersion
+} catch(err) {
+    showVersion = function () {
+        console.log('无法加载version.js，获取版本失败。')
+    }
+}
+
 console.show()
+showVersion()
 
 function getSetting() {
     let indices = []
@@ -436,4 +446,5 @@ try {
         startCoin && console.log('本次任务开始时有' + startCoin + '金币')
         console.error(new Error().stack, err)
     }
+    showVersion()
 }
