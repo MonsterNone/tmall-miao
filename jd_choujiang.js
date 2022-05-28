@@ -411,8 +411,10 @@ try {
                     continue
                 }
                 if (!doTask(tasks[i])) {
-                    console.log('任务失败，退出')
-                    quit()
+                    // console.log('任务失败，退出')
+                    // quit()
+                    console.log('任务出现失败，换一个抽奖进行')
+                    break
                 }
                 sleep(5000)
             }
