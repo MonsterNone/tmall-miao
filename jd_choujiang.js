@@ -8,7 +8,7 @@ try {
     showVersion = require('version.js').showVersion
 } catch(err) {
     showVersion = function () {
-        console.log('无法加载version.js，获取版本失败。')
+        console.log('无法加载version.js，获取版本失败。请前往https://github.com/monsternone/tmall-miao下载。')
     }
 }
 
