@@ -445,7 +445,7 @@ function viewTask() {
 function wallTask() {
     console.log('进行品牌墙任务')
     sleep(3000)
-    for (let i of [2, 4, 5, 7, 8]) { // 选5个
+    for (let i of [2, 3, 4, 5, 6]) { // 选5个
         console.log('打开一个')
         textContains('!q70').boundsInside(0, 0, device.width, device.height).findOnce(i).click()
         sleep(5000)
