@@ -446,8 +446,8 @@ try {
 } catch (err) {
     device.cancelKeepingAwake()
     if (err.toString() != 'JavaException: com.stardust.autojs.runtime.exception.ScriptInterruptedException: null') {
-        startCoin && console.log('本次任务开始时有' + startCoin + '金币')
         console.error(new Error().stack, err)
+        startCoin && console.log('本次任务开始时有' + startCoin + '金币')
     }
     showVersion()
 }
