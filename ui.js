@@ -1,6 +1,11 @@
 "ui";
 
-const VERSION = require('version.js').VERSION
+let VERSION
+try {
+    VERSION = require('version.js').VERSION
+} catch(err) {
+    VERSION = 0
+}
 
 ui.layout(
     <frame>
@@ -10,8 +15,8 @@ ui.layout(
             <button id="startTask" text="3-1. 淘宝活动尚未开始，敬请期待(5.29)" />
             <button id="startJDTask" text="3-2. 开始京东任务" /> 
             <button id="startJDChoujiang" text="3-3. 进行京东热爱奇旅抽奖任务(beta)" /> 
-            {/* <button id="discountTask" text="4-1. 领取天猫年货现金红包" /> */}
-            {/* <button id="jd" text="4-2. 领取京东年货现金红包（领完再进，每天三次）" /> */}
+            <button id="tb" text="4-1. 领取天猫618现金红包(5.29日20点首发)" />
+            <button id="jd" text="4-2. 领取京东618现金红包（5.30日12点开始）" />
             {/* <button id="specialTask" text="5. 淘宝618主会场" /> */}
             {/* <button id="caidan" text="5. 完成天猫开彩蛋任务" /> */}
             {/* <button id="butie" text="天猫百亿补贴会场，真补贴，真划算" /> */}
@@ -55,9 +60,9 @@ ui.layout(
         <vertical id="huichang" visibility="gone" bg="#ffffff" paddingTop="50" paddingLeft="20" paddingRight="20">
             {/* <button id="jianhuo" text="618内部爆款清单" /> */}
             <button id="jdHuichang" text="京东618主会场" />
+            <button id="yushou" text="天猫618主会场" />
             <button id="jdYouhui" text="京东618万券齐发会场，早鸟券包1分抢" />
             <button id="jdRexiao" text="京东618爆款清单，预售定金膨胀至高5倍" />
-            <button id="yushou" text="天猫618预售争霸赛" />
             <button id="rexiao" text="618热销榜，单单有补贴" />
             <button id="chaoshi" text="天猫超市，抢15元超市优惠券" />
             <button id="jdChaoshi" text="京东超市，上午下单下午收货，领券满200-20" />
@@ -70,10 +75,6 @@ ui.layout(
 ui.ver.setText('\n版本：' + VERSION)
 
 threads.start(checkUpdate)
-
-// ui.tb.click(function () {
-//     app.openUrl('https://www.wandoujia.com/apps/32267/history_v253')
-// })
 
 ui.automationPermission.click(function () {
     threads.start(autoPerReq)
@@ -161,25 +162,31 @@ ui.checkUpdate.click(function () {
     threads.start(checkUpdate)
 })
 
-// ui.jd.click(function() {
-//     dialogs.build({
-//         title: "是否使用复制京口令领取？",
-//         content: "实测京口令领取红包更大，如果app未自动弹出口令请使用默认方式",
-//         positive: "京口令方式",
-//         negative: "默认方式"
-//     }).on("positive", ()=>{
-//         setClip("28:/！40ZkU2rLJVXAr！")
-//         if (launch('com.jingdong.app.mall')) {
-//             toast('京口令已复制，打开京东App领取')
-//         } else {
-//             toast('京口令已复制，请手动打开京东App领取')
-//         }
-//     }).on("negative", ()=>{
-//         const url = 'https://u.jd.com/PIYvDAt'
-//         openJdUrl(url)
-//     }).show()
-// })
+ui.jd.click(function() {
+    dialogs.build({
+        title: "是否使用复制京口令领取？",
+        content: "实测京口令领取红包更大，如果app未自动弹出口令请使用默认方式",
+        positive: "京口令方式",
+        negative: "默认方式"
+    }).on("positive", ()=>{
+        setClip("88:/(KDyAu9isBQ)")
+        rawInput("已复制，部分机型限制剪贴板，可以手动复制", "88:/(KDyAu9isBQ)")
+        if (launch('com.jingdong.app.mall')) {
+            toast('京口令已复制，打开京东App领取')
+        } else {
+            toast('京口令已复制，请手动打开京东App领取')
+        }
+    }).on("negative", ()=>{
+        const url = 'https://u.jd.com/JdHdlPN'
+        openJdUrl(url)
+    }).show()
+})
  
+ui.tb.click(function () {
+    const url = 'https://s.m.taobao.com/h5?q=秘密通道505'
+    openTbUrl(url)
+})
+
 // ui.showHb.click(function () {
 //     ui.hb.visibility = 0
 // })
@@ -190,7 +197,7 @@ ui.showHC.click(function () {
 })
 
 ui.yushou.click(function () {
-    const url = 'https://m.tb.cn/h.ftic1Dx'
+    const url = 'https://s.m.taobao.com/h5?q=秘密通道505'
     openTbUrl(url)
 })
 
@@ -285,6 +292,10 @@ function conPerReq() {
 
 
 function checkUpdate() {
+    if (VERSION == 0) {
+        toast('无法加载version.js')
+        return
+    }
     toast('正在检查更新')
     const versionUrl = 'https://raw.fastgit.org/MonsterNone/tmall-miao/master/version'
     http.get(versionUrl, {}, function (res, err) {
