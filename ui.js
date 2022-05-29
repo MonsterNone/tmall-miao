@@ -12,8 +12,8 @@ ui.layout(
         <vertical id="main" visibility="visible">
             <button id="automationPermission" text="1. 授予无障碍权限" />
             <button id="consolePermission" text="2. 授予悬浮窗权限" />
-            <button id="startTask" text="3-1. 淘宝活动尚未开始，敬请期待(5.29)" />
-            <button id="startJDTask" text="3-2. 开始京东任务" /> 
+            <button id="startJDTask" text="3-1. 开始京东任务" /> 
+            <button id="startTask" text="3-2. 开始淘宝任务" />
             <button id="startJDChoujiang" text="3-3. 进行京东热爱奇旅抽奖任务(beta)" /> 
             <button id="tb" text="4-1. 领取天猫618现金红包(5.29日20点首发)" />
             <button id="jd" text="4-2. 领取京东618现金红包（5.30日12点开始）" />
@@ -85,8 +85,8 @@ ui.consolePermission.click(function () {
 })
 
 ui.startTask.click(function () {
-    alert('淘宝活动尚未开始', '5.29天猫活动上线，敬请关注脚本更新')
-    // engines.execScriptFile('./start.js')
+    // alert('淘宝活动尚未开始', '5.29天猫活动上线，敬请关注脚本更新')
+    engines.execScriptFile('./start.js')
 })
 
 ui.startJDTask.click(function () {
