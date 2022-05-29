@@ -6,7 +6,7 @@ if (!auto.service) {
 let showVersion
 try {
     showVersion = require('version.js').showVersion
-} catch(err) {
+} catch (err) {
     showVersion = function () {
         console.log('无法加载version.js，获取版本失败。')
     }
@@ -65,6 +65,18 @@ try {
         return null
     }
 
+    // 自定义一个findTextDescMatchesTimeout
+    function findTextDescMatchesTimeout(reg, timeout) {
+        let c = 0
+        while (c < timeout / 50) {
+            let result = textMatches(reg).findOnce() || descMatches(reg).findOnce()
+            if (result) return result
+            sleep(50)
+            c++
+        }
+        return null
+    }
+
     // 查找任务按钮
     function findTask() {
         var jumpButtonFind = textMatches(/去浏览|去搜索|去完成|签到|逛一逛|去逛逛|去观看|去参赛/) // 找进入任务的按钮，10秒
@@ -91,7 +103,7 @@ try {
                     sleep(8000)
                     return findTask()
                 }
-                if (!(taskName.match(/话费|斗地主|消消乐|流浪猫|开88|扔喵糖|占领|邀请|登录|组队|参与|施肥|浇水|特价版|小鸡|消除|穿搭|森林|点淘|人生|我的淘宝/) || content.match(/小互动/))) {
+                if (!(taskName.match(/淘金币|提醒|话费|斗地主|消消乐|流浪猫|开88|扔喵糖|占领|邀请|登录|组队|参与|施肥|浇水|特价版|小鸡|消除|穿搭|森林|点淘|人生|我的淘宝|庄园/) || content.match(/小互动/))) {
                     return [taskName, jumpButtons[i]]
                 }
             }
@@ -111,15 +123,15 @@ try {
         textMatches(/.*浏览得奖励.*/).findOne(15000) // 等待开始
 
         let finish_c = 0
-        while (finish_c < 80) { // 0.5 * 60 = 40 秒，防止死循环
+        while (finish_c < 50) { // 0.5 * 50 = 25 秒，防止死循环
             let finish_reg = /.*完成.*|.*失败.*|.*上限.*|.*开小差.*|.*发放.*/
             if (
                 (textMatches(finish_reg).exists() ||
                     descMatches(finish_reg).exists() ||
                     textContains('任务已完成').exists() ||
-                    textContains('喵糖已发放').exists() ||
+                    textContains('喵币已发放').exists() ||
                     descContains('任务已完成').exists() ||
-                    descContains('喵糖已发放').exists()) &&
+                    descContains('喵币已发放').exists()) &&
                 !text("浏览得奖励").exists()
             ) // 等待已完成出现，有可能失败
             {
@@ -130,11 +142,16 @@ try {
                 console.log('异常退出。')
                 quit()
             }
+            if (textContains('互动奖励').exists() ||
+                descContains('互动奖励').exists()) {
+                console.log('跳过互动任务')
+                break
+            }
             sleep(500)
             finish_c++
         }
 
-        if (finish_c > 79) {
+        if (finish_c > 49) {
             console.log('未检测到任务完成标识。返回。')
             // console.log('如果你认为这是一个bug请截图反馈。')
             // console.log('一般情况下，二次运行脚本即可。')
@@ -167,7 +184,7 @@ try {
 
     // 打开淘宝活动页面
     console.log('正在打开淘宝...')
-    var url = 'pages.tmall.com/wow/z/hdwk/20211111/pk20211111'
+    var url = 'pages.tmall.com/wow/z/hdwk/20220618/gamehome?disableNav=YES'
 
     app.startActivity({
         action: "VIEW",
@@ -178,30 +195,32 @@ try {
     console.log('等待页面加载...')
 
     try {
-        textMatches(/.*赚.*?糖.*/).findOne(20000)
+        textMatches(/领喵币/).findOne(20000)
         console.log('准备打开任务列表')
         sleep(2000)
         // if(click('关闭')) {
         //     sleep(2000)
         // }
-        let c = textMatches(/.*赚.*?糖.*/).findOnce()
+        let c = findTextDescMatchesTimeout(/领喵币/, 1000)
         if (c) {
             console.log('打开任务列表')
             c.click()
         } else {
+            throw '无法找到任务列表入口'
+        }
+        if (!text('做任务赢奖励').findOne(8000)) {
             console.log('默认方式打开失败，二次尝试')
-            c = descMatches(/.*赚.*?糖.*/).findOnce()
-            if (c) {
-                c.click()
-            } else {
-                console.log('无法找到任务列表按钮')
-                quit()
+            // let right = c.bounds().right
+            // let left = c.bounds().left
+            // let top = c.bounds().top
+            // let bottom = c.bounds().bottom
+            // click(random(right,left), random(top, bottom))
+            click(c.bounds().centerX(), c.bounds().centerY())
+            if (!text('做任务赢奖励').findOne(8000)) {
+                throw '无法打开任务列表'
             }
         }
         console.log('准备搜索任务')
-        if (!text('做任务赢奖励').findOne(10000)) {
-            throw '未检测到任务列表标识，判定进入失败！'
-        }
         sleep(2000)
     } catch (err) {
         console.log(err)
@@ -229,7 +248,7 @@ try {
 
             console.log('没找到合适的任务。也许任务已经全部做完了。退出。互动任务不会自动完成。')
             console.log('请手动切换回主页面')
-            alert('任务已完成', '别忘了在脚本主页领取双十一红包！')
+            alert('任务已完成', '别忘了在脚本主页领取618红包！互动任务需要手动完成。')
             quit()
         }
 
@@ -243,7 +262,7 @@ try {
                 sleep(2000)
             }
             back()
-        } else if (jumpButton[0].match(/.*浏览餐饮卡券.*|.*加油赛.*|.*赚星星.*/)) {
+        } else if (jumpButton[0].match(/.*玩游戏.*|.*浏览餐饮卡券.*|.*加油赛.*|.*赚星星.*/)) {
             console.log('进行' + jumpButton[0] + '任务，10秒后返回')
             jumpButton[1].click()
             sleep(10000)
@@ -269,7 +288,7 @@ try {
     }
 } catch (err) {
     device.cancelKeepingAwake()
-    if (!err.toString().match(/null/)) {
+    if (err.toString() != 'JavaException: com.stardust.autojs.runtime.exception.ScriptInterruptedException: null') {
         console.error(err)
     }
     showVersion()
