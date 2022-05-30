@@ -153,7 +153,17 @@ function findTasks() {
         return false
     }
     console.log('打开任务列表')
-    anchor.parent().parent().parent().parent().child(1).click()
+    anchor = anchor.parent().parent().parent().parent()
+
+    if (anchor.childCount() == 8) { // 关闭弹窗
+        if (anchor.child(7).childCount() > 0) {
+            console.log('关闭弹窗')
+            anchor.child(7).child(0).child(0).child(0).child(3).click()
+            sleep(1000)
+        }
+    }
+
+    anchor.child(1).click()
     sleep(5000)
     let go = text('去完成').findOnce()
     if (!go) {
