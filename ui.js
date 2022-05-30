@@ -10,8 +10,8 @@ ui.layout(
             <button id="startJDTask" text="3-1. 开始京东任务" /> 
             <button id="startTask" text="3-2. 开始淘宝任务" />
             <button id="startJDChoujiang" text="3-3. 进行京东热爱奇旅抽奖任务(beta)" /> 
-            <button id="tb" text="4-1. 领取天猫618现金红包(5.29日20点首发)" />
-            <button id="jd" text="4-2. 领取京东618现金红包（5.30日12点开始）" />
+            <button id="tb" text="4-1. 领取天猫618现金红包" />
+            <button id="jd" text="4-2. 领取京东618现金红包（退出再进，每日一共三次）" />
             {/* <button id="specialTask" text="5. 淘宝618主会场" /> */}
             {/* <button id="caidan" text="5. 完成天猫开彩蛋任务" /> */}
             {/* <button id="butie" text="天猫百亿补贴会场，真补贴，真划算" /> */}
