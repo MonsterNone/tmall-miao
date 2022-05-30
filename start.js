@@ -155,15 +155,7 @@ try {
         let finish_c = 0
         while (finish_c < 50) { // 0.5 * 50 = 25 秒，防止死循环
             let finish_reg = /.*完成.*|.*失败.*|.*上限.*|.*开小差.*|.*发放.*/
-            if (
-                (textMatches(finish_reg).exists() ||
-                    descMatches(finish_reg).exists() ||
-                    textContains('任务已完成').exists() ||
-                    textContains('喵币已发放').exists() ||
-                    descContains('任务已完成').exists() ||
-                    descContains('喵币已发放').exists())
-            ) // 等待已完成出现，有可能失败
-            {
+            if (textMatches(finish_reg).exists() || descMatches(finish_reg).exists()) { // 等待已完成出现，有可能失败
                 break
             }
             if (textMatches(/.*休息会呗.*/).exists()) {
@@ -187,29 +179,28 @@ try {
             // console.log('请手动切换回主页面')
             // device.cancelKeepingAwake()
             // quit()
-            return back()
+            back()
+            sleep(1000)
+            // TODO: 返回检测
+            if (!textContains('当前进度').findOne(5000)) {
+                console.log('似乎没有返回，二次尝试')
+                back()
+            }
+            return
         }
 
         console.log('任务完成，返回')
 
-        // if (currentActivity() == 'com.taobao.tao.TBMainActivity') {
-        //     var backButton = descContains('返回618列车').findOnce() // 有可能是浏览首页，有可能无法点击
-        //     if (backButton) {
-        //         if (!backButton.parent().parent().parent().click()) {
-        //             back()
-        //         }
-        //     } else {
-        //         back()
-        //     }
-        // } else {
-        //     back()
-        // }
         back()
         sleep(1000)
-        // TODO: 返回检测
         if (!textContains('当前进度').findOne(5000)) {
-            console.log('似乎没有返回，二次尝试')
-            back()
+            if (currentActivity() == 'com.taobao.tao.TBMainActivity') {
+                console.log('返回到了主页，尝试重新进入任务')
+                id('com.taobao.taobao:id/rv_main_container').findOnce().child(3).child(0).click()
+            } else {
+                console.log('似乎没有返回，二次尝试')
+                back()
+            }
         }
     }
 
