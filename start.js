@@ -151,7 +151,7 @@ try {
         // }
 
         // textMatches(/.*浏览得奖励.*/).findOne(15000) // 等待开始
-
+        sleep(5000)
         let finish_c = 0
         while (finish_c < 50) { // 0.5 * 50 = 25 秒，防止死循环
             let finish_reg = /.*完成.*|.*失败.*|.*上限.*|.*开小差.*|.*发放.*/
@@ -161,8 +161,7 @@ try {
                     textContains('任务已完成').exists() ||
                     textContains('喵币已发放').exists() ||
                     descContains('任务已完成').exists() ||
-                    descContains('喵币已发放').exists()) &&
-                !text("浏览得奖励").exists()
+                    descContains('喵币已发放').exists())
             ) // 等待已完成出现，有可能失败
             {
                 break
@@ -232,7 +231,7 @@ try {
         sleep(2000)
         let c = findTextDescMatchesTimeout(/领喵币/, 1000)
         if (c) {
-            console.log('打开任务列表')
+            console.log('使用默认方法尝试打开任务列表')
             c.click()
         } else {
             throw '无法找到任务列表入口'
