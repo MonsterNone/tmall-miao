@@ -206,6 +206,8 @@ try {
         //     back()
         // }
         back()
+        sleep(1000)
+        // TODO: 返回检测
         if (!text('做任务赢奖励').findOne(5000)) {
             console.log('似乎没有返回，二次尝试')
             back()
@@ -226,11 +228,8 @@ try {
 
     try {
         textMatches(/领喵币/).findOne(20000)
-        console.log('准备打开任务列表，出现弹窗请手动关闭')
+        console.log('准备打开任务列表')
         sleep(2000)
-        // if(click('关闭')) {
-        //     sleep(2000)
-        // }
         let c = findTextDescMatchesTimeout(/领喵币/, 1000)
         if (c) {
             console.log('打开任务列表')
@@ -240,12 +239,21 @@ try {
         }
         if (!text('做任务赢奖励').findOne(8000)) {
             console.log('默认方式打开失败，二次尝试')
+            console.log('首先检测弹窗')
+            for (let i = 0; i < 2 && text('关闭').findOne(2000); i++) { // 关闭弹窗
+                console.log('检测到弹窗，关闭')
+                click('关闭')
+                sleep(2000)
+            }
+            console.log('出现未能自动关闭的弹窗请手动关闭')
+            sleep(2000)
             // let right = c.bounds().right
             // let left = c.bounds().left
             // let top = c.bounds().top
             // let bottom = c.bounds().bottom
             // click(random(right,left), random(top, bottom))
             click(c.bounds().centerX(), c.bounds().centerY())
+            console.log('已点击，等待任务列表出现')
             if (!text('做任务赢奖励').findOne(8000)) {
                 throw '无法打开任务列表'
             }
