@@ -208,7 +208,7 @@ try {
         back()
         sleep(1000)
         // TODO: 返回检测
-        if (!text('做任务赢奖励').findOne(5000)) {
+        if (!textContains('当前进度').findOne(5000)) {
             console.log('似乎没有返回，二次尝试')
             back()
         }
@@ -237,7 +237,7 @@ try {
         } else {
             throw '无法找到任务列表入口'
         }
-        if (!text('做任务赢奖励').findOne(8000)) {
+        if (!textContains('当前进度').findOne(8000)) {
             console.log('默认方式打开失败，二次尝试')
             console.log('首先检测弹窗')
             for (let i = 0; i < 2 && text('关闭').findOne(2000); i++) { // 关闭弹窗
@@ -254,7 +254,7 @@ try {
             // click(random(right,left), random(top, bottom))
             click(c.bounds().centerX(), c.bounds().centerY())
             console.log('已点击，等待任务列表出现')
-            if (!text('做任务赢奖励').findOne(8000)) {
+            if (!textContains('当前进度').findOne(8000)) {
                 throw '无法打开任务列表'
             }
         }
