@@ -120,7 +120,7 @@ try {
         //     }
         // }
 
-        textMatches(/.*浏览得奖励.*/).findOne(15000) // 等待开始
+        // textMatches(/.*浏览得奖励.*/).findOne(15000) // 等待开始
 
         let finish_c = 0
         while (finish_c < 50) { // 0.5 * 50 = 25 秒，防止死循环
