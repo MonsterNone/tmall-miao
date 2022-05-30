@@ -1,20 +1,52 @@
+const VERSION = '2022618-14'
+
 if (!auto.service) {
     toast('无障碍服务未启动！退出！')
     exit()
 }
 
-let showVersion
-try {
-    showVersion = require('version.js').showVersion
-} catch (err) {
-    showVersion = function () {
-        console.log('无法加载version.js，获取版本失败。')
-    }
+let showVersion = function () {
+    console.log('当前版本：' + VERSION)
+    console.log('https://github.com/monsternone/tmall-miao')
+    toast('当前版本：' + VERSION)
 }
 
 // alert('请把手机放稳，不要摇晃！', '不然有时候会跳出合伙赢喵币，导致任务阻塞')
 
-if (confirm('是否需要自动调整媒体音量为0', '以免直播任务发出声音。需要修改系统设置权限。')) {
+function getSetting() {
+    let indices = []
+    autoOpen && indices.push(0)
+    autoMute && indices.push(1)
+
+    let settings = dialogs.multiChoice('任务设置', ['自动打开淘宝进入活动。多开或任务列表无法自动打开时取消勾选（注意，分身运行淘宝大概率导致任务收益变为100）', '自动调整媒体音量为0。以免直播任务发出声音，首次选择需要修改系统设置权限'], indices)
+
+    if (settings.length == 0) {
+        toast('取消选择，任务停止')
+        exit()
+    }
+
+    if (settings.indexOf(0) != -1) {
+        storage.put('autoOpen', true)
+        autoOpen = true
+    } else {
+        storage.put('autoOpen', false)
+        autoOpen = false
+    }
+    if (settings.indexOf(1) != -1) {
+        storage.put('autoMute', true)
+        autoMute = true
+    } else {
+        storage.put('autoMute', false)
+        autoMute = false
+    }
+}
+
+let storage = storages.create("tb_task");
+let autoOpen = storage.get('autoOpen', true)
+let autoMute = storage.get('autoMute', true)
+getSetting()
+
+if (autoMute) {
     try {
         device.setMusicVolume(0)
         toast('成功设置媒体音量为0')
@@ -22,8 +54,6 @@ if (confirm('是否需要自动调整媒体音量为0', '以免直播任务发�
         alert('首先需要开启权限，请开启后再次运行脚本')
         exit()
     }
-} else {
-    toast('不修改媒体音量')
 }
 
 console.show()

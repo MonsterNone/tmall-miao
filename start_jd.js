@@ -1,15 +1,14 @@
+const VERSION = '2022618-14'
+
 if (!auto.service) {
     toast('无障碍服务未启动！退出！')
     exit()
 }
 
-let showVersion
-try {
-    showVersion = require('version.js').showVersion
-} catch(err) {
-    showVersion = function () {
-        console.log('无法加载version.js，获取版本失败。请前往https://github.com/monsternone/tmall-miao下载。')
-    }
+let showVersion = function () {
+    console.log('当前版本：' + VERSION)
+    console.log('https://github.com/monsternone/tmall-miao')
+    toast('当前版本：' + VERSION)
 }
 
 console.show()
