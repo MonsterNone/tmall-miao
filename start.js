@@ -36,7 +36,7 @@ device.keepScreenDim(60 * 60 * 1000)
 function registerKey() {
     events.observeKey()
     events.onKeyDown('volume_down', function (event) {
-        console.log('喵糖任务脚本停止了')
+        console.log('喵币任务脚本停止了')
         console.log('请手动切换回主页面')
         device.cancelKeepingAwake()
         exit()
@@ -196,7 +196,7 @@ try {
 
     try {
         textMatches(/领喵币/).findOne(20000)
-        console.log('准备打开任务列表')
+        console.log('准备打开任务列表，出现弹窗请手动关闭')
         sleep(2000)
         // if(click('关闭')) {
         //     sleep(2000)
