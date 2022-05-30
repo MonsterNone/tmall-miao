@@ -109,7 +109,7 @@ try {
 
     // 查找任务按钮
     function findTask() {
-        var jumpButtonFind = textMatches(/去浏览|去搜索|去完成|签到|逛一逛|去逛逛|去观看|去参赛/) // 找进入任务的按钮，10秒
+        var jumpButtonFind = textMatches(/去浏览|去搜索|去完成|去签到|逛一逛|去逛逛|去观看|去参赛/) // 找进入任务的按钮，10秒
         var jumpButtons = findTimeout(jumpButtonFind, 10000)
 
         if (!jumpButtons) {
@@ -126,7 +126,7 @@ try {
                 continue
             }
             if (taskName) {
-                if (taskName.match(/签到/)) {
+                if (taskName.match(/签到领/)) {
                     console.log('进行签到任务')
                     sleep(1000)
                     jumpButtons[i].click()
