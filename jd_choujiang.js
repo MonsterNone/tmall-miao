@@ -348,7 +348,7 @@ function openBox() {
         console.log('未能找到抽奖提示')
         return false
     }
-    let count = anchor.parent().child(1)
+    let count = anchor.parent().child(1).text()
     if (!parseInt(count)) {
         console.log('没有抽奖次数，返回')
         return true
