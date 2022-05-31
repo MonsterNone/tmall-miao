@@ -64,7 +64,13 @@ console.log('按音量下键停止')
 device.keepScreenDim(60 * 60 * 1000)
 
 function registerKey() {
-    events.observeKey()
+    try {
+        events.observeKey()
+    } catch(err) {
+        console.log('监听音量键停止失败，应该是无障碍权限出错，请关闭软件后台任务重新运行。')
+        console.log('如果还是不行可以重启手机尝试。')
+        quit()
+    }
     events.onKeyDown('volume_down', function (event) {
         console.log('喵币任务脚本停止了')
         console.log('请手动切换回主页面')
