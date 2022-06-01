@@ -272,7 +272,7 @@ function timeTask() {
         // 弹窗处理
         let pop = text('升级开卡会员领好礼')
         if (pop.exists()) {
-            pop.parent().parent().child(2).click()
+            pop.findOnce().parent().parent().child(2).click()
             console.log('关闭会员弹窗')
         }
 
