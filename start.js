@@ -268,7 +268,7 @@ try {
 
         if (jumpButton == null) {
             // 没有任务之后领取奖励
-            var awardButtonFind = textMatches(/立即领取/)
+            var awardButtonFind = textMatches(/立即领取|领取奖励/)
             var awardButtons = findTimeout(awardButtonFind, 10000)
 
             if (awardButtons) {
