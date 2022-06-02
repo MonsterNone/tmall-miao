@@ -160,7 +160,7 @@ try {
         sleep(5000)
         let finish_c = 0
         while (finish_c < 50) { // 0.5 * 50 = 25 秒，防止死循环
-            let finish_reg = /.*任务已完成.*|.*失败.*|.*上限.*|.*开小差.*|.*喵币已发放.*/
+            let finish_reg = /.*任务已完成[\s\S]*|.*失败.*|.*上限.*|.*开小差.*|.*喵币已发放.*/
             if (textMatches(finish_reg).exists() || descMatches(finish_reg).exists()) { // 等待已完成出现，有可能失败
                 break
             }
