@@ -306,8 +306,8 @@ function joinTask() {
             click(btn.centerX(), btn.centerY())
             sleep(500)
             console.show()
-            check = textMatches(/.*确认授权即同意.*/).findOne(8000)
             sleep(2000)
+            check = textMatches(/.*确认授权即同意.*/).boundsInside(0,0,device.width,device.height).findOne(8000)
         }
 
         if (!check) {
