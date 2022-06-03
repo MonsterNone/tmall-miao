@@ -332,7 +332,7 @@ function doTask(task) {
             console.log('未能找到加购商品')
             return false
         }
-
+        sleep(3000);
         let items = itemFilter.find()
         if (items.empty() || items.length < 2 || textMatches(/\(\d\/2\)/).find().size()!=2) {
             console.log('查找商品失败')
@@ -341,11 +341,11 @@ function doTask(task) {
         for (let i = 0; i < 2; i++) {
             console.log('加购第' + (i+1) + '个商品')
             try{
-                // 220603 TODO Android8 不兼容
                 items[i].parent().parent().parent().child(1).child(2).click()
             }catch(e){
-                log.error(e);
-                log.error(e.stack);
+                console.error(e);
+                console.error(e.stack);
+                back();
             }
             sleep(2000)
         }
@@ -361,8 +361,8 @@ function doTask(task) {
             item.click();
             });
         }
-        let t = items[0].parent().parent().parent().parent().parent()
-        t.child(t.childCount() - 2).click() // 关闭
+        //let t = items[0].parent().parent().parent().parent().parent()
+        //t.child(t.childCount() - 2).click() // 关闭
         return true
     } else if (tTitle.match(/会员|品牌页/)) {
         console.log('进行入会任务')
