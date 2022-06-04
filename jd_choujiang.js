@@ -128,7 +128,17 @@ function getCoin() {
         if (coin) {
             return parseInt(coin)
         } else {
+          let coins = anchor.parent().find(textMatches(/\d{3,}/).indexInParent(1)); // Android 8 适配
+          if(coins.size()>0){
+            coin = coins.get(0).text()
+            if(coin){
+              return parseInt(coin)
+            }else{
+              return false
+            }
+          }else{
             return false
+          }
         }
     }
 }
@@ -355,7 +365,7 @@ function doTask(task) {
         // 关闭 加购2个商品 页面
         if (addCartCountTxt) {
         text("").clickable().className("android.view.View")
-        .boundsInside(addCartCountTxt.bounds().centerX(), addCartCountTxt.bounds().centerY()-600, device.width, addCartCountTxt.bounds().centerY())
+        .boundsInside(addCartCountTxt.bounds().centerX(), addCartCountTxt.bounds().centerY()-200, device.width+100, addCartCountTxt.bounds().centerY())
             .find()
             .forEach((item, index) => {
             item.click();
@@ -390,8 +400,13 @@ function openBox() {
     let box = anchor.parent().parent().children()
     for (let i = 0; i < 6; i++) {
         console.log('打开第' + (i+1) + '个盒子')
-        box[i].click()
-        console.log('检测弹窗')
+        if(device.sdkInt!=28){ // 不是 Android8
+            box[i].click()
+        }else{
+            // Android 8 下面 大概率.click()无效, 使用模拟点击
+            click(box[i].bounds().centerX(),box[i].bounds().centerY())
+        }
+        console.log('检测弹窗') 
         let title = textContains("恭喜").findOne(5000);
         // 关闭 中奖啦 页面
         if (title) {
@@ -402,6 +417,7 @@ function openBox() {
         //     .text()
         //     .indexOf("已放入我的") != -1
         // ) {
+        sleep(2000)
         text("")
             .clickable()
             .className("android.view.View")
@@ -497,7 +513,7 @@ try {
             // 关闭 任务列表 页面
             if (completeTxt) {
             text("").clickable().className("android.view.View")
-            .boundsInside(completeTxt.bounds().centerX(), completeTxt.bounds().centerY()-600, device.width, completeTxt.bounds().centerY())
+            .boundsInside(completeTxt.bounds().centerX(), completeTxt.bounds().centerY()-300, device.width+100, completeTxt.bounds().centerY())
                 .find()
                 .forEach((item, index) => {
                 item.click();
