@@ -1,4 +1,4 @@
-const VERSION = '2022618-17'
+const VERSION = '2022618-18'
 
 if (!auto.service) {
     toast('无障碍服务未启动！退出！')
@@ -81,7 +81,7 @@ function quit() {
 function registerKey() {
     try {
         events.observeKey()
-    } catch(err) {
+    } catch (err) {
         console.log('监听音量键停止失败，应该是无障碍权限出错，请关闭软件后台任务重新运行。')
         console.log('如果还是不行可以重启手机尝试。')
         quit()
@@ -307,31 +307,31 @@ function joinTask() {
             sleep(500)
             console.show()
             sleep(5000)
-            check = textMatches(/.*确认授权即同意.*/).boundsInside(0,0,device.width,device.height).findOne(8000)
+            check = textMatches(/.*确认授权即同意.*/).boundsInside(0, 0, device.width, device.height).findOne(8000)
         }
 
         if (!check) {
             console.log('无法找到入会按钮弹窗，加载失败')
             return false
         }
-        
+
         // text("instruction_icon") 全局其实都只有一个, 保险起见, 使用两个parent来限定范围
         let checks = check.parent().parent().find(text("instruction_icon"));
-        if(checks.size()>0){
+        if (checks.size() > 0) {
             // 解决部分店铺(欧莱雅)开卡无法勾选 [确认授权] 的问题           
-            check = checks.get(0);    
-        } else{
+            check = checks.get(0);
+        } else {
             if (check.indexInParent() == 6) {
                 check = check.parent().child(5)
-            } else if (check.text() == '确认授权即同意') {            
-                check = check.parent().child(0)            
+            } else if (check.text() == '确认授权即同意') {
+                check = check.parent().child(0)
             } else {
                 check = check.parent().parent().child(5)
             }
         }
-        
+
         check = check.bounds()
-        log("最终[确认授权]前面选项框坐标为:",check);
+        log("最终[确认授权]前面选项框坐标为:", check);
         let x = check.centerX()
         let y = check.centerY()
 
@@ -586,6 +586,16 @@ function signTask() {
     return true
 }
 
+// 领取金币
+function havestCoin() {
+    console.log('准备领取自动积累的金币')
+    let h = descMatches(/.*领取金币.*|.*后满.*/).findOne(5000)
+    if (h) {
+        h.click()
+        console.log('领取成功')
+    } else { console.log('未找到金币控件，领取失败') }
+}
+
 let startCoin = null // 音量键需要
 
 // 全局try catch，应对无法显示报错
@@ -621,7 +631,9 @@ try {
         console.log('获取金币失败，跳过', err)
     }
 
-    sleep(2000)
+    sleep(1000)
+    havestCoin()
+    sleep(1000)
 
     // 完成所有任务的循环
     while (true) {
@@ -637,6 +649,10 @@ try {
 
             console.log('最后进行签到任务')
             signTask()
+
+            sleep(1000)
+            havestCoin()
+            sleep(1000)
 
             let endCoin = null
             try {

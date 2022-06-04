@@ -1,6 +1,6 @@
 "ui";
 
-const VERSION = '2022618-17'
+const VERSION = '2022618-18'
 
 ui.layout(
     <frame>
@@ -9,14 +9,14 @@ ui.layout(
             <button id="consolePermission" text="2. 授予悬浮窗权限" />
             <button id="startJDTask" text="3-1. 开始京东任务" /> 
             <button id="startTask" text="3-2. 开始淘宝任务" />
-            <button id="startJDChoujiang" text="3-3. 进行京东热爱奇旅抽奖任务(beta)" /> 
-            <button id="tb" text="4-1. 领取天猫618现金红包" />
-            <button id="jd" text="4-2. 领取京东618现金红包（退出再进，每日一共三次）" />
+            <button id="startJDChoujiang" text="3-3. 开始京东热爱奇旅抽奖任务" /> 
+            <button id="tb" textColor="blue" text="4-1. 领取天猫618现金红包" />
+            <button id="jd" textColor="blue" text="4-2. 领取京东618现金红包（退出再进，每日一共三次）" />
             {/* <button id="specialTask" text="5. 淘宝618主会场" /> */}
             {/* <button id="caidan" text="5. 完成天猫开彩蛋任务" /> */}
             {/* <button id="butie" text="天猫百亿补贴会场，真补贴，真划算" /> */}
             {/* <button id="showHb" text="消灭红包！旧的不去新的不来！" textColor="red" /> */}
-            <button id="showHC" text="618大促会场直达" textColor="red" />
+            <button id="showHC" text="618大促会场直达（6.4更新）" textColor="red" />
             <button id="showQun" text="加入618活动助力群" />
             <button id="showQun2" text="加入内部优惠线报群" />
             {/* <button id="feedback" text="正版发布地址！小心病毒盗版！" /> */}
@@ -53,15 +53,14 @@ ui.layout(
             <button id="hideHb" style="Widget.AppCompat.Button.Colored" text="隐藏" />
         </vertical> */}
         <vertical id="huichang" visibility="gone" bg="#ffffff" paddingTop="50" paddingLeft="20" paddingRight="20">
-            {/* <button id="jianhuo" text="618内部爆款清单" /> */}
             <button id="jdHuichang" text="京东618主会场" />
             <button id="yushou" text="天猫618主会场" />
-            <button id="jdYouhui" text="京东618万券齐发会场，早鸟券包1分抢" />
-            <button id="jdRexiao" text="京东618爆款清单，预售定金膨胀至高5倍" />
-            <button id="rexiao" text="618热销榜，单单有补贴" />
-            <button id="chaoshi" text="天猫超市，抢15元超市优惠券" />
-            <button id="jdChaoshi" text="京东超市，上午下单下午收货，领券满200-20" />
-            <button id="jdBaihuo" text="京东新百货，美妆居家钟表运动，送货上门正品保障" />
+            <button id="jdRexiao" text="京东实时热销榜，低价羊毛大额券" />
+            <button id="rexiao" text="天猫超级U选，精选爆品史低价" />
+            <button id="jianhuo" text="天猫618内购清单" />
+            <button id="jdYouhui" text="京东618万券齐发会场" />
+            {/* <button id="jdChaoshi" text="京东超市，上午下单下午收货，领券满200-20" />
+            <button id="jdBaihuo" text="京东新百货，美妆居家钟表运动，送货上门正品保障" /> */}
             <button id="hideHC" style="Widget.AppCompat.Button.Colored" text="隐藏" />
         </vertical>
     </frame>
@@ -196,30 +195,28 @@ ui.yushou.click(function () {
     openTbUrl(url)
 })
 
-// ui.jianhuo.click(function () {
-//     app.startActivity({
-//         action: "VIEW",
-//         data: "taobao://m.tb.cn/h.fkiwuT1"
-//     })
-// })
-
-ui.chaoshi.click(function () {
-    const url = 'https://m.tb.cn/h.fHizabu'
+ui.jianhuo.click(function () {
+    const url = 'https://m.tb.cn/h.fFOaz9Q'
     openTbUrl(url)
 })
 
+// ui.chaoshi.click(function () {
+//     const url = 'https://m.tb.cn/h.fHizabu'
+//     openTbUrl(url)
+// })
+
 ui.rexiao.click(function () {
-    const url = 'https://m.tb.cn/h.fGzYnPr'
+    const url = 'https://m.tb.cn/h.ftnQgmQ'
     openTbUrl(url)
 })
 
 ui.jdHuichang.click(function () {
-    const url = 'https://u.jd.com/JCbNy3t'
+    const url = 'https://u.jd.com/JdHdlPN'
     openJdUrl(url)
 })
 
 ui.jdRexiao.click(function () {
-    const url = 'https://u.jd.com/JCb4AIS'
+    const url = 'https://u.jd.com/lM2fjiR'
     openJdUrl(url)
 })
 
@@ -228,15 +225,15 @@ ui.jdYouhui.click(function () {
     openJdUrl(url)
 })
 
-ui.jdChaoshi.click(function () {
-    const url = 'https://u.jd.com/JwSw88P'
-    openJdUrl(url)
-})
+// ui.jdChaoshi.click(function () {
+//     const url = 'https://u.jd.com/JwSw88P'
+//     openJdUrl(url)
+// })
 
-ui.jdBaihuo.click(function () {
-    const url = 'https://u.jd.com/JISziRw'
-    openJdUrl(url)
-})
+// ui.jdBaihuo.click(function () {
+//     const url = 'https://u.jd.com/JISziRw'
+//     openJdUrl(url)
+// })
 
 ui.hideHC.click(function () {
     ui.huichang.visibility = 8
