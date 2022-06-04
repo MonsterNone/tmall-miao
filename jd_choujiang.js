@@ -369,6 +369,16 @@ function openBox() {
     return true
 }
 
+// 领取金币
+function havestCoin() {
+    console.log('准备领取自动积累的金币')
+    let h = descMatches(/.*领取金币.*|.*后满.*/).findOne(5000)
+    if (h) {
+        h.click()
+        console.log('领取成功')
+    } else { console.log('未找到金币控件，领取失败') }
+}
+
 
 let startCoin = null
 let endCoin = null
@@ -401,6 +411,10 @@ try {
     } catch (err) {
         console.log('获取金币失败，跳过', err)
     }
+
+    sleep(1000)
+    havestCoin()
+    sleep(1000)
 
     // 完成所有任务的循环
     while (true) {
