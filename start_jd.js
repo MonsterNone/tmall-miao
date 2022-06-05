@@ -19,8 +19,9 @@ function getSetting() {
     autoOpen && indices.push(0)
     autoMute && indices.push(1)
     autoJoin && indices.push(2)
+    indices.push(3)
 
-    let settings = dialogs.multiChoice('任务设置', ['自动打开京东进入活动。多开或任务列表无法自动打开时取消勾选', '自动调整媒体音量为0。以免直播任务发出声音，首次选择需要修改系统设置权限', '自动完成入会任务。京东将授权手机号给商家，日后可能会收到推广短信'], indices)
+    let settings = dialogs.multiChoice('任务设置', ['自动打开京东进入活动。多开或任务列表无法自动打开时取消勾选', '自动调整媒体音量为0。以免直播任务发出声音，首次选择需要修改系统设置权限', '自动完成入会任务。京东将授权手机号给商家，日后可能会收到推广短信', '此选项用于保证选择的处理，勿动！'], indices)
 
     if (settings.length == 0) {
         toast('取消选择，任务停止')
