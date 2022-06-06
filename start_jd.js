@@ -520,7 +520,7 @@ function doTask(tButton, tText, tTitle) {
 
 function signTask() {
     let anchor = className('android.view.View').filter(function (w) {
-        return w.clickable() && (w.text() == '去使用奖励' || w.desc() == '去使用奖励')
+        return w.clickable() && (w.text().indexOf('去使用奖励')!=-1 || w.desc() == '去使用奖励')
     }).findOne(5000)
 
     if (!anchor) {
