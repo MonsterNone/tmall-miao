@@ -140,18 +140,52 @@ function getCoin() {
     let coin = anchor.parent().child(2).text()
     if (coin) {
         return parseInt(coin)
+    // } else if (anchor.parent().childCount()>=4) {        
+    //     coin = anchor.parent().child(3).text() // 有可能中间插了个控件
+    //     if (coin) {
+    //         return parseInt(coin)
+    //     } else {
+    //         return false
+    //     }
     } else {
-        coin = anchor.parent().child(3).text() // 有可能中间插了个控件
-        if (coin) {
+        let coins = anchor.parent().find(textMatches(/\d{4,}/)); // Android 8 适配
+        if(coins.size()>0){
+          coin = coins.get(0).text()
+          if(coin){
             return parseInt(coin)
-        } else {
+          }else{
             return false
+          }
+        }else{
+          return false
         }
     }
 }
 
 // 打开任务列表
 function openTaskList() {
+    // 关闭 [欢迎回来] [继续环游] 的弹框
+    let continueTravelBtn = textMatches("(继续环游|立即抽奖).*").findOne(1000);
+    if (continueTravelBtn) {
+    continueTravelBtn
+        .parent()
+        .find(
+        clickable(true)
+            .className("android.view.View")
+            .boundsInside(
+            continueTravelBtn.bounds().right,
+            200,
+            device.width + 100,
+            device.height / 3
+            )
+        )
+        .forEach((item, index) => {
+        //log(item);
+        item.click();
+        log("关闭弹窗[%s]",continueTravelBtn.text());
+        sleep(1000);
+        });
+    }
     console.log('打开任务列表')
     let taskListButtons = findTextDescMatchesTimeout(/分红\+卡牌/, 20000)
     if (!taskListButtons) {
@@ -206,7 +240,7 @@ function closeTaskList() {
 // 重新打开任务列表
 function reopenTaskList() {
     closeTaskList()
-    sleep(3000)
+    sleep(3000)    
     openTaskList()
     sleep(5000)
 }
@@ -590,7 +624,7 @@ function signTask() {
 // 领取金币
 function havestCoin() {
     console.log('准备领取自动积累的金币')
-    let h = descMatches(/.*领取金币.*|.*后满.*/).findOne(5000)
+    let h = findTextDescMatchesTimeout(/.*领取金币.*|.*后满.*/,5000)
     if (h) {
         h.click()
         console.log('领取成功')

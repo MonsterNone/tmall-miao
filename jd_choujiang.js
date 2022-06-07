@@ -130,22 +130,24 @@ function getCoin() {
     let coin = anchor.parent().child(2).text()
     if (coin) {
         return parseInt(coin)
+    // } else if (anchor.parent().childCount()>=4) {        
+    //     coin = anchor.parent().child(3).text() // 有可能中间插了个控件
+    //     if (coin) {
+    //         return parseInt(coin)
+    //     } else {
+    //         return false
+    //     }
     } else {
-        coin = anchor.parent().child(3).text() // 有可能中间插了个控件
-        if (coin) {
+        let coins = anchor.parent().find(textMatches(/\d{4,}/)); // Android 8 适配
+        if(coins.size()>0){
+          coin = coins.get(0).text()
+          if(coin){
             return parseInt(coin)
-        } else {
-          let coins = anchor.parent().find(textMatches(/\d{3,}/).indexInParent(1)); // Android 8 适配
-          if(coins.size()>0){
-            coin = coins.get(0).text()
-            if(coin){
-              return parseInt(coin)
-            }else{
-              return false
-            }
           }else{
             return false
           }
+        }else{
+          return false
         }
     }
 }
@@ -161,12 +163,16 @@ function openPage() {
         console.log('未找到使用奖励按钮，打开抽奖页失败')
         return false
     }
-
+    sleep(1000);
     let anchor_index = anchor.indexInParent()
     let sign = anchor.parent().child(anchor_index + 1) // 去使用的后1个, 定位[免费抽奖]
     if(sign.child(0).child(0).clickable()){
+        log("使用方式一打开抽奖页面")
         sign.child(0).child(0).click() // child才可以点
-    }else{
+    }
+
+    if(!text('剩余抽奖次数').findOne(8000)){
+        log("使用方式二打开抽奖页面")
         click(sign.bounds().centerX(),sign.bounds().centerY());
     }
     return text('剩余抽奖次数').findOne(8000)
@@ -440,7 +446,7 @@ function openBox() {
                 .className("android.view.View")
                 .boundsInside(
                 title.bounds().right,
-                title.bounds().top - 500,
+                title.bounds().top - 300,
                 device.width - 1,
                 title.bounds().top
                 )
@@ -455,23 +461,28 @@ function openBox() {
         //   title.child(title.childCount() - 2).click();
         // }
         }else{
+            
             text("").clickable().className("android.view.View")
             .boundsInside(title.bounds().centerX(), title.bounds().centerY()-300, device.width+100, title.bounds().centerY())
                 .find()
                 .forEach((item, index) => {
-                item.click();
+                    log("已经没有抽奖次数");
+                    i=6;
+                    item.click();
                 });
+             
         }
         sleep(1000);
-        }
-
-        // 查找 已完成 对象得坐标
-        let completeTxt = text("已完成").findOnce();
-        // 关闭 任务列表 页面
-        if (completeTxt) {
+        }    
         
+        while(!(anchor = text('剩余抽奖次数').findOne(3000))){
+            back();            
         }
-
+        let count = anchor.parent().child(1).text()
+        if (!parseInt(count)) {
+            log("已经没有抽奖次数")
+            break;
+        }
     }
     return true
 }
@@ -483,6 +494,7 @@ function havestCoin() {
     if (h) {
         h.click()
         console.log('领取成功')
+        sleep(2000);
     } else { console.log('未找到金币控件，领取失败') }
 }
 
