@@ -171,7 +171,7 @@ function openPage() {
         sign.child(0).child(0).click() // child才可以点
     }
 
-    if(!text('剩余抽奖次数').findOne(8000)){
+    if(!sign.child(0).child(0).clickable() || !text('剩余抽奖次数').findOne(8000)){
         log("使用方式二打开抽奖页面")
         click(sign.bounds().centerX(),sign.bounds().centerY());
     }
