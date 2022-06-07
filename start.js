@@ -140,7 +140,7 @@ try {
                     sleep(8000)
                     return findTask()
                 }
-                if (!(taskName.match(/淘金币|提醒|话费|斗地主|消消乐|流浪猫|开88|扔喵糖|占领|邀请|登录|组队|参与|施肥|浇水|特价版|小鸡|消除|穿搭|森林|点淘|人生|我的淘宝|庄园/) || content.match(/小互动/))) {
+                if (!(taskName.match(/提醒|话费|斗地主|连连消|消消乐|流浪猫|开88|扔喵糖|占领|邀请|登录|组队|参与|浇水|特价版|小鸡|消除|穿搭|森林|点淘|人生|我的淘宝|庄园/) || content.match(/小互动/))) {
                     return [taskName, jumpButtons[i]]
                 }
             }
@@ -302,6 +302,29 @@ try {
             jumpButton[1].click()
             sleep(10000)
             back()
+        } else if (jumpButton[0].match(/.*施肥.*/)) {
+            console.log('进行' + jumpButton[0] + '任务')
+            jumpButton[1].click()
+            sleep(5000);
+            click("免费领取");
+            sleep(2000);
+            let handBtn = text("光效 光效").depth(12).indexInParent(0).clickable().findOne(5000);
+            log(handBtn);
+            click(handBtn.bounds().left,handBtn.bounds().top);
+            sleep(2000);
+            back();
+            sleep(2000);
+        } else if (jumpButton[0].match(/.*淘金币.*/)) {
+            console.log('进行' + jumpButton[0] + '任务')
+            jumpButton[1].click()            
+            sleep(5000);
+            let todayCoinBtn = text("今日签到").findOne(1000);
+            todayCoinBtn && click(todayCoinBtn.bounds().centerX(),todayCoinBtn.bounds().centerY()) && sleep(5000);
+
+            let returnCoinBtn = text("购物返").findOne(1000);
+            returnCoinBtn && click(returnCoinBtn.bounds().centerX(),returnCoinBtn.bounds().centerY()) && sleep(5000);
+            back();
+            sleep(2000);
         } else if (jumpButton[0].match(/领现金/)) {
             console.log('进行' + jumpButton[0] + '任务')
             jumpButton[1].click()
