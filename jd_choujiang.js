@@ -1,4 +1,4 @@
-const VERSION = '2022618-18'
+const VERSION = '2022618-19'
 
 // 达到多少次没有抽奖资格就认为今天的任务已经完成了
 const MAX_NO_REWARD_TIMES = 10;
@@ -26,8 +26,9 @@ function getSetting() {
     autoOpen && indices.push(0)
     autoMute && indices.push(1)
     autoJoin && indices.push(2)
+    indices.push(3)
 
-    let settings = dialogs.multiChoice('任务设置', ['自动打开京东进入活动。多开或任务列表无法自动打开时取消勾选', '自动调整媒体音量为0。以免直播任务发出声音，首次选择需要修改系统设置权限', '自动完成入会任务。京东将授权手机号给商家，日后可能会收到推广短信'], indices)
+    let settings = dialogs.multiChoice('任务设置', ['自动打开京东进入活动。多开或任务列表无法自动打开时取消勾选', '自动调整媒体音量为0。以免直播任务发出声音，首次选择需要修改系统设置权限', '自动完成入会任务。京东将授权手机号给商家，日后可能会收到推广短信', '此选项用于保证选择的处理，勿动！'], indices)
 
     if (settings.length == 0) {
         toast('取消选择，任务停止')
@@ -73,7 +74,7 @@ function quit() {
 function registerKey() {
     try {
         events.observeKey()
-    } catch(err) {
+    } catch (err) {
         console.log('监听音量键（用于停止脚本）失败，应该是无障碍权限出错，请关闭软件后台任务重新运行。')
         console.log('如果还是不行可以重启手机尝试。')
         quit()
@@ -143,11 +144,18 @@ function getCoin() {
           coin = coins.get(0).text()
           if(coin){
             return parseInt(coin)
-          }else{
-            return false
-          }
-        }else{
-          return false
+        } else {
+            let coins = anchor.parent().find(textMatches(/\d{3,}/).indexInParent(1)); // Android 8 适配
+            if (coins.size() > 0) {
+                coin = coins.get(0).text()
+                if (coin) {
+                    return parseInt(coin)
+                } else {
+                    return false
+                }
+            } else {
+                return false
+            }
         }
     }
 }
@@ -156,7 +164,11 @@ function getCoin() {
 function openPage() {
     // Android 8 的 去使用奖励 后面带了1个空格 , [去使用奖励 ]
     let anchor = className('android.view.View').filter(function (w) {
-        return w.clickable() && (w.text().indexOf('去使用奖励')!=-1 || w.desc() == '去使用奖励')
+        if (w.clickable() && ((w.text() && w.text().match(/去使用奖励/)) || (w.desc() && w.desc().match(/去使用奖励/)))) {
+            return true
+        } else {
+            return false
+        }
     }).findOne(5000)
 
     if (!anchor) {
@@ -165,13 +177,24 @@ function openPage() {
     }
     sleep(1000);
     let anchor_index = anchor.indexInParent()
-    let sign = anchor.parent().child(anchor_index + 1) // 去使用的后1个, 定位[免费抽奖]
-    if(sign.child(0).child(0).clickable()){
-        log("使用方式一打开抽奖页面")
-        sign.child(0).child(0).click() // child才可以点
+
+    let sign = anchor.parent().child(anchor_index + 1) // 去使用的后1个, 定位[免费抽奖]    
+
+    if (!sign.child(0).child(0).click()) {
+        console.log('使用备用方式点击')
+        console.log('首先检测弹窗')
+        let btn = textMatches(/.*继续环游.*|.*立即抽奖.*/).findOne(2000)
+        if (btn) {
+            console.log('关闭弹窗')
+            btn.parent().parent().parent().child(0).child(0).click()
+        } else {
+            console.log('无需关闭弹窗')
+        }
+        sleep(1000)
+        click(sign.bounds().centerX(), sign.bounds().centerY());
     }
 
-    if(!sign.child(0).child(0).clickable() || !text('剩余抽奖次数').findOne(8000)){
+    if(!text('剩余抽奖次数').findOne(8000)){
         log("使用方式二打开抽奖页面")
         click(sign.bounds().centerX(),sign.bounds().centerY());
     }
@@ -194,7 +217,10 @@ function findTasks() {
             anchor.child(7).child(0).child(0).child(0).child(3).click()
             sleep(1000)
         }
+    } else {
+        console.log('无需关闭弹窗')
     }
+
     // 关闭自动弹出的 [关注店铺开礼盒] depth(19);
     text("").clickable().className("android.view.View")
     .boundsInside(501 - 50, 1761 - 200, 579 + 50, 1839 + 200)
@@ -203,10 +229,10 @@ function findTasks() {
     item.click();
     });
 
-    // 点击 [做任务 得抽奖机会]r
-    if(anchor.child(1).clickable()){
+    // 点击 [做任务 得抽奖机会]
+    if (anchor.child(1).clickable()) {
         anchor.child(1).click()
-    }else{
+    } else {
         anchor.child(2).click() // 京东11.0.4 Android 8 适配
     }
     sleep(5000)
@@ -340,6 +366,49 @@ function joinTask() {
     }
 }
 
+// 加购任务
+function cartTask() {
+    console.log('查找商品')
+    let anchor = textMatches(/\(\d\/2\)/).findOne(10000)
+    if (!anchor) {
+        console.log('未能找到加购提示')
+        return false
+    }
+
+    let items = anchor.parent().parent().children().find(textContains('q70'))
+    if (items.empty() || items.length < 2 || textMatches(/\(\d\/2\)/).find().size()!=2) {
+        console.log('查找商品失败')
+        return false
+    }
+    for (let i = 0; i < 2; i++) {
+        console.log('加购第' + (i + 1) + '个商品')
+        try {
+            items[i].parent().parent().parent().child(1).child(2).click()
+        } catch (e) {
+            console.error(e);
+            console.log('加购失败')
+            back();
+            return false
+        }
+        sleep(2000)
+    }
+    console.log('加购完成')
+    // 查找 (0/2) 对象得坐标
+    let addCartCountTxt = textMatches(/\(\d\/2\)/).findOnce(1);
+    // 关闭 加购2个商品 页面
+    if (addCartCountTxt) {
+    text("").clickable().className("android.view.View")
+    .boundsInside(addCartCountTxt.bounds().centerX(), addCartCountTxt.bounds().centerY()-200, device.width+100, addCartCountTxt.bounds().centerY())
+        .find()
+        .forEach((item, index) => {
+        item.click();
+        });
+    }
+    //let t = items[0].parent().parent().parent().parent().parent()
+    //t.child(t.childCount() - 2).click() // 关闭
+    return true
+}
+
 // 进行抽奖活动
 function doTask(task) {
     let tTitle = task[0]
@@ -350,50 +419,7 @@ function doTask(task) {
         console.log('签到完成')
         return true
     } else if (tTitle.match(/加购/)) {
-        let itemFilter = textContains('!q70').filter(function (w) {
-            // return w.bounds().width() == w.bounds().height() // 等宽高
-            // return w.depth() >= 15
-            let rect = w.bounds()
-            return rect.left > 0 && rect.top <= device.height
-        })
-
-        console.log('查找商品，等待至多20秒')
-        if (!itemFilter.findOne(20000)) {
-            console.log('未能找到加购商品')
-            return false
-        }
-        sleep(3000);
-        let items = itemFilter.find()
-        if (items.empty() || items.length < 2 || textMatches(/\(\d\/2\)/).find().size()!=2) {
-            console.log('查找商品失败')
-            return false
-        }
-        for (let i = 0; i < 2; i++) {
-            console.log('加购第' + (i+1) + '个商品')
-            try{
-                items[i].parent().parent().parent().child(1).child(2).click()
-            }catch(e){
-                console.error(e);
-                console.error(e.stack);
-                back();
-            }
-            sleep(2000)
-        }
-        console.log('加购完成')
-        // 查找 (0/2) 对象得坐标
-        let addCartCountTxt = textMatches(/\(\d\/2\)/).findOnce(1);
-        // 关闭 加购2个商品 页面
-        if (addCartCountTxt) {
-        text("").clickable().className("android.view.View")
-        .boundsInside(addCartCountTxt.bounds().centerX(), addCartCountTxt.bounds().centerY()-200, device.width+100, addCartCountTxt.bounds().centerY())
-            .find()
-            .forEach((item, index) => {
-            item.click();
-            });
-        }
-        //let t = items[0].parent().parent().parent().parent().parent()
-        //t.child(t.childCount() - 2).click() // 关闭
-        return true
+        return cartTask()
     } else if (tTitle.match(/会员|品牌页/)) {
         console.log('进行入会任务')
         return joinTask() && backToPage()
@@ -406,6 +432,8 @@ function doTask(task) {
 
 // 抽奖
 function openBox() {
+    console.log('关闭任务列表')
+    textContains('签到').findOne(5000).parent().parent().child(1).click()
     let anchor = text('剩余抽奖次数').findOne(8000)
     if (!anchor) {
         console.log('未能找到抽奖提示')
