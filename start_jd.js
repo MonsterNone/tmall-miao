@@ -120,7 +120,7 @@ function openAndInto() {
 
     app.startActivity({
         action: "VIEW",
-        data: 'openApp.jdMobile://virtual?params={"category":"jump","action":"to","des":"m","sourceValue":"JSHOP_SOURCE_VALUE","sourceType":"JSHOP_SOURCE_TYPE","url":"https://u.jd.com/JCTuenU","M_sourceFrom":"mxz","msf_type":"auto"}'
+        data: 'openApp.jdMobile://virtual?params={"category":"jump","action":"to","des":"m","sourceValue":"JSHOP_SOURCE_VALUE","sourceType":"JSHOP_SOURCE_TYPE","url":"https://u.jd.com/lCoOLUY","M_sourceFrom":"mxz","msf_type":"auto"}'
     })
 }
 
