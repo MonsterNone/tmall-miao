@@ -9,9 +9,9 @@ ui.layout(
             <button id="consolePermission" text="2. 授予悬浮窗权限" />
             <button id="startJDTask" text="3-1. 开始京东任务" /> 
             <button id="startTask" text="3-2. 开始淘宝任务" />
-            <button id="startJDChoujiang" text="3-3. 开始京东热爱奇旅抽奖任务" /> 
+            <button id="startJDChoujiang" text="3-3. 开始京东热爱奇旅抽奖任务(Beta 2)" /> 
             <button id="tb" textColor="blue" text="4-1. 领取天猫618现金红包" />
-            <button id="jd" textColor="blue" text="4-2. 领取京东618现金红包（退出再进，每日一共三次）" />
+            <button id="jd" textColor="blue" text="4-2. 领取京东618现金红包（口令6.9更新）" />
             {/* <button id="specialTask" text="5. 淘宝618主会场" /> */}
             {/* <button id="caidan" text="5. 完成天猫开彩蛋任务" /> */}
             {/* <button id="butie" text="天猫百亿补贴会场，真补贴，真划算" /> */}
@@ -163,8 +163,8 @@ ui.jd.click(function() {
         positive: "京口令方式",
         negative: "默认方式"
     }).on("positive", ()=>{
-        setClip("88:/(KDyAu9isBQ)")
-        rawInput("已复制，部分机型限制剪贴板，可以手动复制", "88:/(KDyAu9isBQ)")
+        setClip("88:/￥AC096DapYao%")
+        rawInput("已复制，部分机型限制剪贴板，可以手动复制", "88:/￥AC096DapYao%")
         if (launch('com.jingdong.app.mall')) {
             toast('京口令已复制，打开京东App领取')
         } else {
