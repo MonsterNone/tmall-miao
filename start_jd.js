@@ -218,7 +218,7 @@ function getTaskByText() {
         tCount = 0,
         tTitle = null
     console.log('寻找未完成任务...')
-    let taskButtons = textMatches(/.*浏览并关注.*|.*浏览.*s.*|.*累计浏览.*|.*浏览可得.*|.*逛晚会.*|.*品牌墙.*|.*打卡.*|.*首页.*/).find()
+    let taskButtons = textMatches(/.*浏览并关注.*|.*浏览.*s.*|.*累计浏览.*|.*浏览可得.*|.*逛晚会.*|.*品牌墙.*|.*打卡.*|.*点击首页.*|.*组队可得.*/).find()
     if (!taskButtons.empty()) { // 如果找不到任务，直接返回
         for (let i = 0; i < taskButtons.length; i++) {
             let item = taskButtons[i]
@@ -511,6 +511,27 @@ function doTask(tButton, tText, tTitle) {
     } else if (tText.match(/打卡|首页/)) {
         tFlag = clickFlag // 打卡点击一次即可
         return tFlag
+    } else if (tText.match(/组队/)) {
+        console.log('等待组队任务')
+        sleep(3000)
+        if (findTextDescMatchesTimeout(/累计任务奖励/, 1000)) {
+            console.log('当前仍在任务列表，说明已经完成任务且领取奖励，返回')
+            return true
+        } else {
+            if (textContains('锦鲤').findOne(10000)) {
+                console.log('进入到组队页面，返回')
+                backToList()
+                console.log('等待领取奖励')
+                sleep(2000)
+                tFlag = tButton.click()
+                sleep(2000)
+                return tFlag
+            } else {
+                console.log('未能进入组队')
+                console.log('组队任务失败，避免卡死，退出')
+                quit()
+            }
+        }
     } else {
         console.log('未知任务类型，默认为浏览任务', tText)
         tFlag = timeTask()
@@ -699,7 +720,7 @@ try {
 } catch (err) {
     device.cancelKeepingAwake()
     if (err.toString() != 'JavaException: com.stardust.autojs.runtime.exception.ScriptInterruptedException: null') {
-        console.error(new Error().stack, err)
+        console.error(err)
         startCoin && console.log('本次任务开始时有' + startCoin + '金币')
     }
     showVersion()
