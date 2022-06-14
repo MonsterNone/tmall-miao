@@ -648,12 +648,12 @@ try {
                 sleep(2000)
             })
 
-            console.log('最后进行签到任务')
-            signTask()
-
             sleep(1000)
             havestCoin()
             sleep(1000)
+
+            console.log('最后进行签到任务')
+            signTask()
 
             let endCoin = null
             try {
