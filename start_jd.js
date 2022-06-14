@@ -218,7 +218,7 @@ function getTaskByText() {
         tCount = 0,
         tTitle = null
     console.log('寻找未完成任务...')
-    let taskButtons = textMatches(/.*浏览并关注.*|.*浏览.*s.*|.*累计浏览.*|.*浏览可得.*|.*逛晚会.*|.*品牌墙.*|.*打卡.*/).find()
+    let taskButtons = textMatches(/.*浏览并关注.*|.*浏览.*s.*|.*累计浏览.*|.*浏览可得.*|.*逛晚会.*|.*品牌墙.*|.*打卡.*|.*首页.*/).find()
     if (!taskButtons.empty()) { // 如果找不到任务，直接返回
         for (let i = 0; i < taskButtons.length; i++) {
             let item = taskButtons[i]
@@ -508,7 +508,7 @@ function doTask(tButton, tText, tTitle) {
     } else if (tText.match(/品牌墙/)) {
         tFlag = wallTask()
         return tFlag // 品牌墙无需backToList，提前返回
-    } else if (tText.match(/打卡/)) {
+    } else if (tText.match(/打卡|首页/)) {
         tFlag = clickFlag // 打卡点击一次即可
         return tFlag
     } else {
