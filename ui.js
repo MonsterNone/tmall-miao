@@ -1,6 +1,6 @@
 "ui";
 
-const VERSION = '2022618-19'
+const VERSION = '2022618-20'
 
 ui.layout(
     <frame>
@@ -15,7 +15,7 @@ ui.layout(
             {/* <button id="specialTask" text="5. 淘宝618主会场" /> */}
             {/* <button id="caidan" text="5. 完成天猫开彩蛋任务" /> */}
             {/* <button id="butie" text="天猫百亿补贴会场，真补贴，真划算" /> */}
-            {/* <button id="showHb" text="消灭红包！旧的不去新的不来！" textColor="red" /> */}
+            <button id="showHb" text="消灭红包！旧的不去新的不来！" textColor="red" />
             <button id="showHC" text="618大促会场直达（6.4更新）" textColor="red" />
             <button id="showQun" text="加入618活动助力群" />
             <button id="showQun2" text="加入内部优惠线报群" />
@@ -45,17 +45,18 @@ ui.layout(
             <text text="线报QQ群：740725146，点击图片自动跳转手机QQ添加" textSize="20sp" gravity="center" />
             <button id="hideQun2" style="Widget.AppCompat.Button.Colored" text="隐藏" />
         </vertical>
-        {/* <vertical id="hb" visibility="gone" bg="#ffffff" paddingTop="50" paddingLeft="20" paddingRight="20">
-            <text text="每日的红包使用掉，淘宝才会给你发新红包！5元惊喜红包不用完，绝对不会收到下一个5元！" textSize="18sp" textStyle="bold" textColor="red" />
-            <button id="get" text="先领红包，不领咋有的用哈哈" />
-            <button id="one" text="小红包：每日一元购" />
-            <button id="big" text="大红包：官方补贴清单" />
+        <vertical id="hb" visibility="gone" bg="#ffffff" paddingTop="50" paddingLeft="20" paddingRight="20">
+        <text text="消灭小红包专区" textSize="18sp" textStyle="bold" textColor="blue" />
+            <text text="记得先在首页领取每日红包！加码红包不用完，大概率不会收到下一个加码！" textSize="18sp" textStyle="bold" textColor="red" />
+            <button id="jdMiaosha" text="京喜秒杀，消灭小红包" />
+            <button id="temai" text="淘宝天天特卖，消灭小红包" />
             <button id="hideHb" style="Widget.AppCompat.Button.Colored" text="隐藏" />
-        </vertical> */}
+        </vertical>
         <vertical id="huichang" visibility="gone" bg="#ffffff" paddingTop="50" paddingLeft="20" paddingRight="20">
             <button id="jdHuichang" text="京东618主会场" />
             <button id="yushou" text="天猫618主会场" />
             <button id="jdRexiao" text="京东实时热销榜，低价羊毛大额券" />
+            <button id="chaoshi" text="猫超内购清单" />
             <button id="rexiao" text="天猫超级U选，精选爆品史低价" />
             <button id="jianhuo" text="天猫618内购清单" />
             <button id="jdYouhui" text="京东618万券齐发会场" />
@@ -181,9 +182,9 @@ ui.tb.click(function () {
     openTbUrl(url)
 })
 
-// ui.showHb.click(function () {
-//     ui.hb.visibility = 0
-// })
+ui.showHb.click(function () {
+    ui.hb.visibility = 0
+})
 
 ui.showHC.click(function () {
     ui.main.visibility = 8
@@ -200,10 +201,10 @@ ui.jianhuo.click(function () {
     openTbUrl(url)
 })
 
-// ui.chaoshi.click(function () {
-//     const url = 'https://m.tb.cn/h.fHizabu'
-//     openTbUrl(url)
-// })
+ui.chaoshi.click(function () {
+    const url = 'https://m.tb.cn/h.fFVitYE'
+    openTbUrl(url)
+})
 
 ui.rexiao.click(function () {
     const url = 'https://m.tb.cn/h.ftnQgmQ'
@@ -218,6 +219,16 @@ ui.jdHuichang.click(function () {
 ui.jdRexiao.click(function () {
     const url = 'https://u.jd.com/lM2fjiR'
     openJdUrl(url)
+})
+
+ui.jdMiaosha.click(function () {
+    const url = 'https://u.jd.com/NMvLVd3'
+    openJdUrl(url)
+})
+
+ui.temai.click(function () {
+    const url = 'https://m.tb.cn/h.fFVPNIk'
+    openTbUrl(url)
 })
 
 ui.jdYouhui.click(function () {
@@ -240,9 +251,9 @@ ui.hideHC.click(function () {
     ui.main.visibility = 0
 })
 
-// ui.hideHb.click(function () {
-//     ui.hb.visibility = 8
-// })
+ui.hideHb.click(function () {
+    ui.hb.visibility = 8
+})
 
 // ui.get.click(function () {
 //     app.startActivity({
