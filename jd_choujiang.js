@@ -398,26 +398,29 @@ function openBox() {
         console.log('未能找到抽奖提示')
         return false
     }
-    let count = anchor.parent().child(1).text()
-    if (!parseInt(count)) {
+    let count = parseInt(anchor.parent().child(1).text())
+    if (!count) {
         console.log('没有抽奖次数，返回')
         return true
     }
     console.log('进行抽奖，由于无法判断是否已经开盒，所以每个盒子都点一遍')
     let box = anchor.parent().parent().children()
-    for (let i = 0; i < 6; i++) {
-        console.log('打开第' + (i + 1) + '个盒子')
-        box[i].click()
-        sleep(3000)
-        console.log('检测弹窗')
-        let title = textContains('恭喜').findOne(5000)
-        if (title) {
-            console.log('关闭弹窗')
-            title = title.parent()
-            title.child(title.childCount() - 2).click()
+    for (let loop = 0; loop < Math.ceil(count / 6); loop++) {
+        console.log('进行第' + (loop + 1) + '轮抽奖')
+        for (let i = 0; i < 6; i++) {
+            console.log('打开第' + (i + 1) + '个盒子')
+            box[i].click()
             sleep(3000)
-        } else {
-            console.log('没有弹窗')
+            console.log('检测弹窗')
+            let title = textContains('恭喜').findOne(5000)
+            if (title) {
+                console.log('关闭弹窗')
+                title = title.parent()
+                title.child(title.childCount() - 2).click()
+                sleep(3000)
+            } else {
+                console.log('没有弹窗')
+            }
         }
     }
     return true
