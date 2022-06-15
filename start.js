@@ -315,26 +315,42 @@ try {
         } else if (jumpButton[0].match(/.*施肥.*/)) {
             console.log('进行' + jumpButton[0] + '任务')
             jumpButton[1].click()
-            sleep(5000);
-            click("免费领取");
+            sleep(3000);
+            click(850,1480); // 收集肥料
             sleep(2000);
-            let handBtn = text("光效 光效").depth(12).indexInParent(0).clickable().findOne(5000);
-            log(handBtn);
-            click(handBtn.bounds().left,handBtn.bounds().top);
+            depth(13).text("图片").findOnce() && (shifei = depth(13).text("图片").findOnce().parent()) && click(shifei.bounds().centerX(),shifei.bounds().centerY());
             sleep(2000);
-            back();
-            sleep(2000);
+            let i = 0;
+            while (!text("已签到").exists() && i++<3) {
+                back();
+                sleep(2000);
+            }
         } else if (jumpButton[0].match(/.*淘金币.*/)) {
             console.log('进行' + jumpButton[0] + '任务')
-            jumpButton[1].click()            
+            jumpButton[1].click()
+            
+            console.hide()
+            click(635,145); // 又可能还有别的脚本的框没有关闭    
             sleep(5000);
-            let todayCoinBtn = text("今日签到").findOne(1000);
-            todayCoinBtn && click(todayCoinBtn.bounds().centerX(),todayCoinBtn.bounds().centerY()) && sleep(5000);
+            
 
             let returnCoinBtn = text("购物返").findOne(1000);
             returnCoinBtn && click(returnCoinBtn.bounds().centerX(),returnCoinBtn.bounds().centerY()) && sleep(5000);
-            back();
-            sleep(2000);
+
+            let todayCoinBtn = text("今日签到").findOne(1000);
+            if(todayCoinBtn){
+              log("点击[今日签到]");
+              click(todayCoinBtn.bounds().centerX(),todayCoinBtn.bounds().centerY()) && sleep(5000);
+            }else{
+              log("没有找到[今日签到], 直接点击坐标");
+              click(540,300);
+            }
+            console.show();
+            let i = 0;
+            while (!text("已签到").exists() && i++<3) {
+                back();
+                sleep(5000);
+            }
         } else if (jumpButton[0].match(/领现金/)) {
             console.log('进行' + jumpButton[0] + '任务')
             jumpButton[1].click()
