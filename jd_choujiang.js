@@ -460,9 +460,7 @@ function openBox() {
         console.log('未能找到抽奖提示')
         return false
     }
-
-    let count = anchor.parent().child(1).text()
-    if (!parseInt(count)) {
+    
     let count = parseInt(anchor.parent().child(1).text())
     if (!count) {
         continueNoRewardTimes++;
@@ -541,14 +539,13 @@ function openBox() {
             while(!(anchor = text('剩余抽奖次数').findOne(3000)) && tryCount-->0){
                 back();            
             }
-            let count = anchor.parent().child(1).text()
-            if (!parseInt(count)) {
+            let count = parseInt(anchor.parent().child(1).text())
+            if (!count) {
                 log("已经没有抽奖次数")
                 break;
             }
         }
-    }
-    }
+    }    
     return true
 }
 
