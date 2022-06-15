@@ -1,4 +1,4 @@
-const VERSION = '2022618-18'
+const VERSION = '2022618-20'
 
 if (!auto.service) {
     toast('无障碍服务未启动！退出！')
@@ -67,7 +67,7 @@ device.keepScreenDim(60 * 60 * 1000)
 function registerKey() {
     try {
         events.observeKey()
-    } catch(err) {
+    } catch (err) {
         console.log('监听音量键停止失败，应该是无障碍权限出错，请关闭软件后台任务重新运行。')
         console.log('如果还是不行可以重启手机尝试。')
         quit()
@@ -211,48 +211,58 @@ try {
         }
     }
 
-    // 打开淘宝活动页面
-    console.log('正在打开淘宝...')
-    var url = 'pages.tmall.com/wow/z/hdwk/20220618/gamehome?disableNav=YES'
-
-    app.startActivity({
-        action: "VIEW",
-        data: "taobao://" + url
-    })
-    sleep(2000)
-
-    console.log('等待页面加载...')
-
     try {
-        textMatches(/领喵币/).findOne(20000)
-        console.log('准备打开任务列表')
-        sleep(2000)
-        let c = findTextDescMatchesTimeout(/领喵币/, 1000)
-        if (c) {
-            console.log('使用默认方法尝试打开任务列表')
-            c.click()
-        } else {
-            throw '无法找到任务列表入口'
-        }
-        if (!textContains('当前进度').findOne(8000)) {
-            console.log('默认方式打开失败，二次尝试')
-            console.log('首先检测弹窗')
-            for (let i = 0; i < 2 && text('关闭').findOne(2000); i++) { // 关闭弹窗
-                console.log('检测到弹窗，关闭')
-                click('关闭')
-                sleep(2000)
-            }
-            console.log('出现未能自动关闭的弹窗请手动关闭')
+        if (autoOpen) {
+            // 打开淘宝活动页面
+            console.log('正在打开淘宝...')
+            var url = 'pages.tmall.com/wow/z/hdwk/20220618/gamehome?disableNav=YES'
+
+            app.startActivity({
+                action: "VIEW",
+                data: "taobao://" + url
+            })
             sleep(2000)
-            // let right = c.bounds().right
-            // let left = c.bounds().left
-            // let top = c.bounds().top
-            // let bottom = c.bounds().bottom
-            // click(random(right,left), random(top, bottom))
-            click(c.bounds().centerX(), c.bounds().centerY())
-            console.log('已点击，等待任务列表出现')
+
+            console.log('等待页面加载...')
+            textMatches(/领喵币/).findOne(20000)
+            console.log('准备打开任务列表')
+            sleep(2000)
+
+            let c = findTextDescMatchesTimeout(/领喵币/, 1000)
+            if (c) {
+                console.log('使用默认方法尝试打开任务列表')
+                c.click()
+            } else {
+                throw '无法找到任务列表入口'
+            }
             if (!textContains('当前进度').findOne(8000)) {
-                throw '无法打开任务列表'
+                console.log('默认方式打开失败，二次尝试')
+                console.log('首先检测弹窗')
+                for (let i = 0; i < 2 && text('关闭').findOne(2000); i++) { // 关闭弹窗
+                    console.log('检测到弹窗，关闭')
+                    click('关闭')
+                    sleep(2000)
+                }
+                console.log('出现未能自动关闭的弹窗请手动关闭')
+                sleep(2000)
+                // let right = c.bounds().right
+                // let left = c.bounds().left
+                // let top = c.bounds().top
+                // let bottom = c.bounds().bottom
+                // click(random(right,left), random(top, bottom))
+                click(c.bounds().centerX(), c.bounds().centerY())
+                console.log('已点击，等待任务列表出现')
+                if (!textContains('当前进度').findOne(8000)) {
+                    throw '无法打开任务列表'
+                }
+            }
+        } else {
+            console.log('请在30秒内打开淘宝活动页，并打开任务列表')
+            if (textContains('当前进度').findOne(30000)) {
+                console.log('已打开，继续任务')
+            } else {
+                console.log('未能检测到任务列表，退出')
+                quit()
             }
         }
         console.log('准备搜索任务')

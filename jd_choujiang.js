@@ -1,7 +1,7 @@
-const VERSION = '2022618-19'
+const VERSION = '2022618-20'
 
 // 达到多少次没有抽奖资格就认为今天的任务已经完成了
-const MAX_NO_REWARD_TIMES = 10;
+const MAX_NO_REWARD_TIMES = 5;
 // 连续没有抽奖资格的次数
 var continueNoRewardTimes = 0;
 
@@ -139,13 +139,13 @@ function getCoin() {
     //         return false
     //     }
     } else {
-        let coins = anchor.parent().find(textMatches(/\d{4,}/)); // Android 8 适配
+        let coins = anchor.parent().find(textMatches(/\d{4,}/)); // Android 9 适配
         if(coins.size()>0){
-          coin = coins.get(0).text()
-          if(coin){
-            return parseInt(coin)
+            coin = coins.get(0).text()
+            if(coin){
+                return parseInt(coin)
             } else {
-                let coins = anchor.parent().find(textMatches(/\d{3,}/).indexInParent(1)); // Android 8 适配
+                let coins = anchor.parent().find(textMatches(/\d{3,}/).indexInParent(1)); // Android 9 适配
                 if (coins.size() > 0) {
                     coin = coins.get(0).text()
                     if (coin) {
@@ -163,7 +163,28 @@ function getCoin() {
 
 // 打开抽奖页
 function openPage() {
-    // Android 8 的 去使用奖励 后面带了1个空格 , [去使用奖励 ]
+    let continueTravelBtn = textMatches("(继续环游|立即抽奖|开心收下).*").findOne(1000);
+    if (continueTravelBtn) {
+    continueTravelBtn
+        .parent()
+        .find(
+        clickable(true)
+            .className("android.view.View")
+            .boundsInside(
+            continueTravelBtn.bounds().right,
+            200,
+            device.width + 100,
+            device.height / 3
+            )
+        )
+        .forEach((item, index) => {
+        //log(item);
+        item.click();
+        log("关闭弹窗[%s]",continueTravelBtn.text());
+        sleep(1000);
+        });
+    }
+    // Android 9 的 去使用奖励 后面带了1个空格 , [去使用奖励 ]
     let anchor = className('android.view.View').filter(function (w) {
         if (w.clickable() && ((w.text() && w.text().match(/去使用奖励/)) || (w.desc() && w.desc().match(/去使用奖励/)))) {
             return true
@@ -195,7 +216,7 @@ function openPage() {
         click(sign.bounds().centerX(), sign.bounds().centerY());
     }
 
-    if(!text('剩余抽奖次数').findOne(8000)){
+    if(!text('剩余抽奖次数').findOne(4000)){
         log("使用方式二打开抽奖页面")
         click(sign.bounds().centerX(),sign.bounds().centerY());
     }
@@ -234,7 +255,7 @@ function findTasks() {
     if (anchor.child(1).clickable()) {
         anchor.child(1).click()
     } else {
-        anchor.child(2).click() // 京东11.0.4 Android 8 适配
+        anchor.child(2).click() // 京东11.0.4 Android 9 适配
     }
     sleep(5000)
     let go = text('去完成').findOnce()
@@ -388,8 +409,7 @@ function cartTask() {
         } catch (e) {
             console.error(e);
             console.log('加购失败')
-            back();
-            return false
+            break;
         }
         sleep(2000)
     }
@@ -434,84 +454,100 @@ function doTask(task) {
 // 抽奖
 function openBox() {
     console.log('关闭任务列表')
-    textContains('签到').findOne(5000).parent().parent().child(1).click()
+    textContains('签到').findOne(5000) && textContains('签到').findOne(5000).parent().parent().child(1).click()
     let anchor = text('剩余抽奖次数').findOne(8000)
     if (!anchor) {
         console.log('未能找到抽奖提示')
         return false
     }
+
     let count = anchor.parent().child(1).text()
     if (!parseInt(count)) {
+    let count = parseInt(anchor.parent().child(1).text())
+    if (!count) {
         continueNoRewardTimes++;
         console.log('没有抽奖次数连续第%s次，返回',continueNoRewardTimes)
         return true
     }
-    console.log('进行抽奖，由于无法判断是否已经开盒，所以每个盒子都点一遍')
+    // console.log('进行抽奖，由于无法判断是否已经开盒，所以每个盒子都点一遍')
     continueNoRewardTimes = 0;
     let box = anchor.parent().parent().children()
-    for (let i = 0; i < 6; i++) {
-        console.log('打开第' + (i+1) + '个盒子')
-        if(device.sdkInt!=28){ // 不是 Android8
-            box[i].click()
-        }else{
-            // Android 8 下面 大概率.click()无效, 使用模拟点击
-            click(box[i].bounds().centerX(),box[i].bounds().centerY())
+    for (let loop = 0; loop < Math.ceil(count / 6); loop++) {
+        console.log('进行第' + (loop + 1) + '轮抽奖')
+        let i = 0;
+        box.forEach((item, index) => {  
+            // 找 小手
+            let handBtn = textMatches("开好礼")
+            .boundsInside(
+                item.bounds().left + 1,
+                item.bounds().top + item.bounds().height() * 0.5,
+                item.bounds().left + item.bounds().width() * 1.5,
+                item.bounds().top + item.bounds().height() * 1.5
+            )
+            .findOnce();
+            if(handBtn){
+                log("第%s个盒子开始没有开过",(index+1));
+                i = index;
+                return true;
+            }
+        });
+        for (i; i < 6; i++) {
+            console.log('打开第' + (i + 1) + '个盒子')
+            if(device.sdkInt!=28){ // 不是 Android 9
+                box[i].click()
+            }else{
+                // Android 9 下面 大概率.click()无效, 使用模拟点击
+                click(box[i].bounds().centerX(),box[i].bounds().centerY())
+            }
+            sleep(3000)
+            console.log('检测弹窗')
+            let title = textMatches("(恭喜|已完成).*").findOne(5000); // 点击未打开箱子的情况下, 有次数会获取奖品, 无次数会弹出任务列表
+            if (title) {
+                // console.log('关闭弹窗')
+                // title = title.parent()
+                // title.child(title.childCount() - 2).click()
+                if(title.text().indexOf("恭喜")!=-1){
+                    title.parent() && title.parent().parent()
+                        .find(text("")
+                        .clickable()
+                        .className("android.view.View")
+                        .boundsInside(
+                        title.bounds().right,
+                        title.bounds().top - 500,
+                        device.width +100,
+                        title.bounds().top
+                        ))
+                        .forEach((item, index) => {
+                        //log(item);
+                        // log(item.depth());
+                        // log(item.indexInParent());
+                        item.click();
+                        });
+                }else{                    
+                    text("").clickable().className("android.view.View")
+                    .boundsInside(title.bounds().centerX(), title.bounds().centerY()-300, device.width+100, title.bounds().centerY())
+                        .find()
+                        .forEach((item, index) => {
+                            log("已经没有抽奖次数");
+                            i=6;
+                            item.click();
+                        });                     
+                }
+                sleep(3000)
+            } else {
+                console.log('没有弹窗')
+            }
+            let tryCount = 2;
+            while(!(anchor = text('剩余抽奖次数').findOne(3000)) && tryCount-->0){
+                back();            
+            }
+            let count = anchor.parent().child(1).text()
+            if (!parseInt(count)) {
+                log("已经没有抽奖次数")
+                break;
+            }
         }
-        console.log('检测弹窗') 
-        let title = textMatches("(恭喜|已完成).*").findOne(5000); // 点击未打开箱子的情况下, 有次数会获取奖品, 无次数会弹出任务列表
-        // 关闭 中奖啦 页面
-        if (title) {
-        // title = title.parent();
-        // if (
-        //   title
-        //     .child(title.childCount() - 2)
-        //     .text()
-        //     .indexOf("已放入我的") != -1
-        // ) {
-        sleep(2000)
-        if(title.text().indexOf("恭喜")!=-1){
-            text("")
-                .clickable()
-                .className("android.view.View")
-                .boundsInside(
-                title.bounds().right,
-                title.bounds().top - 300,
-                device.width - 1,
-                title.bounds().top
-                )
-                .find()
-                .forEach((item, index) => {
-                // log(item);
-                // log(item.depth());
-                // log(item.indexInParent());
-                item.click();
-                });
-        // } else {
-        //   title.child(title.childCount() - 2).click();
-        // }
-        }else{
-            
-            text("").clickable().className("android.view.View")
-            .boundsInside(title.bounds().centerX(), title.bounds().centerY()-300, device.width+100, title.bounds().centerY())
-                .find()
-                .forEach((item, index) => {
-                    log("已经没有抽奖次数");
-                    i=6;
-                    item.click();
-                });
-             
-        }
-        sleep(1000);
-        }    
-        
-        while(!(anchor = text('剩余抽奖次数').findOne(3000))){
-            back();            
-        }
-        let count = anchor.parent().child(1).text()
-        if (!parseInt(count)) {
-            log("已经没有抽奖次数")
-            break;
-        }
+    }
     }
     return true
 }
