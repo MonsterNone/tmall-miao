@@ -1,6 +1,6 @@
 "ui";
 
-const VERSION = '2022618-21'
+const VERSION = '202211-A'
 
 ui.layout(
     <frame>
@@ -9,15 +9,15 @@ ui.layout(
             <button id="consolePermission" text="2. 授予悬浮窗权限" />
             <button id="startJDTask" text="3-1. 开始京东任务" /> 
             <button id="startTask" text="3-2. 开始淘宝任务" />
-            <button id="startJDChoujiang" text="3-3. 开始京东热爱奇旅抽奖任务(Beta 2)" /> 
-            <button id="tb" textColor="blue" text="4-1. 领取天猫618现金红包" />
-            <button id="jd" textColor="blue" text="4-2. 领取京东618现金红包（口令6.9更新）" />
-            {/* <button id="specialTask" text="5. 淘宝618主会场" /> */}
+            {/* <button id="startJDChoujiang" text="3-3. 开始京东热爱奇旅抽奖任务(Beta 2)" />  */}
+            <button id="tb" textColor="blue" text="4-1. 领取天猫双十一专享红包（尚未开始）" />
+            <button id="jd" textColor="blue" text="4-2. 领取京东双十一专享红包（尚未开始）" />
+            {/* <button id="specialTask" text="5. 淘宝双十一主会场" /> */}
             {/* <button id="caidan" text="5. 完成天猫开彩蛋任务" /> */}
             {/* <button id="butie" text="天猫百亿补贴会场，真补贴，真划算" /> */}
-            <button id="showHb" text="消灭红包！旧的不去新的不来！" textColor="red" />
-            <button id="showHC" text="618大促会场直达（6.4更新）" textColor="red" />
-            <button id="showQun" text="加入618活动助力群" />
+            {/* <button id="showHb" text="消灭红包！旧的不去新的不来！" textColor="red" /> */}
+            <button id="showHC" text="双十一大促会场直达" textColor="red" />
+            <button id="showQun" text="加入双十一活动助力群" />
             <button id="showQun2" text="加入内部优惠线报群" />
             {/* <button id="feedback" text="正版发布地址！小心病毒盗版！" /> */}
             <button id="checkUpdate" text="检查更新（需要联网）" />
@@ -36,6 +36,7 @@ ui.layout(
             <text id="ver" line="1" />
         </vertical>
         <vertical id="qun" visibility="gone" bg="#ffffff">
+            <text id="guild" text="新上线互助QQ频道，人数更多功能更全！点击本行文字加入！" textSize="40sp" textColor="red" gravity="center" />
             <img id="jiaQun" src="file://res/qun.png" />
             <text text="互助QQ群：533943195，点击图片自动跳转手机QQ添加" textSize="20sp" gravity="center" />
             <button id="hideQun" style="Widget.AppCompat.Button.Colored" text="隐藏" />
@@ -53,13 +54,13 @@ ui.layout(
             <button id="hideHb" style="Widget.AppCompat.Button.Colored" text="隐藏" />
         </vertical>
         <vertical id="huichang" visibility="gone" bg="#ffffff" paddingTop="50" paddingLeft="20" paddingRight="20">
-            <button id="jdHuichang" text="京东618主会场" />
-            <button id="yushou" text="天猫618主会场" />
-            <button id="jdRexiao" text="京东实时热销榜，低价羊毛大额券" />
+            <button id="jdHuichang" text="京东双十一主会场" />
+            <button id="yushou" text="天猫双十一主会场(22日开启)" />
+            <button id="jdRexiao" text="京东家电双11预售提前购" />
+            <button id="jdYouhui" text="京东手机双十一专区" />
             <button id="chaoshi" text="猫超内购清单" />
-            <button id="rexiao" text="天猫超级U选，精选爆品史低价" />
-            <button id="jianhuo" text="天猫618内购清单" />
-            <button id="jdYouhui" text="京东618万券齐发会场" />
+            {/* <button id="rexiao" text="天猫超级U选，精选爆品史低价" /> */}
+            {/* <button id="jianhuo" text="天猫双十一内购清单" /> */}
             {/* <button id="jdChaoshi" text="京东超市，上午下单下午收货，领券满200-20" />
             <button id="jdBaihuo" text="京东新百货，美妆居家钟表运动，送货上门正品保障" /> */}
             <button id="hideHC" style="Widget.AppCompat.Button.Colored" text="隐藏" />
@@ -80,17 +81,17 @@ ui.consolePermission.click(function () {
 })
 
 ui.startTask.click(function () {
-    // alert('淘宝活动尚未开始', '5.29天猫活动上线，敬请关注脚本更新')
-    engines.execScriptFile('./start.js')
+    alert('淘宝活动尚未开始', '敬请关注脚本更新')
+    // engines.execScriptFile('./start.js')
 })
 
 ui.startJDTask.click(function () {
     engines.execScriptFile('./start_jd.js')
 })
 
-ui.startJDChoujiang.click(function () {
-    engines.execScriptFile('./jd_choujiang.js')
-})
+// ui.startJDChoujiang.click(function () {
+//     engines.execScriptFile('./jd_choujiang.js')
+// })
 
 // ui.butie.click(function () {
 //     const url = 'm.tb.cn/h.4yiqRfM'
@@ -142,6 +143,13 @@ ui.jiaQun.click(function () {
     })
 })
 
+ui.guild.click(function() {
+    app.startActivity({
+        action: 'VIEW',
+        data: 'mqqapi://forward/url?url_prefix=aHR0cHM6Ly9xdW4ucXEuY29tL3Fxd2ViL3F1bnByby9zaGFyZT9pbnZpdGVDb2RlPTFYMGNzSFRXU1Bu'
+    })
+})
+
 ui.jiaQun2.click(function () {
     app.startActivity({
         action: 'VIEW',
@@ -157,34 +165,34 @@ ui.checkUpdate.click(function () {
     threads.start(checkUpdate)
 })
 
-ui.jd.click(function() {
-    dialogs.build({
-        title: "是否使用复制京口令领取？",
-        content: "实测京口令领取红包更大，如果app未自动弹出口令请使用默认方式",
-        positive: "京口令方式",
-        negative: "默认方式"
-    }).on("positive", ()=>{
-        setClip("88:/￥AC096DapYao%")
-        rawInput("已复制，部分机型限制剪贴板，可以手动复制", "88:/￥AC096DapYao%")
-        if (launch('com.jingdong.app.mall')) {
-            toast('京口令已复制，打开京东App领取')
-        } else {
-            toast('京口令已复制，请手动打开京东App领取')
-        }
-    }).on("negative", ()=>{
-        const url = 'https://u.jd.com/JdHdlPN'
-        openJdUrl(url)
-    }).show()
-})
+// ui.jd.click(function() {
+//     dialogs.build({
+//         title: "是否使用复制京口令领取？",
+//         content: "实测京口令领取红包更大，如果app未自动弹出口令请使用默认方式",
+//         positive: "京口令方式",
+//         negative: "默认方式"
+//     }).on("positive", ()=>{
+//         setClip("88:/￥AC096DapYao%")
+//         rawInput("已复制，部分机型限制剪贴板，可以手动复制", "88:/￥AC096DapYao%")
+//         if (launch('com.jingdong.app.mall')) {
+//             toast('京口令已复制，打开京东App领取')
+//         } else {
+//             toast('京口令已复制，请手动打开京东App领取')
+//         }
+//     }).on("negative", ()=>{
+//         const url = 'https://u.jd.com/JdHdlPN'
+//         openJdUrl(url)
+//     }).show()
+// })
  
-ui.tb.click(function () {
-    const url = 'https://s.m.taobao.com/h5?q=秘密通道505'
-    openTbUrl(url)
-})
+// ui.tb.click(function () {
+//     const url = 'https://s.m.taobao.com/h5?q=惊喜不断来dddd'
+//     openTbUrl(url)
+// })
 
-ui.showHb.click(function () {
-    ui.hb.visibility = 0
-})
+// ui.showHb.click(function () {
+//     ui.hb.visibility = 0
+// })
 
 ui.showHC.click(function () {
     ui.main.visibility = 8
@@ -192,32 +200,33 @@ ui.showHC.click(function () {
 })
 
 ui.yushou.click(function () {
-    const url = 'https://s.m.taobao.com/h5?q=秘密通道505'
+    // const url = 'https://s.m.taobao.com/h5?q=惊喜不断来dddd'
+    const url = 'https://m.tb.cn/h.UeNxVFJ'
     openTbUrl(url)
 })
 
-ui.jianhuo.click(function () {
-    const url = 'https://m.tb.cn/h.fFOaz9Q'
-    openTbUrl(url)
-})
+// ui.jianhuo.click(function () {
+//     const url = 'https://m.tb.cn/h.fFOaz9Q'
+//     openTbUrl(url)
+// })
 
 ui.chaoshi.click(function () {
-    const url = 'https://m.tb.cn/h.fFVitYE'
+    const url = 'https://s.click.taobao.com/mHrbfSu'
     openTbUrl(url)
 })
 
-ui.rexiao.click(function () {
-    const url = 'https://m.tb.cn/h.ftnQgmQ'
-    openTbUrl(url)
-})
+// ui.rexiao.click(function () {
+//     const url = 'https://m.tb.cn/h.ftnQgmQ'
+//     openTbUrl(url)
+// })
 
 ui.jdHuichang.click(function () {
-    const url = 'https://u.jd.com/JdHdlPN'
+    const url = 'https://u.jd.com/kIbdeYx'
     openJdUrl(url)
 })
 
 ui.jdRexiao.click(function () {
-    const url = 'https://u.jd.com/lM2fjiR'
+    const url = 'https://u.jd.com/kLbG0Q7'
     openJdUrl(url)
 })
 
@@ -232,7 +241,7 @@ ui.temai.click(function () {
 })
 
 ui.jdYouhui.click(function () {
-    const url = 'https://u.jd.com/JLbfhhN'
+    const url = 'https://u.jd.com/kKbqMrP'
     openJdUrl(url)
 })
 
@@ -278,7 +287,7 @@ ui.hideHb.click(function () {
 
 function autoPerReq() {
     if (!auto.service) {
-        alert('找到618任务助手，勾选授予权限', '部分机型在“已安装服务”中')
+        alert('找到双十一任务助手，勾选授予权限', '部分机型在“已安装服务”中')
     }
     auto.waitFor()
     toast('无障碍权限授予成功')
@@ -300,7 +309,7 @@ function checkUpdate() {
         return
     }
     toast('正在检查更新')
-    const versionUrl = 'https://gh.api.99988866.xyz/https://raw.githubusercontent.com/MonsterNone/tmall-miao/master/version'
+    const versionUrl = 'https://cdn.jsdelivr.net/gh/MonsterNone/tmall-miao/raw/master/version'
     http.get(versionUrl, {}, function (res, err) {
         if (err) {
             toast('检查更新出错，请手动前往项目地址查看')
