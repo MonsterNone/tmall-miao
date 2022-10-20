@@ -363,7 +363,7 @@ function joinTask() {
         console.show()
 
         console.log('准备点击入会按钮')
-        let j = textMatches(/^确认授权(并加入店铺会员)*$/).findOne(5000)
+        let j = textMatches(/^确认授权(并加入店铺会员)*$|.*立即开通.*/).findOne(5000)
         if (!j) {
             console.log('无法找到入会按钮，失败')
             return false
