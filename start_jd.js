@@ -126,16 +126,16 @@ function openAndInto() {
 
 // 获取金币数量
 function getCoin() {
-    let anchor = descMatches(/.*解锁.*还需.*/).clickable().findOne(5000)
+    let anchor = text('消耗').findOne(5000)
     if (!anchor) {
-        console.log('找不到解锁控件')
+        console.log('找不到消耗控件')
         return false
     }
-    let coin = anchor.parent().child(1).text()
+    let coin = anchor.parent().parent().parent().parent().child(1).text()
     if (coin) {
         return parseInt(coin)
     } else {
-        coin = anchor.parent().child(2).text() // 有可能中间插了个控件
+        coin = anchor.parent().parent().parent().parent().child(2).text() // 有可能中间插了个控件
         if (coin) {
             return parseInt(coin)
         } else {
@@ -147,12 +147,12 @@ function getCoin() {
 // 打开任务列表
 function openTaskList() {
     console.log('打开任务列表')
-    let taskListButtons = descMatches(/.*解锁.*还需.*/).clickable().findOne(20000)
+    let taskListButtons = text('消耗').findOne(20000)
     if (!taskListButtons) {
         console.log('未能打开任务列表，请关闭京东重新运行！')
         quit()
     }
-    taskListButtons = taskListButtons.parent().children()
+    taskListButtons = taskListButtons.parent().parent().parent().parent().children()
 
     let taskListButton = taskListButtons.findOne(boundsInside(device.width/2, 0, device.width, device.height).clickable())
 
@@ -201,16 +201,16 @@ function getTaskByText() {
         tCount = 0,
         tTitle = null
     console.log('寻找未完成任务...')
-    let taskButtons = textMatches(/去完成|去领取/).find()
+    let taskButtons = textMatches(/去完成|去领取|去打卡/).find()
     if (!taskButtons.empty()) { // 如果找不到任务，直接返回
         for (let i = 0; i < taskButtons.length; i++) {
             tButton = taskButtons[i]
-            if (tButton.text() == '去领取') {
-                console.log('领取奖励')
-                tButton.click()
-                sleep(500)
-                continue
-            }
+            // if (tButton.text() == '去领取') {
+            //     console.log('领取奖励')
+            //     tButton.click()
+            //     sleep(500)
+            //     continue
+            // }
 
             let tmp = tButton.parent().child(tButton.indexInParent() - 1)
             tTitle = tmp.child(0).text()
@@ -482,6 +482,12 @@ function wallTask() {
 function doTask(tButton, tText, tTitle) {
     let clickFlag = tButton.click()
     let tFlag
+
+    if (tButton.text() == '去领取') {
+        tFlag = clickFlag // 打卡点击一次即可
+        return tFlag
+    }
+
     if (tText.match(/浏览并关注.*s|浏览.*s/)) {
         console.log('进行', tText)
         tFlag = timeTask()
@@ -509,7 +515,7 @@ function doTask(tButton, tText, tTitle) {
         } 
         tFlag = wallTask()
         return tFlag // 品牌墙无需backToList，提前返回
-    } else if (tText.match(/打卡/)) {
+    } else if (tText.match(/打卡|首页/)) {
         tFlag = clickFlag // 打卡点击一次即可
         return tFlag
     } else if (tText.match(/组队/)) {
@@ -519,7 +525,7 @@ function doTask(tButton, tText, tTitle) {
             console.log('当前仍在任务列表，说明已经完成任务且领取奖励，返回')
             return true
         } else {
-            if (textContains('锦鲤').findOne(10000)) {
+            if (textContains('我的金币').findOne(10000)) {
                 console.log('进入到组队页面，返回')
                 backToList()
                 console.log('等待领取奖励')
