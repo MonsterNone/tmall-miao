@@ -1,4 +1,4 @@
-const VERSION = '20221111-B'
+const VERSION = '20221111-C'
 
 if (!auto.service) {
     toast('无障碍服务未启动！退出！')
@@ -204,7 +204,7 @@ function getTaskByText() {
     let taskButtons = textMatches(/去完成|去领取|去打卡/).find()
     if (!taskButtons.empty()) { // 如果找不到任务，直接返回
         for (let i = 0; i < taskButtons.length; i++) {
-            tButton = taskButtons[i]
+            let button = taskButtons[i]
             // if (tButton.text() == '去领取') {
             //     console.log('领取奖励')
             //     tButton.click()
@@ -212,7 +212,7 @@ function getTaskByText() {
             //     continue
             // }
 
-            let tmp = tButton.parent().child(tButton.indexInParent() - 1)
+            let tmp = button.parent().child(button.indexInParent() - 1)
             tTitle = tmp.child(0).text()
             let r = tTitle.match(/(\d*)\/(\d*)/)
             if (!r) continue
@@ -223,7 +223,8 @@ function getTaskByText() {
             if (tCount) { // 如果数字相减不为0，证明没完成
                 tText = tmp.child(1).text()
                 if (!autoJoin && tText.match(/成功入会/)) continue
-                if (tText.match(/下单|小程序/)) continue
+                if (tTitle.match(/下单|小程序/)) continue
+                tButton = button
                 break
             }
         }
@@ -255,7 +256,7 @@ function timeTask() {
     console.log('等待浏览任务完成...')
     if (textMatches(/.*滑动浏览.*[^可]得.*/).findOne(10000)) {
         console.log('模拟滑动')
-        swipe(device.width / 2, device.height - 200, device.width / 2 + 20, device.height - 250, 500)
+        swipe(device.width / 2, device.height - 200, device.width / 2 + 20, device.height - 300, 500)
     }
     let c = 0
     while (c < 40) { // 0.5 * 40 = 20 秒，防止死循环
@@ -337,7 +338,7 @@ function joinTask() {
         let float = className('android.widget.ImageView')
             .filter(function (w) {
                 let b = w.bounds()
-                return b.left <= x && b.right >= x && b.top <= y && b.bottom >= y
+                return b.left <= x && b.right >= x && b.top <= y && b.bottom >= y // TODO: 检测和原控件是否完全一致
             }).findOnce()
 
         if (float) {
@@ -605,7 +606,7 @@ try {
     } else {
         alert('请关闭弹窗后立刻手动打开京东App进入活动页面，并打开任务列表', '限时30秒')
         console.log('请手动打开京东App进入活动页面，并打开任务列表')
-        if (!findTextDescMatchesTimeout(/累计任务奖励/, 30000)) {
+        if (!findTextDescMatchesTimeout(/累计任务奖励|互动攻略/, 30000)) {
             console.log('未能进入活动，请重新运行！')
             quit()
         }
