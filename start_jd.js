@@ -338,7 +338,7 @@ function joinTask() {
         let float = className('android.widget.ImageView')
             .filter(function (w) {
                 let b = w.bounds()
-                return b.left <= x && b.right >= x && b.top <= y && b.bottom >= y && b != check
+                return b.left <= x && b.right >= x && b.top <= y && b.bottom >= y && b.centerX() != x && b.centerY() != y
             }).findOnce()
 
         if (float) {
