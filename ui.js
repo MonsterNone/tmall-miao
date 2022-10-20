@@ -54,7 +54,8 @@ ui.layout(
             <button id="hideHb" style="Widget.AppCompat.Button.Colored" text="隐藏" />
         </vertical>
         <vertical id="huichang" visibility="gone" bg="#ffffff" paddingTop="50" paddingLeft="20" paddingRight="20">
-            <button id="jdHuichang" text="京东双十一主会场" />
+            <button id="jdHuichang" text="京东双十一预售" />
+            <buttion id="jdMain" text="京东双十一主会场" />
             <button id="yushou" text="天猫双十一主会场(22日开启)" />
             <button id="jdRexiao" text="京东家电双11预售提前购" />
             <button id="jdYouhui" text="京东手机双十一专区" />
@@ -222,6 +223,11 @@ ui.chaoshi.click(function () {
 
 ui.jdHuichang.click(function () {
     const url = 'https://u.jd.com/kIbdeYx'
+    openJdUrl(url)
+})
+
+ui.jdMain.click(function () {
+    const url = 'https://u.jd.com/kL6ggFg'
     openJdUrl(url)
 })
 
