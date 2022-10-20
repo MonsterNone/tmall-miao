@@ -256,7 +256,7 @@ function timeTask() {
     console.log('等待浏览任务完成...')
     if (textMatches(/.*滑动浏览.*[^可]得.*/).findOne(10000)) {
         console.log('模拟滑动')
-        swipe(device.width / 2, device.height - 200, device.width / 2 + 20, device.height - 300, 500)
+        swipe(device.width / 2, device.height - 200, device.width / 2 + 20, device.height - 500, 500)
     }
     let c = 0
     while (c < 40) { // 0.5 * 40 = 20 秒，防止死循环
