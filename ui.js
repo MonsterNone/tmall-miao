@@ -1,6 +1,6 @@
 "ui";
 
-const VERSION = '20221111-A'
+const VERSION = '20221111-B'
 
 ui.layout(
     <frame>
@@ -36,9 +36,9 @@ ui.layout(
             <text id="ver" line="1" />
         </vertical>
         <vertical id="qun" visibility="gone" bg="#ffffff">
-            <text id="guild" text="新上线互助QQ频道，人数更多功能更全！点击本行文字加入！" textSize="40sp" textColor="red" gravity="center" />
             <img id="jiaQun" src="file://res/qun.png" />
-            <text text="互助QQ群：533943195，点击图片自动跳转手机QQ添加" textSize="20sp" gravity="center" />
+            <text text="互助QQ群：533943195，点击图片跳转QQ加群" textSize="20sp" gravity="center" />
+            <text id="guild" text="新上线互助QQ频道，人数更多功能更全！点击本行文字加入！" textSize="40sp" textColor="red" gravity="center" />
             <button id="hideQun" style="Widget.AppCompat.Button.Colored" text="隐藏" />
         </vertical>
         <vertical id="qun2" visibility="gone" bg="#ffffff">
