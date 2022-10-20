@@ -329,16 +329,16 @@ function joinTask() {
             }
         }
 
-        check = check.bounds()
+        check = check
         log("最终[确认授权]前面选项框坐标为:", check);
-        let x = check.centerX()
-        let y = check.centerY()
+        let x = check.bounds().centerX()
+        let y = check.bounds().centerY()
 
         console.log('检测是否有遮挡')
         let float = className('android.widget.ImageView')
             .filter(function (w) {
                 let b = w.bounds()
-                return b.left <= x && b.right >= x && b.top <= y && b.bottom >= y // TODO: 检测和原控件是否完全一致
+                return b.left <= x && b.right >= x && b.top <= y && b.bottom >= y && b != check
             }).findOnce()
 
         if (float) {
