@@ -298,8 +298,16 @@ function joinTask() {
     } else {
         sleep(2000)
         if (check.text().match(/.*立即开卡.*|.*解锁全部会员福利.*|授权解锁/)) {
+            if (check.text() == '授权信息，解锁全部会员福利') {
+                check = text('去升级').findOnce()
+                if (!check) {
+                    console.log('此类型，无法找到升级按钮，入会失败')
+                    return false
+                }
+            }
+
             let btn = check.bounds()
-            console.log('即将点击开卡/解锁福利，自动隐藏控制台')
+            console.log('即将点击开卡/解锁福利/升级，自动隐藏控制台')
             sleep(500)
             console.hide()
             sleep(500)
@@ -315,22 +323,14 @@ function joinTask() {
             return false
         }
 
-        // text("instruction_icon") 全局其实都只有一个, 保险起见, 使用两个parent来限定范围
-        let checks = check.parent().parent().find(text("instruction_icon"));
-        if (checks.size() > 0) {
-            // 解决部分店铺(欧莱雅)开卡无法勾选 [确认授权] 的问题           
-            check = checks.get(0);
+       
+        if (check.indexInParent() == 2) {
+            check = check.parent().child(1)
         } else {
-            if (check.indexInParent() >= 6) {
-                check = check.parent().child(5)
-            } else if (check.text() == '确认授权即同意') {
-                check = check.parent().child(0)
-            } else {
-                check = check.parent().parent().child(5)
-            }
+            let anchor = textContains('*****').findOnce()
+            check = anchor.parent().child(anchor.indexInParent() + 2)
         }
 
-        check = check
         log("最终[确认授权]前面选项框坐标为:", check);
         let x = check.bounds().centerX()
         let y = check.bounds().centerY()
