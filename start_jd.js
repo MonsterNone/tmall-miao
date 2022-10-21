@@ -600,8 +600,9 @@ try {
             console.log('未能进入活动，请重新运行！')
             quit()
         }
-        console.log('成功进入活动')
+        console.log('成功进入活动，向下滑动一段以保证控件全部出现')
         sleep(2000)
+        scrollDown();
 
         openTaskList();
     } else {
