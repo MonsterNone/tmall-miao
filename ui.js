@@ -10,8 +10,8 @@ ui.layout(
             <button id="startJDTask" text="3-1. 开始京东任务" /> 
             <button id="startTask" text="3-2. 开始淘宝任务" />
             {/* <button id="startJDChoujiang" text="3-3. 开始京东热爱奇旅抽奖任务(Beta 2)" />  */}
-            <button id="tb" textColor="blue" text="4-1. 领取天猫双十一专享红包（尚未开始）" />
-            <button id="jd" textColor="blue" text="4-2. 领取京东双十一专享红包（尚未开始）" />
+            <button id="tb" textColor="blue" text="4-1. 领取天猫双十一专享红包（24日开始）" />
+            <button id="jd" textColor="blue" text="4-2. 领取京东双十一专享红包（28日开始）" />
             {/* <button id="specialTask" text="5. 淘宝双十一主会场" /> */}
             {/* <button id="caidan" text="5. 完成天猫开彩蛋任务" /> */}
             {/* <button id="butie" text="天猫百亿补贴会场，真补贴，真划算" /> */}
@@ -72,6 +72,16 @@ ui.layout(
 ui.ver.setText('\n版本：' + VERSION)
 
 threads.start(checkUpdate)
+
+confirm('为了保证运行效果，软件启动后会清空一次剪贴板，不允许请点取消')
+    .then(value => {
+        if (value) {
+            setClip('')
+            toast('剪贴板清空')
+        } else {
+            toast('不清空')
+        }
+    })
 
 ui.automationPermission.click(function () {
     threads.start(autoPerReq)
@@ -186,10 +196,10 @@ ui.checkUpdate.click(function () {
 //     }).show()
 // })
  
-// ui.tb.click(function () {
-//     const url = 'https://s.m.taobao.com/h5?q=惊喜不断来dddd'
-//     openTbUrl(url)
-// })
+ui.tb.click(function () {
+    const url = 'https://s.m.taobao.com/h5?q=惊喜不断来dddd'
+    openTbUrl(url)
+})
 
 // ui.showHb.click(function () {
 //     ui.hb.visibility = 0
@@ -201,8 +211,7 @@ ui.showHC.click(function () {
 })
 
 ui.yushou.click(function () {
-    // const url = 'https://s.m.taobao.com/h5?q=惊喜不断来dddd'
-    const url = 'https://m.tb.cn/h.UeNxVFJ'
+    const url = 'https://s.m.taobao.com/h5?q=惊喜不断来dddd'
     openTbUrl(url)
 })
 
