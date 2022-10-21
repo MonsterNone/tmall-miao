@@ -563,7 +563,7 @@ function signTask() {
     sign.click()
     sleep(3000)
 
-    sign = textMatches(/.*点我签到.*|.*明天继续来.*/).findOne(5000)
+    sign = textMatches(/.*立即签到.*|.*明天继续来.*/).findOne(5000)
     if (!sign) {
         console.log('未找到签到按钮')
         return false
