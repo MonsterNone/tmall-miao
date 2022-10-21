@@ -503,7 +503,7 @@ function doTask(tButton, tText, tTitle) {
     } else if (tText.match(/入会/)) {
         console.log('进行入会任务')
         tFlag = joinTask()
-    } else if (tText.match(/浏览可得|浏览并关注|晚会/)) {
+    } else if (tText.match(/浏览可得|浏览并关注|晚会|互动/)) {
         if (tTitle.match(/种草城/)) {
             tFlag = shopTask()
         } else {
