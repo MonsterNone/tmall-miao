@@ -201,7 +201,7 @@ function getTaskByText() {
         tCount = 0,
         tTitle = null
     console.log('寻找未完成任务...')
-    let taskButtons = textMatches(/去完成|去领取|去打卡/).find()
+    let taskButtons = textMatches(/^(去完成|去领取|去打卡)$/).find() // TODO: 累计任务奖励的去领取
     if (!taskButtons.empty()) { // 如果找不到任务，直接返回
         for (let i = 0; i < taskButtons.length; i++) {
             let button = taskButtons[i]
