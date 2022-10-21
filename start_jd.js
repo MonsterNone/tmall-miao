@@ -301,7 +301,7 @@ function joinTask() {
             if (check.text() == '授权信息，解锁全部会员福利') {
                 check = text('去升级').findOnce()
                 if (!check) {
-                    console.log('此类型，无法找到升级按钮，入会失败')
+                    console.log('此类型无法找到升级按钮，入会失败')
                     return false
                 }
             }
