@@ -668,7 +668,7 @@ try {
             quit()
         }
 
-        if (taskText.match(/品牌墙/)) { // 品牌墙0/3只需要一次完成
+        if (taskText.match(/品牌墙|种草城/)) { // 品牌墙0/3只需要一次完成
             taskCount = 1
         }
 
