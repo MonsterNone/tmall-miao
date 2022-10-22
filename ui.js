@@ -56,7 +56,7 @@ ui.layout(
         <vertical id="huichang" visibility="gone" bg="#ffffff" paddingTop="50" paddingLeft="20" paddingRight="20">
             <button id="jdHuichang" text="京东双十一预售" />
             <button id="jdMain" text="京东双十一主会场" />
-            <button id="yushou" text="天猫双十一主会场(22日开启)" />
+            <button id="yushou" text="天猫双十一主会场" />
             <button id="jdRexiao" text="京东家电双11预售提前购" />
             <button id="jdYouhui" text="京东手机双十一专区" />
             <button id="chaoshi" text="猫超内购清单" />
@@ -211,7 +211,8 @@ ui.showHC.click(function () {
 })
 
 ui.yushou.click(function () {
-    const url = 'https://s.m.taobao.com/h5?q=惊喜不断来dddd'
+    // const url = 'https://s.m.taobao.com/h5?q=惊喜不断来dddd'
+    const url = 'https://s.click.taobao.com/ErINXSu'
     openTbUrl(url)
 })
 
