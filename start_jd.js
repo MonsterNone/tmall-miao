@@ -205,6 +205,10 @@ function getTaskByText() {
     if (!taskButtons.empty()) { // 如果找不到任务，直接返回
         for (let i = 0; i < taskButtons.length; i++) {
             let button = taskButtons[i]
+            if (button.indexInParent() == 0) {
+                console.log('跳过，如果找不到任务可能是累计任务奖励的去领取按钮造成冲突；将去领取都领了试试。出现此问题麻烦反馈！谢谢！')
+                continue
+            }
             // if (tButton.text() == '去领取') {
             //     console.log('领取奖励')
             //     tButton.click()

@@ -236,7 +236,8 @@ try {
         }
 
         console.log('任务完成，返回')
-
+        
+        sleep(1000)
         back()
         sleep(1000)
         if (!textContains('mMk3').findOne(5000)) {
