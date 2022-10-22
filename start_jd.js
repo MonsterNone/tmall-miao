@@ -254,18 +254,20 @@ function backToList() {
 // 浏览n秒的任务
 function timeTask() {
     console.log('等待浏览任务完成...')
-    if (textMatches(/.*滑动浏览.*[^可]得.*/).findOne(10000)) {
-        sleep(1000)
-        console.log('模拟滑动')
-        swipe(device.width / 2, device.height - 200, device.width / 2 + 20, device.height - 500, 1000)
-    }
     let c = 0
-    while (c < 40) { // 0.5 * 40 = 20 秒，防止死循环
+    let swipe_flag = 0
+    while (c < 40) { // 0.5 * 60 = 20 秒，防止死循环
         if ((textMatches(/获得.*?金币/).exists() || descMatches(/获得.*?金币/).exists())) // 等待已完成出现
             break
         if ((textMatches(/已浏览/).exists() || descMatches(/已浏览/).exists())) { // 失败
             console.log('上限，返回刷新任务列表')
             return false
+        }
+        if (!swipe_flag && textMatches(/.*滑动浏览.*[^可]得.*/).exists()) {
+            console.log('进行模拟滑动')
+            swipe_flag = 1
+            swipe(device.width / 2, device.height - 200, device.width / 2 + 20, device.height - 500, 2000)
+            console.log('模拟滑动完成，继续等待浏览任务')
         }
 
         // 弹窗处理
