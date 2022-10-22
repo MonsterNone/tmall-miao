@@ -1,4 +1,4 @@
-const VERSION = '2022618-21'
+const VERSION = '20221111-G'
 
 if (!auto.service) {
     toast('无障碍服务未启动！退出！')
@@ -236,7 +236,7 @@ try {
         }
 
         console.log('任务完成，返回')
-        
+
         sleep(1000)
         back()
         sleep(1000)

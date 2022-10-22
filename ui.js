@@ -1,6 +1,6 @@
 "ui";
 
-const VERSION = '20221111-F'
+const VERSION = '20221111-G'
 
 ui.layout(
     <frame>
@@ -9,10 +9,10 @@ ui.layout(
             <button id="consolePermission" text="2. 授予悬浮窗权限" />
             <button id="startJDTask" text="3-1. 开始京东任务" /> 
             <button id="startTask" text="3-2. 开始淘宝任务" />
+            <button id="specialTask" text="3-3. 淘宝能量红包任务（新增！）" />
             {/* <button id="startJDChoujiang" text="3-3. 开始京东热爱奇旅抽奖任务(Beta 2)" />  */}
             <button id="tb" textColor="blue" text="4-1. 领取天猫双十一专享红包（24日开始）" />
             <button id="jd" textColor="blue" text="4-2. 领取京东双十一专享红包（28日开始）" />
-            {/* <button id="specialTask" text="5. 淘宝双十一主会场" /> */}
             {/* <button id="caidan" text="5. 完成天猫开彩蛋任务" /> */}
             {/* <button id="butie" text="天猫百亿补贴会场，真补贴，真划算" /> */}
             {/* <button id="showHb" text="消灭红包！旧的不去新的不来！" textColor="red" /> */}
@@ -119,9 +119,9 @@ ui.startJDTask.click(function () {
 //     openTbUrl(url)
 // })
 
-// ui.specialTask.click(function() {
-//     engines.execScriptFile('./special.js')
-// })
+ui.specialTask.click(function() {
+    engines.execScriptFile('./tb_nengliang.js')
+})
 
 // ui.caidan.click(function () {
 //     engines.execScriptFile('./egg.js')
