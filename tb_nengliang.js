@@ -260,7 +260,7 @@ try {
     } else {
         console.log('请在30秒内打开淘宝做任务赢红包活动页，28￥ CZ3457 f3Y02ARyptF￥ https://m.tb.cn/h.UVYqH6w')
     }
-    if (!text('预售玩法会场').findOne(20000)) {
+    if (!textContains('mMk3').findOne(30000)) {
         console.log('未能检测到任务页，退出')
         quit()
     }
