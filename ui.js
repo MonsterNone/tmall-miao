@@ -163,7 +163,7 @@ ui.layout(
                 {/* 第三页 */}
                 <frame>
                     <vertical>
-                        <text text="使用脚本有极小机率导致任务收益减少。系统webview版本（设置-应用管理中查看）需在101以下，否则京东任务无法正常进行。" textStyle="italic" textColor="red" textSize="18sp" />
+                        <text text="软件已做防检测处理。如果你的手机内装有其他辅助，有可能导致任务收益减少。" textStyle="italic" textColor="red" textSize="18sp" />
                         <text text="运行前需要首先在首页授予权限！！！！" textStyle="bold" textColor="red" textSize="30sp" />
                         <card w="{{parseInt(deviceWidth*0.95) + 'px'}}" h="{{parseInt(deviceHeight*0.1) + 'px'}}"
                             margin="5" cardCornerRadius="15dp" cardBackgroundColor="#f5f5f5" gravity="left">
@@ -186,15 +186,20 @@ ui.layout(
                                 </horizontal>
                             </vertical>
                         </card>
-                        <card>
-                        </card>
+                        <scroll>
+                            <vertical margin="5">
+                                <text textStyle="bold">使用帮助：</text>
+                                <text>在首页授予权限模块，给予软件运行必要的权限，之后点击上方按钮即可完成任务。</text>
+                                <text textStyle="bold">可能出现的问题：</text>
+                                <text>Q: 点击开始运行，跳转到通知权限页面</text>
+                                <text>A: 华为/荣耀机型需要在设置-应用管理内手动打开软件的悬浮窗权限</text>
+                                <text>Q: 京东任务检测不到活动、无法检测到任务列表等情况</text>
+                                <text>A: 请首先检查系统WebView版本，高于101版本则无法获取到控件（检测方法：手机设置-应用列表，勾选显示系统应用后搜索webview）</text>
+                            </vertical>
+                        </scroll>
                     </vertical>
                 </frame>
                 {/* 第四页 */}
-                <frame>
-                    <text>等待撰写</text>
-                </frame>
-                {/* 第五页 */}
                 <frame>
                     <com.stardust.autojs.core.console.ConsoleView id="console" h="*" />
                 </frame>
@@ -204,7 +209,7 @@ ui.layout(
 );
 
 activity.setSupportActionBar(ui.toolbar);
-ui.viewpager.setTitles(["主页", "双11会场", "进行任务", "帮助", "日志"]);
+ui.viewpager.setTitles(["主页", "双11会场", "进行任务", "日志"]);
 ui.tabs.setupWithViewPager(ui.viewpager);
 ui.viewpager.setOnPageChangeListener({
     //已选定页面发生改变时触发
