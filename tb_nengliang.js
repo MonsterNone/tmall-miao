@@ -292,12 +292,13 @@ try {
         } else if (jumpButton[0].match(/浏览点击/)) {
             jumpButton[1].click()
             sleep(2000)
-            console.log('点击10个商品')
+            let count = jumpButton[0].match(/点击(\d*)个/)[1]
+            console.log('点击',count,'个商品')
             let buttons = text('马上抢').find()
             if (!buttons) {
                 throw '无法找到马上抢按钮，任务失败'
             }
-            for (let i = 0; i < 10; i++) {
+            for (let i = 0; i < count; i++) {
                 console.log('点击第', i + 1, '个')
                 sleep(2000)
                 buttons[i].click()
