@@ -298,16 +298,30 @@ try {
             if (!buttons) {
                 throw '无法找到马上抢按钮，任务失败'
             }
+            for (let i = 0; i < 3 && count > buttons.length; i++) {
+                    console.log('商品数量不足，向下翻页')
+                    scrollDown()
+                    sleep(2000)
+                    buttons = text('马上抢').find()
+            }
+            if (count > buttons.length) {
+                throw '商品数量不足，退出任务'
+            }
+            
             for (let i = 0; i < count; i++) {
                 console.log('点击第', i + 1, '个')
                 sleep(2000)
                 buttons[i].click()
-                console.log('10秒后返回')
-                sleep(10 * 1000)
-                back()
-                if (!textContains('mMk3').findOne(5000)) {
-                    console.log('似乎没有返回，二次尝试')
+                console.log('等待加载')
+                if (text('加入购物车').findOne(10000) || currentActivity() == 'com.taobao.android.detail.wrapper.activity.DetailActivity') {
+                    console.log('商品打开成功，返回')
                     back()
+                    if (!textContains('mMk3').findOne(10000)) {
+                        console.log('似乎没有返回，二次尝试')
+                        back()
+                    }
+                } else {
+                    throw '商品页未能加载'
                 }
             }
         } else {
