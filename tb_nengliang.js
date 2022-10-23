@@ -192,13 +192,10 @@ try {
 
         // textMatches(/.*浏览得奖励.*/).findOne(15000) // 等待开始
         let finish_c = 0
-        let swipe_flag = 0
         while (finish_c < 50) { // 0.5 * 50 = 25 秒，防止死循环
             if (!swipe_flag && textMatches(/.*下拉浏览.*/).exists()) {
                 console.log('进行模拟滑动')
-                swipe_flag = 1
                 swipe(device.width / 2, device.height - 200, device.width / 2 + 20, device.height - 500, 2000)
-                console.log('模拟滑动完成，继续等待浏览任务')
             }
             let finish_reg = /.*任务已完成[\s\S]*|.*失败.*|.*上限.*|.*开小差.*/
             if (textMatches(finish_reg).exists() || descMatches(finish_reg).exists()) { // 等待已完成出现，有可能失败
