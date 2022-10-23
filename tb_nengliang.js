@@ -193,7 +193,7 @@ try {
         // textMatches(/.*浏览得奖励.*/).findOne(15000) // 等待开始
         let finish_c = 0
         while (finish_c < 50) { // 0.5 * 50 = 25 秒，防止死循环
-            if (!swipe_flag && textMatches(/.*下拉浏览.*/).exists()) {
+            if (textMatches(/.*下拉浏览.*/).exists()) {
                 console.log('进行模拟滑动')
                 swipe(device.width / 2, device.height - 200, device.width / 2 + 20, device.height - 500, 2000)
             }
