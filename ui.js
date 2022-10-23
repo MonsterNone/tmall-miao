@@ -16,142 +16,144 @@ ui.layout(
             <viewpager id="viewpager">
                 {/* 第一页 */}
                 <frame>
-                    <vertical gravity="center|top">
-                        <card w="{{parseInt(deviceWidth*0.95) + 'px'}}" h="{{parseInt(deviceHeight*0.05) + 'px'}}"
-                            margin="5" cardCornerRadius="15dp" cardBackgroundColor="#f5f5f5" gravity="left">
-                            <horizontal gravity="center_vertical" padding="5" id="checkUpdate">
-                                <text size="20sp" text="当前版本：{{VERSION}}，点击检查更新" />
+                    <scroll>
+                        <vertical gravity="center|top">
+                            <card w="{{parseInt(deviceWidth*0.95) + 'px'}}" h="{{parseInt(deviceHeight*0.05) + 'px'}}"
+                                margin="5" cardCornerRadius="15dp" cardBackgroundColor="#f5f5f5" gravity="left">
+                                <horizontal gravity="center_vertical" padding="5" id="checkUpdate">
+                                    <text size="20dp" text="当前版本：{{VERSION}}，点击检查更新" />
+                                </horizontal>
+                            </card>
+                            <card w="{{parseInt(deviceWidth*0.95) + 'px'}}" h="{{parseInt(deviceHeight*0.1) + 'px'}}"
+                                margin="5" cardCornerRadius="15dp" cardBackgroundColor="#f5f5f5" gravity="left">
+                                <vertical gravity="center_vertical">
+                                    <text gravity="center" color="red" text="运行脚本请先授予权限" size="20dp" />
+                                    <horizontal gravity="center">
+                                        <button id="consolePermission" text="1. 授予悬浮窗权限" />
+                                        <button id="automationPermission" text="2. 授予无障碍权限" />
+                                    </horizontal>
+                                </vertical>
+                            </card>
+                            <horizontal gravity="center|top">
+                                <card w="{{parseInt(deviceWidth*0.45) + 'px'}}" h="auto"
+                                    margin="5" cardCornerRadius="15dp" cardBackgroundColor="#f5f5f5" gravity="left">
+                                    <vertical gravity="center_vertical">
+                                        <text gravity="center" color="blue" text="加入双十一互助组队" size="20dp" />
+                                        <vertical gravity="center">
+                                            <button id="guild" text="QQ频道（推荐）" />
+                                            <button id="qun" text="QQ群：533943195" />
+                                        </vertical>
+                                    </vertical>
+                                </card>
+                                <card w="{{parseInt(deviceWidth*0.45) + 'px'}}" h="auto"
+                                    margin="5" cardCornerRadius="15dp" cardBackgroundColor="#f5f5f5" gravity="left">
+                                    <vertical gravity="center_vertical">
+                                        <text gravity="center" color="blue" text="加入好价神车线报群" size="20dp" />
+                                        <vertical gravity="center">
+                                            <button id="guild1" text="QQ频道（推荐）" />
+                                            <button id="qun2" text="QQ群：740725146" />
+                                        </vertical>
+                                    </vertical>
+                                </card>
                             </horizontal>
-                        </card>
-                        <card w="{{parseInt(deviceWidth*0.95) + 'px'}}" h="{{parseInt(deviceHeight*0.1) + 'px'}}"
-                            margin="5" cardCornerRadius="15dp" cardBackgroundColor="#f5f5f5" gravity="left">
-                            <vertical gravity="center_vertical">
-                                <text gravity="center" color="red" text="运行脚本请先授予权限" size="20sp" />
-                                <horizontal gravity="center">
-                                    <button id="consolePermission" text="1. 授予悬浮窗权限" />
-                                    <button id="automationPermission" text="2. 授予无障碍权限" />
-                                </horizontal>
-                            </vertical>
-                        </card>
-                        <horizontal gravity="center|top">
-                            <card w="{{parseInt(deviceWidth*0.45) + 'px'}}" h="{{parseInt(deviceHeight*0.15) + 'px'}}"
-                                margin="5" cardCornerRadius="15dp" cardBackgroundColor="#f5f5f5" gravity="left">
+                            <card w="{{parseInt(deviceWidth*0.95) + 'px'}}" h="auto"
+                                margin="5" cardCornerRadius="15dp" cardBackgroundColor="#FFC0BE" gravity="left">
                                 <vertical gravity="center_vertical">
-                                    <text gravity="center" color="blue" text="加入双十一互助组队" size="20sp" />
-                                    <vertical gravity="center">
-                                        <button id="guild" text="QQ频道（推荐）" />
-                                        <button id="qun" text="QQ群：533943195" />
-                                    </vertical>
+                                    <text gravity="center" color="#E8110F" text="双十一必领无门槛红包！！" size="30dp" />
+                                    <text gravity="center" color="#E8110F" text="↓↓↓↓↓↓点击下方色块领取↓↓↓↓↓↓" />
+                                    <horizontal gravity="center">
+                                        <card w="{{parseInt(deviceWidth*0.45) + 'px'}}" h="{{parseInt(deviceHeight*0.15) + 'px'}}"
+                                            margin="5" cardCornerRadius="15dp" cardBackgroundColor="#FF82A9"
+                                            gravity="left" id="tbHb">
+                                            <vertical gravity="center_vertical">
+                                                <text gravity="center" color="#FFF000" text="淘宝红包！！" size="30dp" />
+                                                <text gravity="center">(10.24开始发放)</text>
+                                            </vertical>
+                                        </card>
+                                        <card w="{{parseInt(deviceWidth*0.45) + 'px'}}" h="{{parseInt(deviceHeight*0.15) + 'px'}}"
+                                            margin="5" cardCornerRadius="15dp" cardBackgroundColor="#FF82A9"
+                                            gravity="left" id="jdHb">
+                                            <vertical gravity="center_vertical">
+                                                <text gravity="center" color="#FFF000" text="京东红包！！" size="30dp" />
+                                                <text gravity="center">领完退出再进，每日3次</text>
+                                                <text gravity="center">(10.28开始发放)</text>
+                                            </vertical>
+                                        </card>
+                                    </horizontal>
                                 </vertical>
                             </card>
-                            <card w="{{parseInt(deviceWidth*0.45) + 'px'}}" h="{{parseInt(deviceHeight*0.15) + 'px'}}"
-                                margin="5" cardCornerRadius="15dp" cardBackgroundColor="#f5f5f5" gravity="left">
-                                <vertical gravity="center_vertical">
-                                    <text gravity="center" color="blue" text="加入好价神车线报群" size="20sp" />
-                                    <vertical gravity="center">
-                                        <button id="guild1" text="QQ频道（推荐）" />
-                                        <button id="qun2" text="QQ群：740725146" />
-                                    </vertical>
-                                </vertical>
-                            </card>
-                        </horizontal>
-                        <card w="{{parseInt(deviceWidth*0.95) + 'px'}}" h="{{parseInt(deviceHeight*0.25) + 'px'}}"
-                            margin="5" cardCornerRadius="15dp" cardBackgroundColor="#FFC0BE" gravity="left">
-                            <vertical gravity="center_vertical">
-                                <text gravity="center" color="#E8110F" text="双十一必领无门槛红包！！" size="30sp" />
-                                <text gravity="center" color="#E8110F" text="↓↓↓↓↓↓点击下方色块领取↓↓↓↓↓↓" />
-                                <horizontal gravity="center">
-                                    <card w="{{parseInt(deviceWidth*0.45) + 'px'}}" h="{{parseInt(deviceHeight*0.15) + 'px'}}"
-                                        margin="5" cardCornerRadius="15dp" cardBackgroundColor="#FF82A9"
-                                        gravity="left" id="tbHb">
-                                        <vertical gravity="center_vertical">
-                                            <text gravity="center" color="#FFF000" text="淘宝红包！！" size="30sp" />
-                                            <text gravity="center">(10.24开始发放)</text>
-                                        </vertical>
-                                    </card>
-                                    <card w="{{parseInt(deviceWidth*0.45) + 'px'}}" h="{{parseInt(deviceHeight*0.15) + 'px'}}"
-                                        margin="5" cardCornerRadius="15dp" cardBackgroundColor="#FF82A9"
-                                        gravity="left" id="jdHb">
-                                        <vertical gravity="center_vertical">
-                                            <text gravity="center" color="#FFF000" text="京东红包！！" size="30sp" />
-                                            <text gravity="center">领完退出再进，每日3次</text>
-                                            <text gravity="center">(10.28开始发放)</text>
-                                        </vertical>
-                                    </card>
-                                </horizontal>
-                            </vertical>
-                        </card>
-                        <text text="仅供学习参考，请勿用于非法用途，请于下载后24小时内删除。用户使用脚本导致的任何可能结果与开发者无关。" />
-                        <text text="1. 本程序基于Auto.JS（感谢原开发者）" />
-                        <text autoLink="web" text="2. 本程序完全免费，基础代码全部开源，项目地址：https://github.com/MonsterNone/tmall-miao" />
-                        <text text="3. 由于调用淘宝打开页面，部分手机管家可能会误报为诱导软件，实际上本软件绝无任何病毒行为。" />
-                    </vertical>
+                            <text text="仅供学习参考，请勿用于非法用途，请于下载后24小时内删除。用户使用脚本导致的任何可能结果与开发者无关。" />
+                            <text text="1. 本程序基于Auto.JS（感谢原开发者）" />
+                            <text autoLink="web" text="2. 本程序完全免费，基础代码全部开源，项目地址：https://github.com/MonsterNone/tmall-miao" />
+                            <text text="3. 由于调用淘宝打开页面，部分手机管家可能会误报为诱导软件，实际上本软件绝无任何病毒行为。" />
+                        </vertical>
+                    </scroll>
                 </frame>
                 {/* 第二页 */}
                 <frame>
                     <horizontal gravity="center_vertical|center_horizontal">
-                        <card w="{{parseInt(deviceWidth*0.48) + 'px'}}" h="{{parseInt(deviceHeight*0.8) + 'px'}}"
+                        <card w="{{parseInt(deviceWidth*0.48) + 'px'}}" h="*"
                             margin="5" cardCornerRadius="15dp" cardBackgroundColor="#f5f5f5" gravity="center|top">
                             <vertical>
-                                <text textStyle="bold" gravity="center|top" textSize="18sp">淘宝会场(可滑动查看)</text>
+                                <text textStyle="bold" gravity="center|top" textSize="18dp">淘宝会场(可滑动查看)</text>
                                 <scroll gravity="center|top">
                                     <vertical>
-                                        <card marginBottom="10dp" h="*" w="*" cardBackgroundColor="#f5f5f5" id="tb1">
+                                        <card marginBottom="10dp" h="auto" w="*" cardBackgroundColor="#f5f5f5" id="tb1">
                                             <vertical>
                                                 <img layout_gravity="center" src="file://res/activity/tb1.jpeg" />
-                                                <text gravity="center" textSize="16sp">淘宝预售主会场</text>
+                                                <text gravity="center" textSize="16dp">淘宝预售主会场</text>
                                             </vertical>
                                         </card>
-                                        <card marginBottom="10dp" h="*" w="*" cardBackgroundColor="#f5f5f5" id="tb2">
+                                        <card marginBottom="10dp" h="auto" w="*" cardBackgroundColor="#f5f5f5" id="tb2">
                                             <vertical>
                                                 <img layout_gravity="center" src="file://res/activity/tb2.jpeg" />
-                                                <text gravity="center" textSize="16sp">猫超内购清单</text>
+                                                <text gravity="center" textSize="16dp">猫超内购清单</text>
                                             </vertical>
                                         </card>
-                                        <card marginBottom="10dp" h="*" w="*" cardBackgroundColor="#f5f5f5" id="tb4">
+                                        <card marginBottom="10dp" h="auto" w="*" cardBackgroundColor="#f5f5f5" id="tb4">
                                             <vertical>
                                                 <img layout_gravity="center" src="file://res/activity/tb4.jpeg" />
-                                                <text gravity="center" textSize="16sp">预售实时热销榜</text>
+                                                <text gravity="center" textSize="16dp">预售实时热销榜</text>
                                             </vertical>
                                         </card>
-                                        <card marginBottom="10dp" h="*" w="*" cardBackgroundColor="#f5f5f5" id="tb3">
+                                        <card marginBottom="10dp" h="auto" w="*" cardBackgroundColor="#f5f5f5" id="tb3">
                                             <vertical>
                                                 <img layout_gravity="center" src="file://res/activity/tb3.jpeg" />
-                                                <text gravity="center" textSize="16sp">聚划算百亿补贴</text>
+                                                <text gravity="center" textSize="16dp">聚划算百亿补贴</text>
                                             </vertical>
                                         </card>
                                     </vertical>
                                 </scroll>
                             </vertical>
                         </card>
-                        <card w="{{parseInt(deviceWidth*0.48) + 'px'}}" h="{{parseInt(deviceHeight*0.8) + 'px'}}"
+                        <card w="{{parseInt(deviceWidth*0.48) + 'px'}}" h="*"
                             margin="5" cardCornerRadius="15dp" cardBackgroundColor="#f5f5f5" gravity="center|top">
                             <vertical>
-                                <text textStyle="bold" gravity="center|top" textSize="18sp">京东会场(可滑动查看)</text>
+                                <text textStyle="bold" gravity="center|top" textSize="18dp">京东会场(可滑动查看)</text>
                                 <scroll gravity="center|top">
                                     <vertical>
-                                        <card marginBottom="10dp" h="*" w="*" cardBackgroundColor="#f5f5f5" id="jd1">
+                                        <card marginBottom="10dp" h="auto" w="*" cardBackgroundColor="#f5f5f5" id="jd1">
                                             <vertical>
                                                 <img layout_gravity="center" src="file://res/activity/jd1.jpg" />
-                                                <text gravity="center" textSize="16sp">京东预售主会场</text>
+                                                <text gravity="center" textSize="16dp">京东预售主会场</text>
                                             </vertical>
                                         </card>
-                                        <card marginBottom="10dp" h="*" w="*" cardBackgroundColor="#f5f5f5" id="jd2">
+                                        <card marginBottom="10dp" h="auto" w="*" cardBackgroundColor="#f5f5f5" id="jd2">
                                             <vertical>
                                                 <img layout_gravity="center" src="file://res/activity/jd2.jpg" />
-                                                <text gravity="center" textSize="16sp">爆款手机买贵1.2倍退差</text>
+                                                <text gravity="center" textSize="16dp">爆款手机买贵1.2倍退差</text>
                                             </vertical>
                                         </card>
-                                        <card marginBottom="10dp" h="*" w="*" cardBackgroundColor="#f5f5f5" id="jd4">
+                                        <card marginBottom="10dp" h="auto" w="*" cardBackgroundColor="#f5f5f5" id="jd4">
                                             <vertical>
                                                 <img layout_gravity="center" src="file://res/activity/jd4.jpg" />
-                                                <text gravity="center" textSize="16sp">家电双11预售提前购</text>
+                                                <text gravity="center" textSize="16dp">家电双11预售提前购</text>
                                             </vertical>
                                         </card>
-                                        <card marginBottom="10dp" h="*" w="*" cardBackgroundColor="#f5f5f5" id="jd3">
+                                        <card marginBottom="10dp" h="auto" w="*" cardBackgroundColor="#f5f5f5" id="jd3">
                                             <vertical>
                                                 <img layout_gravity="center" src="file://res/activity/jd3.jpg" />
-                                                <text gravity="center" textSize="16sp">爆款价同11.11，定金100抵1111</text>
+                                                <text gravity="center" textSize="16dp">爆款价同11.11，定金100抵1111</text>
                                             </vertical>
                                         </card>
                                     </vertical>
@@ -162,42 +164,44 @@ ui.layout(
                 </frame>
                 {/* 第三页 */}
                 <frame>
-                    <vertical>
-                        <text text="软件已做防检测处理。如果你的手机内装有其他辅助，有可能导致任务收益减少。" textStyle="italic" textColor="red" textSize="18sp" />
-                        <text text="运行前需要首先在首页授予权限！！！！" textStyle="bold" textColor="red" textSize="30sp" />
-                        <card w="{{parseInt(deviceWidth*0.95) + 'px'}}" h="{{parseInt(deviceHeight*0.1) + 'px'}}"
-                            margin="5" cardCornerRadius="15dp" cardBackgroundColor="#f5f5f5" gravity="left">
-                            <vertical gravity="center_vertical">
-                                <text gravity="center" text="淘宝任务" size="20sp" color="#FF6D31" />
-                                <horizontal gravity="center">
-                                    <button id="startTask" text="主活动" />
-                                    <button id="energyTask" text="能量红包任务" />
-                                    <button id="tbHb1" text="淘宝双十一红包（24日开启）" />
-                                </horizontal>
-                            </vertical>
-                        </card>
-                        <card w="{{parseInt(deviceWidth*0.95) + 'px'}}" h="{{parseInt(deviceHeight*0.1) + 'px'}}"
-                            margin="5" cardCornerRadius="15dp" cardBackgroundColor="#f5f5f5" gravity="left">
-                            <vertical gravity="center_vertical">
-                                <text gravity="center" text="京东任务" size="20sp" color="#FF6D31" />
-                                <horizontal gravity="center">
-                                    <button id="startJDTask" text="主活动" />
-                                    <button id="jdHb1" text="京东双十一红包（28日开启）" />
-                                </horizontal>
-                            </vertical>
-                        </card>
-                        <scroll>
-                            <vertical margin="5">
-                                <text textStyle="bold">使用帮助：</text>
-                                <text>在首页授予权限模块，给予软件运行必要的权限，之后点击上方按钮即可完成任务。</text>
-                                <text textStyle="bold">可能出现的问题：</text>
-                                <text>Q: 点击开始运行，跳转到通知权限页面</text>
-                                <text>A: 华为/荣耀机型需要在设置-应用管理内手动打开软件的悬浮窗权限</text>
-                                <text>Q: 京东任务检测不到活动、无法检测到任务列表等情况</text>
-                                <text>A: 请首先检查系统WebView版本，高于101版本则无法获取到控件（检测方法：手机设置-应用列表，勾选显示系统应用后搜索webview）</text>
-                            </vertical>
-                        </scroll>
-                    </vertical>
+                    <scroll>
+                        <vertical>
+                            <text text="软件已做防检测处理。如果你的手机内装有其他辅助，有可能导致任务收益减少。" textStyle="italic" textColor="red" textSize="18dp" />
+                            <text text="运行前需要首先在首页授予权限！！！！" textStyle="bold" textColor="red" textSize="30dp" />
+                            <card w="{{parseInt(deviceWidth*0.95) + 'px'}}" h="auto"
+                                margin="5" cardCornerRadius="15dp" cardBackgroundColor="#f5f5f5" gravity="left">
+                                <vertical gravity="center_vertical">
+                                    <text gravity="center" text="淘宝任务" size="20dp" color="#FF6D31" />
+                                    <horizontal gravity="center">
+                                        <button id="startTask" text="主活动" />
+                                        <button id="energyTask" text="能量红包任务" />
+                                        <button id="tbHb1" text="淘宝双十一红包（24日开启）" />
+                                    </horizontal>
+                                </vertical>
+                            </card>
+                            <card w="{{parseInt(deviceWidth*0.95) + 'px'}}" h="auto"
+                                margin="5" cardCornerRadius="15dp" cardBackgroundColor="#f5f5f5" gravity="left">
+                                <vertical gravity="center_vertical">
+                                    <text gravity="center" text="京东任务" size="20dp" color="#FF6D31" />
+                                    <horizontal gravity="center">
+                                        <button id="startJDTask" text="主活动" />
+                                        <button id="jdHb1" text="京东双十一红包（28日开启）" />
+                                    </horizontal>
+                                </vertical>
+                            </card>
+                            <scroll>
+                                <vertical margin="5">
+                                    <text textStyle="bold">使用帮助：</text>
+                                    <text>在首页授予权限模块，给予软件运行必要的权限，之后点击上方按钮即可完成任务。</text>
+                                    <text textStyle="bold">可能出现的问题：</text>
+                                    <text>Q: 点击开始运行，跳转到通知权限页面</text>
+                                    <text>A: 华为/荣耀机型需要在设置-应用管理内手动打开软件的悬浮窗权限</text>
+                                    <text>Q: 京东任务检测不到活动、无法检测到任务列表等情况</text>
+                                    <text>A: 请首先检查系统WebView版本，高于101版本则无法获取到控件（检测方法：手机设置-应用列表，勾选显示系统应用后搜索webview）</text>
+                                </vertical>
+                            </scroll>
+                        </vertical>
+                    </scroll>
                 </frame>
                 {/* 第四页 */}
                 <frame>
