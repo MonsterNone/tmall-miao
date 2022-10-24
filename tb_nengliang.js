@@ -291,7 +291,7 @@ try {
             sleep(2000)
             let count = jumpButton[0].match(/点击(\d*)个/)[1]
             console.log('点击', count, '个商品')
-            let buttons = textMatches(/.*马上抢.*|.*付定随机.*/).find()
+            let buttons = textMatches(/.*马上抢.*|.*付定随机.*|.*立付.*/).find()
             if (!buttons) {
                 throw '无法找到马上抢按钮，任务失败'
             }
