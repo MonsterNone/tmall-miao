@@ -299,7 +299,7 @@ try {
                 console.log('商品数量不足，向下翻页', buttons.length)
                 scrollDown()
                 sleep(2000)
-                buttons = text('马上抢').find()
+                buttons = textMatches(/.*马上抢.*|.*付定随机.*|.*立付.*/).find()
             }
             if (count > buttons.length) {
                 throw '商品数量不足，退出任务'
