@@ -290,21 +290,21 @@ try {
             jumpButton[1].click()
             sleep(2000)
             let count = jumpButton[0].match(/点击(\d*)个/)[1]
-            console.log('点击',count,'个商品')
-            let buttons = text('马上抢').find()
+            console.log('点击', count, '个商品')
+            let buttons = textMatches(/.*马上抢.*|.*付定随机.*/).find()
             if (!buttons) {
                 throw '无法找到马上抢按钮，任务失败'
             }
             for (let i = 0; i < 3 && count > buttons.length; i++) {
-                    console.log('商品数量不足，向下翻页')
-                    scrollDown()
-                    sleep(2000)
-                    buttons = text('马上抢').find()
+                console.log('商品数量不足，向下翻页', buttons.length)
+                scrollDown()
+                sleep(2000)
+                buttons = text('马上抢').find()
             }
             if (count > buttons.length) {
                 throw '商品数量不足，退出任务'
             }
-            
+
             for (let i = 0; i < count; i++) {
                 console.log('点击第', i + 1, '个')
                 sleep(2000)
