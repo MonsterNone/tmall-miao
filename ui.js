@@ -1,6 +1,6 @@
 "ui";
 
-const VERSION = '20221111-I'
+const VERSION = '20221111-J'
 
 const deviceWidth = device.width
 const deviceHeight = device.height
@@ -62,15 +62,15 @@ ui.layout(
                                     <text gravity="center" color="#E8110F" text="双十一必领无门槛红包！！" size="30dp" />
                                     <text gravity="center" color="#E8110F" text="↓↓↓↓↓↓点击下方色块领取↓↓↓↓↓↓" />
                                     <horizontal gravity="center">
-                                        <card w="{{parseInt(deviceWidth*0.45) + 'px'}}" h="{{parseInt(deviceHeight*0.15) + 'px'}}"
+                                        <card w="{{parseInt(deviceWidth*0.45) + 'px'}}" h="{{parseInt(deviceHeight*0.18) + 'px'}}"
                                             margin="5" cardCornerRadius="15dp" cardBackgroundColor="#FF82A9"
                                             gravity="left" id="tbHb">
                                             <vertical gravity="center_vertical">
                                                 <text gravity="center" color="#FFF000" text="淘宝红包！！" size="30dp" />
-                                                <text gravity="center">(10.24开始发放)</text>
+                                                <text gravity="center">(已经开始发放)</text>
                                             </vertical>
                                         </card>
-                                        <card w="{{parseInt(deviceWidth*0.45) + 'px'}}" h="{{parseInt(deviceHeight*0.15) + 'px'}}"
+                                        <card w="{{parseInt(deviceWidth*0.45) + 'px'}}" h="{{parseInt(deviceHeight*0.18) + 'px'}}"
                                             margin="5" cardCornerRadius="15dp" cardBackgroundColor="#FF82A9"
                                             gravity="left" id="jdHb">
                                             <vertical gravity="center_vertical">
@@ -98,10 +98,16 @@ ui.layout(
                                 <text textStyle="bold" gravity="center|top" textSize="18dp">淘宝会场(可滑动查看)</text>
                                 <scroll gravity="center|top">
                                     <vertical>
+                                        <card marginBottom="10dp" h="auto" w="*" cardBackgroundColor="#f5f5f5" id="tb5">
+                                            <vertical>
+                                                <img layout_gravity="center" src="file://res/activity/tb5.jpeg" />
+                                                <text gravity="center" textSize="16dp">淘宝预售主会场</text>
+                                            </vertical>
+                                        </card>
                                         <card marginBottom="10dp" h="auto" w="*" cardBackgroundColor="#f5f5f5" id="tb1">
                                             <vertical>
                                                 <img layout_gravity="center" src="file://res/activity/tb1.jpeg" />
-                                                <text gravity="center" textSize="16dp">淘宝预售主会场</text>
+                                                <text gravity="center" textSize="16dp">淘宝预售能量红包会场</text>
                                             </vertical>
                                         </card>
                                         <card marginBottom="10dp" h="auto" w="*" cardBackgroundColor="#f5f5f5" id="tb2">
@@ -174,8 +180,9 @@ ui.layout(
                                     <text gravity="center" text="淘宝任务" size="20dp" color="#FF6D31" />
                                     <horizontal gravity="center">
                                         <button id="startTask" text="主活动" />
-                                        <button id="energyTask" text="能量红包任务" />
-                                        <button id="tbHb1" text="淘宝双十一红包（24日开启）" />
+                                        <button id="energyTask" text="能量任务" />
+                                        <button id="huichangTask" text="会场任务" />
+                                        <button id="tbHb1" text="淘宝双十一红包" />
                                     </horizontal>
                                 </vertical>
                             </card>
@@ -185,7 +192,7 @@ ui.layout(
                                     <text gravity="center" text="京东任务" size="20dp" color="#FF6D31" />
                                     <horizontal gravity="center">
                                         <button id="startJDTask" text="主活动" />
-                                        <button id="jdHb1" text="京东双十一红包（28日开启）" />
+                                        <button id="jdHb1" text="京东双十一红包（28日中午12点开启）" />
                                     </horizontal>
                                 </vertical>
                             </card>
@@ -203,41 +210,41 @@ ui.layout(
                         </vertical>
                     </scroll>
                 </frame>
-                {/* 第四页 */}
+                {/* 第四页
                 <frame>
                     <com.stardust.autojs.core.console.ConsoleView id="console" h="*" />
-                </frame>
+                </frame> */}
             </viewpager>
         </vertical>
     </drawer>
 );
 
 activity.setSupportActionBar(ui.toolbar);
-ui.viewpager.setTitles(["主页", "双11会场", "进行任务", "日志"]);
+ui.viewpager.setTitles(["主页", "双11会场", "进行任务"]);
 ui.tabs.setupWithViewPager(ui.viewpager);
-ui.viewpager.setOnPageChangeListener({
-    //已选定页面发生改变时触发
-    onPageSelected: function (index) {
-        if (index == 4) {
-            /**控制台 */
-            ui.console.setConsole(runtime.console);
-            // ui.console.findViewById(org.autojs.autojs.R.id.input_container).setVisibility(android.view.View.GONE);
-            //ui.console.setConsole(org.autojs.autojs.autojs.AutoJs.getInstance().getGlobalConsole());            
+// ui.viewpager.setOnPageChangeListener({
+//     //已选定页面发生改变时触发
+//     onPageSelected: function (index) {
+//         if (index == 4) {
+//             /**控制台 */
+//             ui.console.setConsole(runtime.console);
+//             // ui.console.findViewById(org.autojs.autojs.R.id.input_container).setVisibility(android.view.View.GONE);
+//             //ui.console.setConsole(org.autojs.autojs.autojs.AutoJs.getInstance().getGlobalConsole());            
 
-            // 设置控制台字体颜色
-            let c = new android.util.SparseArray();
-            let Log = android.util.Log;
-            c.put(Log.VERBOSE, new java.lang.Integer(colors.parseColor("#dfc0c0c0")));
-            c.put(Log.DEBUG, new java.lang.Integer(colors.parseColor("#cc000000")));
-            c.put(Log.INFO, new java.lang.Integer(colors.parseColor("#ff64dd17")));
-            c.put(Log.WARN, new java.lang.Integer(colors.parseColor("#ff2962ff")));
-            c.put(Log.ERROR, new java.lang.Integer(colors.parseColor("#ffd50000")));
-            c.put(Log.ASSERT, new java.lang.Integer(colors.parseColor("#ffff534e")));
-            ui.console.setColors(c);
-            /**控制台 */
-        }
-    }
-})
+//             // 设置控制台字体颜色
+//             let c = new android.util.SparseArray();
+//             let Log = android.util.Log;
+//             c.put(Log.VERBOSE, new java.lang.Integer(colors.parseColor("#dfc0c0c0")));
+//             c.put(Log.DEBUG, new java.lang.Integer(colors.parseColor("#cc000000")));
+//             c.put(Log.INFO, new java.lang.Integer(colors.parseColor("#ff64dd17")));
+//             c.put(Log.WARN, new java.lang.Integer(colors.parseColor("#ff2962ff")));
+//             c.put(Log.ERROR, new java.lang.Integer(colors.parseColor("#ffd50000")));
+//             c.put(Log.ASSERT, new java.lang.Integer(colors.parseColor("#ffff534e")));
+//             ui.console.setColors(c);
+//             /**控制台 */
+//         }
+//     }
+// })
 
 threads.start(checkUpdate)
 
@@ -313,6 +320,7 @@ ui.tb1.click(function () { openTbUrl('https://s.click.taobao.com/UiWnRSu') })
 ui.tb2.click(function () { openTbUrl('https://s.click.taobao.com/0KclRSu') })
 ui.tb3.click(function () { openTbUrl('https://s.click.taobao.com/5ByfBSu') })
 ui.tb4.click(function () { openTbUrl('https://s.click.taobao.com/76MkRSu') })
+ui.tb5.click(function () { openTbUrl('https://s.m.taobao.com/h5?q=惊喜不断来dddd') })
 ui.jd1.click(function () { openJdUrl('https://u.jd.com/kdBs9Ry') })
 ui.jd2.click(function () { openJdUrl('https://u.jd.com/kCB6yl5') })
 ui.jd3.click(function () { openJdUrl('https://u.jd.com/kCBuyG7') })
@@ -325,6 +333,10 @@ ui.startTask.click(function () {
 
 ui.energyTask.click(function () {
     engines.execScriptFile('./tb_nengliang.js')
+})
+
+ui.huichangTask.click(function () {
+    engines.execScriptFile('./tb_huichang.js')
 })
 
 ui.startJDTask.click(function () {

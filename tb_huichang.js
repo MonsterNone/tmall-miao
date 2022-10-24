@@ -116,14 +116,14 @@ try {
 
     // 打开任务列表
     function openTaskList() {
-        let c = textContains('mMk3').findOne(5000)
+        let c = idContains('node_2_icon').findOne(5000)
         if (c) {
             console.log('使用默认方法尝试打开任务列表')
             c.click()
         } else {
             throw '无法找到任务列表入口'
         }
-        if (!textContains('lucky_detail').findOne(8000)) {
+        if (!textContains('task_detail').findOne(8000)) {
             console.log('默认方式打开失败，二次尝试')
             console.log('首先检测弹窗')
             for (let i = 0; i < 2 && text('关闭').findOne(2000); i++) { // 关闭弹窗
@@ -140,7 +140,7 @@ try {
             // click(random(right,left), random(top, bottom))
             click(c.bounds().centerX(), c.bounds().centerY())
             console.log('已点击，等待任务列表出现')
-            if (!textContains('mMk3').findOne(8000)) {
+            if (!idContains('node_2_icon').findOne(8000)) {
                 throw '无法打开任务列表'
             }
         }
@@ -193,7 +193,7 @@ try {
         // textMatches(/.*浏览得奖励.*/).findOne(15000) // 等待开始
         let finish_c = 0
         while (finish_c < 50) { // 0.5 * 50 = 25 秒，防止死循环
-            if (textMatches(/.*下拉浏览.*/).exists()) {
+            if (textMatches(/.*下拉浏览.*/).exists() || textContains('下滑').exists()) {
                 console.log('进行模拟滑动')
                 swipe(device.width / 2, device.height - 200, device.width / 2 + 20, device.height - 500, 2000)
             }
@@ -217,36 +217,28 @@ try {
 
         if (finish_c > 49) {
             console.log('未检测到任务完成标识。返回。')
-            // console.log('如果你认为这是一个bug请截图反馈。')
-            // console.log('一般情况下，二次运行脚本即可。')
-            // console.log('请手动切换回主页面')
-            // device.cancelKeepingAwake()
-            // quit()
-            back()
-            sleep(1000)
-            // TODO: 返回检测
-            if (!textContains('mMk3').findOne(5000)) {
-                console.log('似乎没有返回，二次尝试')
-                back()
-            }
-            return
+            return false
         }
 
-        console.log('任务完成，返回')
+        console.log('任务完成')
+        return true
+    }
 
-        sleep(1000)
+    function backToList() {
+        console.log('返回上级')
         back()
         sleep(1000)
-        if (!textContains('mMk3').findOne(5000)) {
+        if (!idContains('node_2_icon').findOne(5000)) {
             console.log('似乎没有返回，二次尝试')
             back()
         }
+        sleep(1000)
     }
 
     if (autoOpen) {
         // 打开淘宝活动页面
         console.log('正在打开淘宝...')
-        var url = 's.click.taobao.com/DZ86HSu'
+        var url = 's.m.taobao.com/h5?q=惊喜不断来dddd'
 
         app.startActivity({
             action: "VIEW",
@@ -256,15 +248,37 @@ try {
 
         console.log('等待页面加载...')
     } else {
-        console.log('请在30秒内打开淘宝做任务赢红包活动页，28￥ CZ3457 f3Y02ARyptF￥ https://m.tb.cn/h.UVYqH6w')
+        console.log('请在30秒内打开淘宝做任务赢红包活动页 09￥ CZ3457 uAsnda0xBov￥ https://m.tb.cn/h.UeFyOM8')
     }
-    if (!textContains('mMk3').findOne(30000)) {
+    if (!idContains('node_2_icon').findOne(30000)) {
         console.log('未能检测到任务页，退出')
         quit()
     }
 
     console.log('已打开活动，准备搜索任务')
-    sleep(5000)
+    sleep(2000)
+
+    console.log('首先关闭弹窗')
+    try {
+        idContains('J_wfdlgwrap_6').findOnce().child(0).click()
+        sleep(1000)
+    } catch (err) {
+        console.log(err)
+        console.log('领红包弹窗关闭失败。此问题不影响运行')
+    }
+    try {
+        idContains('CLOSE').findOnce().click()
+        sleep(1000)
+    } catch (err) {
+        console.log(err)
+        console.log('其他弹窗关闭失败。此问题不影响运行')
+    }
+    console.log('检测任务列表是否打开')
+    if (textContains('task_detail').findOne(5000)) {
+        console.log('先关闭列表')
+        idContains('close_btn').findOnce().click()
+        sleep(2000)
+    }
 
     while (true) {
         console.log('准备打开任务列表')
@@ -283,23 +297,24 @@ try {
         console.log('进行' + jumpButton[0] + '任务')
         sleep(2000)
 
-        if (jumpButton[0].match(/精选/)) {
-            jumpButton[1].click()
-            liulan()
-        } else if (jumpButton[0].match(/浏览点击/)) {
+        if (jumpButton[0].match(/商品/)) {
             jumpButton[1].click()
             sleep(2000)
-            let count = jumpButton[0].match(/点击(\d*)个/)[1]
+            let count = jumpButton[0].match(/浏览(\d*)个/)[1]
+            console.log('等待页面')
+            if (!text('双11超红精选热卖').findOne(8000)) {
+                throw '商品页面未加载'
+            }
             console.log('点击', count, '个商品')
-            let buttons = textMatches(/.*马上抢.*|.*付定随机.*|.*立付.*/).find()
+            let buttons = textContains('item_pic').find()
             if (!buttons) {
                 throw '无法找到马上抢按钮，任务失败'
             }
-            for (let i = 0; i < 3 && count > buttons.length; i++) {
-                console.log('商品数量不足，向下翻页', buttons.length)
+            for (let i = 0; i < 5 && count > buttons.length; i++) {
+                console.log('商品数量不足，向下翻页')
                 scrollDown()
                 sleep(2000)
-                buttons = text('马上抢').find()
+                buttons = textContains('item_pic').find()
             }
             if (count > buttons.length) {
                 throw '商品数量不足，退出任务'
@@ -313,7 +328,7 @@ try {
                 if (text('加入购物车').findOne(10000) || currentActivity() == 'com.taobao.android.detail.wrapper.activity.DetailActivity') {
                     console.log('商品打开成功，返回')
                     back()
-                    if (!textContains('mMk3').findOne(10000)) {
+                    if (!text('双11超红精选热卖').findOne(10000)) {
                         console.log('似乎没有返回，二次尝试')
                         back()
                     }
@@ -321,8 +336,27 @@ try {
                     throw '商品页未能加载'
                 }
             }
+            sleep(1000)
+            backToList()
+        } else if (jumpButton[0].match(/搜索/)) {
+            jumpButton[1].click()
+            let listView = className('android.widget.ListView').findOne(8000).child(0)
+            if (listView.childCount() == 1) {
+                listView.child(0).click()
+            } else {
+                listView.child(1).click()
+            }
+            liulan()
+            backToList()
+        } else if (jumpButton[0].match(/为你推荐/)) {
+            jumpButton[1].click()
+            liulan()
         } else {
-            throw '未知任务类型' + jumpButton[0] + '请反馈！'
+            jumpButton[1].click()
+            liulan()
+            sleep(1000)
+            back()
+            backToList()
         }
 
         console.log('等待页面刷新...')
