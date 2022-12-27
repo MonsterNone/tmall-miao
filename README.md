@@ -7,3 +7,5 @@
 3. 运行任务尝试
 
 [打包版下载](https://github.com/MonsterNone/tmall-miao/releases)
+
+> 源码优化完成后发布，目前还存在一些问题
