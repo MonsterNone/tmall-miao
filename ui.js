@@ -1,6 +1,6 @@
 "ui";
 
-const VERSION = '2023HappNewYear-6'
+const VERSION = '2023HappNewYear-7'
 
 const deviceWidth = device.width
 const deviceHeight = device.height
@@ -90,7 +90,7 @@ ui.layout(
                     </scroll>
                 </frame>
                 {/* 第二页 */}
-                {/* <frame>
+                <frame>
                     <horizontal gravity="center_vertical|center_horizontal">
                         <card w="{{parseInt(deviceWidth*0.48) + 'px'}}" h="*"
                             margin="5" cardCornerRadius="15dp" cardBackgroundColor="#f5f5f5" gravity="center|top">
@@ -100,20 +100,14 @@ ui.layout(
                                     <vertical>
                                         <card marginBottom="10dp" h="auto" w="*" cardBackgroundColor="#f5f5f5" id="tb1">
                                             <vertical>
-                                                <img layout_gravity="center" src="file://res/activity/tb1.jpeg" />
-                                                <text gravity="center" textSize="16dp">淘宝主会场</text>
-                                            </vertical>
-                                        </card>
-                                        <card marginBottom="10dp" h="auto" w="*" cardBackgroundColor="#f5f5f5" id="tb5">
-                                            <vertical>
-                                                <img layout_gravity="center" src="file://res/activity/tb5.jpg" />
-                                                <text gravity="center" textSize="16dp">年货节天天开大奖(也有红包)</text>
+                                                <img layout_gravity="center" src="file://res/activity/tb1.jpg" />
+                                                <text gravity="center" textSize="16dp">淘宝年货节主会场</text>
                                             </vertical>
                                         </card>
                                         <card marginBottom="10dp" h="auto" w="*" cardBackgroundColor="#f5f5f5" id="tb2">
                                             <vertical>
                                                 <img layout_gravity="center" src="file://res/activity/tb2.jpg" />
-                                                <text gravity="center" textSize="16dp">超级U选，官方精选爆款</text>
+                                                <text gravity="center" textSize="16dp">超级U选，官方精选全网低价</text>
                                             </vertical>
                                         </card>
                                         <card marginBottom="10dp" h="auto" w="*" cardBackgroundColor="#f5f5f5" id="tb3">
@@ -125,7 +119,13 @@ ui.layout(
                                         <card marginBottom="10dp" h="auto" w="*" cardBackgroundColor="#f5f5f5" id="tb4">
                                             <vertical>
                                                 <img layout_gravity="center" src="file://res/activity/tb4.jpg" />
-                                                <text gravity="center" textSize="16dp">千万神券</text>
+                                                <text gravity="center" textSize="16dp">2023年货节内购清单</text>
+                                            </vertical>
+                                        </card>
+                                        <card marginBottom="10dp" h="auto" w="*" cardBackgroundColor="#f5f5f5" id="tb5">
+                                            <vertical>
+                                                <img layout_gravity="center" src="file://res/activity/tb5.jpg" />
+                                                <text gravity="center" textSize="16dp">聚划算年货节主会场</text>
                                             </vertical>
                                         </card>
                                     </vertical>
@@ -141,31 +141,31 @@ ui.layout(
                                         <card marginBottom="10dp" h="auto" w="*" cardBackgroundColor="#f5f5f5" id="jd1">
                                             <vertical>
                                                 <img layout_gravity="center" src="file://res/activity/jd1.jpg" />
-                                                <text gravity="center" textSize="16dp">京东年货节主会场</text>
+                                                <text gravity="center" textSize="16dp">新年百亿补贴至高减500元</text>
                                             </vertical>
                                         </card>
                                         <card marginBottom="10dp" h="auto" w="*" cardBackgroundColor="#f5f5f5" id="jd2">
                                             <vertical>
                                                 <img layout_gravity="center" src="file://res/activity/jd2.jpg" />
-                                                <text gravity="center" textSize="16dp">手机爆款，30天价保买贵退差</text>
+                                                <text gravity="center" textSize="16dp">电脑数码万件真5折，9.9元数码</text>
                                             </vertical>
                                         </card>
                                         <card marginBottom="10dp" h="auto" w="*" cardBackgroundColor="#f5f5f5" id="jd3">
                                             <vertical>
                                                 <img layout_gravity="center" src="file://res/activity/jd3.jpg" />
-                                                <text gravity="center" textSize="16dp">家电开门红，PLUS专享1450元补贴</text>
+                                                <text gravity="center" textSize="16dp">手机年货 好价开抢</text>
                                             </vertical>
                                         </card>
                                         <card marginBottom="10dp" h="auto" w="*" cardBackgroundColor="#f5f5f5" id="jd4">
                                             <vertical>
                                                 <img layout_gravity="center" src="file://res/activity/jd4.jpg" />
-                                                <text gravity="center" textSize="16dp">居家好物低至9.9元</text>
+                                                <text gravity="center" textSize="16dp">健康送年货</text>
                                             </vertical>
                                         </card>
                                         <card marginBottom="10dp" h="auto" w="*" cardBackgroundColor="#f5f5f5" id="jd5">
                                             <vertical>
                                                 <img layout_gravity="center" src="file://res/activity/jd5.jpg" />
-                                                <text gravity="center" textSize="16dp">电脑数码</text>
+                                                <text gravity="center" textSize="16dp">家电家居一站购</text>
                                             </vertical>
                                         </card>
                                     </vertical>
@@ -173,7 +173,7 @@ ui.layout(
                             </vertical>
                         </card>
                     </horizontal>
-                </frame> */}
+                </frame>
                 {/* 第三页 */}
                 <frame>
                     <scroll>
@@ -183,7 +183,7 @@ ui.layout(
                             <card w="{{parseInt(deviceWidth*0.95) + 'px'}}" h="auto"
                                 margin="5" cardCornerRadius="15dp" cardBackgroundColor="#f5f5f5" gravity="left">
                                 <vertical gravity="center_vertical">
-                                    <text gravity="center" text="淘宝任务（暂未开始）" size="20dp" color="#FF6D31" />
+                                    <text gravity="center" text="淘宝任务" size="20dp" color="#FF6D31" />
                                     <horizontal gravity="center">
                                         {/* <button id="startTask" text="喵果总动员" /> */}
                                         {/* <button id="energyTask" text="能量红包任务" /> */}
@@ -230,8 +230,8 @@ ui.layout(
 );
 
 activity.setSupportActionBar(ui.toolbar);
-// ui.viewpager.setTitles(["主页", "年货节会场", "进行任务"]);
-ui.viewpager.setTitles(["主页", "进行任务"]);
+ui.viewpager.setTitles(["主页", "年货节会场", "进行任务"]);
+// ui.viewpager.setTitles(["主页", "进行任务"]);
 ui.tabs.setupWithViewPager(ui.viewpager);
 // ui.viewpager.setOnPageChangeListener({
 //     //已选定页面发生改变时触发
@@ -315,16 +315,16 @@ ui.tbHb1.click(function () { openTbUrl('https://s.click.taobao.com/xNZiROu') })
 ui.jdHb.click(openJdHb)
 ui.jdHb1.click(openJdHb)
 
-// ui.tb1.click(function () { openTbUrl('https://s.click.taobao.com/xNZiROu') })
-// ui.tb2.click(function () { openTbUrl('https://s.click.taobao.com/UOAHjRu') })
-// ui.tb3.click(function () { openTbUrl('https://s.click.taobao.com/ZnccXRu') })
-// ui.tb4.click(function () { openTbUrl('https://s.click.taobao.com/twoIjRu') })
-// ui.tb5.click(function () { openTbUrl('https://s.click.taobao.com/l0XeXRu') })
-// ui.jd1.click(function () { openJdUrl('https://u.jd.com/xKR9uPx') })
-// ui.jd2.click(function () { openJdUrl('https://u.jd.com/xw7t6WL') })
-// ui.jd3.click(function () { openJdUrl('https://u.jd.com/xLR5IbX') })
-// ui.jd4.click(function () { openJdUrl('https://u.jd.com/xLReHnX') })
-// ui.jd5.click(function () { openJdUrl('https://u.jd.com/xIRozHq') })
+ui.tb1.click(function () { openTbUrl('https://s.click.taobao.com/3ch5BOu') })
+ui.tb2.click(function () { openTbUrl('https://s.click.taobao.com/JpvysNu') })
+ui.tb3.click(function () { openTbUrl('https://s.click.taobao.com/oIh5BOu') })
+ui.tb4.click(function () { openTbUrl('https://s.click.taobao.com/iEqzsNu') })
+ui.tb5.click(function () { openTbUrl('https://s.click.taobao.com/Agw5BOu') })
+ui.jd1.click(function () { openJdUrl('https://u.jd.com/hwIKJGi') })
+ui.jd2.click(function () { openJdUrl('https://u.jd.com/hKIdDew') })
+ui.jd3.click(function () { openJdUrl('https://u.jd.com/hKIwUxL') })
+ui.jd4.click(function () { openJdUrl('https://u.jd.com/hwIQ6ZG') })
+ui.jd5.click(function () { openJdUrl('https://u.jd.com/hwIq3SI') })
 
 // ui.startTask.click(function () {
 //     // alert('淘宝活动尚未开始', '敬请关注脚本更新')

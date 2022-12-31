@@ -1,4 +1,4 @@
-const VERSION = '2023HappNewYear-6'
+const VERSION = '2023HappNewYear-7'
 
 if (!auto.service) {
     toast('无障碍服务未启动！退出！')
@@ -599,9 +599,13 @@ function signTask() {
 
     let anchor = textMatches(/\+\d*爆竹/).findOnce();
 
-    while (anchor) {
+    for (let i = 0; i < 5 && anchor; i++) {
         try {
-            anchor.parent().parent().child(0).click()
+            let tmp = anchor.parent().parent().child(0)
+            if (!tmp.clickable()) {
+                tmp = anchor.parent().parent().parent().child(0)
+            }
+            tmp.click()
             console.log('关闭')
             sleep(1000)
             anchor = textMatches(/\+\d*爆竹/).findOnce()

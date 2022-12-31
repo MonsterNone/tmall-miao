@@ -1,4 +1,4 @@
-const VERSION = '2023HappNewYear-6'
+const VERSION = '2023HappNewYear-7'
 
 if (!auto.service) {
     toast('无障碍服务未启动！退出！')
@@ -127,7 +127,7 @@ try {
             console.log('默认方式打开失败，二次尝试')
             console.log('首先检测弹窗')
             try {
-                idContains('J_wfdlgwrap_6').findOnce().child(0).click()
+                idContains('J_wfdlgwrap_5').findOnce().child(0).click()
                 sleep(1000)
             } catch (err) {
                 console.log(err)
@@ -271,7 +271,7 @@ try {
 
     console.log('首先关闭弹窗')
     try {
-        idContains('J_wfdlgwrap_6').findOnce().child(0).click()
+        idContains('J_wfdlgwrap_5').findOnce().child(0).click()
         sleep(5000)
         console.log('领红包弹窗已关闭')
     } catch (err) {
