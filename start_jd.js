@@ -1,4 +1,4 @@
-const VERSION = '2023618-B'
+const VERSION = '2023618-C'
 
 if (!auto.service) {
     toast('无障碍服务未启动！退出！')
@@ -461,7 +461,6 @@ function shopTask() {
         console.log('未能找到喜欢按钮。返回。')
         return false
     }
-    like = like.parent()
     let bound = [like.bounds().centerX(), like.bounds().centerY()]
     console.log('喜欢按钮位于', bound)
     for (let i = 0; i < c; i++) {
