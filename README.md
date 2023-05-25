@@ -13,7 +13,7 @@
 [打包版下载](https://github.com/MonsterNone/tmall-miao/releases)
 
 ### 源码运行
-安装autojs后导入代码，点击运行即可。
+安装autojs(https://github.com/MonsterNone/Auto.js/releases/tag/u1)后导入代码，点击运行即可。
 
 ---
 
