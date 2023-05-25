@@ -1,4 +1,4 @@
-const VERSION = '2023618-C'
+const VERSION = '2023618-E'
 
 if (!auto.service) {
     toast('无障碍服务未启动！退出！')
@@ -129,7 +129,7 @@ function openAndInto() {
 
     app.startActivity({
         action: "VIEW",
-        data: 'openApp.jdMobile://virtual?params={"category":"jump","action":"to","des":"m","sourceValue":"JSHOP_SOURCE_VALUE","sourceType":"JSHOP_SOURCE_TYPE","url":"https://u.jd.com/6sFU5Fb","M_sourceFrom":"mxz","msf_type":"auto"}'
+        data: 'openApp.jdMobile://virtual?params={"category":"jump","action":"to","des":"m","sourceValue":"JSHOP_SOURCE_VALUE","sourceType":"JSHOP_SOURCE_TYPE","url":"https://u.jd.com/O8g6vvE","M_sourceFrom":"mxz","msf_type":"auto"}'
     })
 }
 
@@ -269,6 +269,10 @@ function timeTask() {
             break
         if ((textMatches(/已.*?浏.*?览/).exists() || descMatches(/已.*?浏.*?览/).exists())) { // 失败
             console.log('上限，返回刷新任务列表')
+            return false
+        }
+        if ((textMatches(/出.*?错.*?了/).exists() || descMatches(/出.*?错.*?了/).exists())) {
+            console.log('任务出错，返回刷新任务列表')
             return false
         }
         if (textMatches(/.*滑动浏览.*[^可]得.*/).exists()) {
