@@ -7,3 +7,7 @@
 3. 运行任务尝试
 
 [打包版下载](https://github.com/MonsterNone/tmall-miao/releases)
+
+---
+
+防止无脑二次打包，本仓库仅放置做任务代码（可直接在autojs或autoxjs中运行），ui页面和热更新相关代码不在此展示，尽情谅解。
