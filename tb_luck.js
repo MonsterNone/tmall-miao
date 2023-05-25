@@ -1,4 +1,4 @@
-const VERSION = '2023618-D'
+const VERSION = '2023618-G'
 
 if (!auto.service) {
     toast('无障碍服务未启动！退出！')
@@ -197,8 +197,11 @@ try {
                 console.log('进行模拟滑动')
                 swipe(device.width / 2, device.height - 200, device.width / 2 + 20, device.height - 500, 2000)
             }
-            let finish_reg = /.*任务已完成[\s\S]*|.*失败.*|.*上限.*|.*开小差.*|.*4ZSN0.*/
+            let finish_reg = /.*任务已完成[\s\S]*|.*失败.*|.*上限.*|.*开小差.*/
             if (textMatches(finish_reg).exists() || descMatches(finish_reg).exists()) { // 等待已完成出现，有可能失败
+                break
+            }
+            if (textMatches(/.*4ZSN0.*/).exists() && !textMatches(/.*已浏览.*/).exists()) { // 标识加载且已浏览消失代表完成
                 break
             }
             if (textMatches(/.*休息会呗.*/).exists()) {
