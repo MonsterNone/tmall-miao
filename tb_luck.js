@@ -1,4 +1,4 @@
-const VERSION = '2023618-G'
+const VERSION = '2023618-H'
 
 if (!auto.service) {
     toast('无障碍服务未启动！退出！')
@@ -279,7 +279,7 @@ try {
         if (jumpButton == null) {
             console.log('没找到合适的任务。也许任务已经全部做完了。退出。互动任务不会自动完成。')
             console.log('请手动切换回主页面')
-            alert('任务已完成', '别忘了在脚本主页领取双11红包！互动任务需要手动完成。')
+            alert('任务已完成', '别忘了在脚本主页领取618红包！互动任务需要手动完成。')
             quit()
         }
 
@@ -292,48 +292,74 @@ try {
         } else if (jumpButton[0].match(/浏览点击/)) {
             jumpButton[1].click()
             sleep(2000)
+            if (jumpButton[0].match(/直播/)) {
+                if (!text('直播尖货').findOne(10000)) {
+                    throw '打开活动页失败'
+                }
+            }
             let count = jumpButton[0].match(/点击(\d*)个/)[1]
+            let done = 0
             try {
                 let anchor = textContains('已浏览商品').findOne(5000).parent().child(1).children()
-                count -= parseInt(anchor[1].text())
+                done = parseInt(anchor[1].text())
+                count -= done
             } catch(err) {
                 console.log('获取数量失败，使用默认值', err)
             }
             
             console.log('点击', count, '个商品')
-            let buttons = textMatches(/.*马上抢.*|.*付定随机.*|.*立付.*/).find()
+            let buttons = textMatches(/.*马上抢.*|.*付定随机.*|.*立付.*|.*爆款热卖中.*|.*爆卖.*/).find()
             if (!buttons) {
                 throw '无法找到马上抢按钮，任务失败'
             }
 
-            for (let i = 0; i < 10 && count > buttons.length; i++) {
+            console.log('从第', done, '个开始寻找')
+            for (let i = 0; i < 10 && count + done > buttons.length; i++) {
                 console.log('商品数量不足，向下翻页', buttons.length)
                 scrollDown()
                 sleep(2000)
                 scrollDown()
                 sleep(2000)
-                buttons = textMatches(/.*马上抢.*|.*付定随机.*|.*立付.*/).find()
+                buttons = textMatches(/.*马上抢.*|.*付定随机.*|.*立付.*|.*爆款热卖中.*|.*爆卖.*/).find()
                 console.log(buttons.length)
             }
-            if (count > buttons.length) {
+            if (count + done > buttons.length) {
                 console.log('商品数量不足，分次完成')
-                count = buttons.length
+                count = buttons.length - done
             }
 
-            for (let i = 0; i < count; i++) {
-                console.log('点击第', i + 1, '个')
+            for (let i = done; i < count + done; i++) {
+                console.log('第' , i+1-done, '次，点击第', i  + 1, '个')
                 sleep(2000)
                 buttons[i].click()
                 console.log('等待加载')
                 if (text('加入购物车').findOne(10000) || currentActivity() == 'com.taobao.android.detail.wrapper.activity.DetailActivity') {
                     console.log('商品打开成功，返回')
+                    sleep(2000)
                     back()
-                    if (!textContains('KEYBWc').findOne(10000)) {
-                        console.log('似乎没有返回，二次尝试')
-                        back()
+                    if (jumpButton[0].match(/直播/)) {
+                        if (!text('直播尖货').findOne(10000)) {
+                            console.log('似乎没有返回，二次尝试')
+                            back()
+                        }
+                    } else {
+                        if (!textContains('KEYBWc').findOne(10000)) {
+                            console.log('似乎没有返回，二次尝试')
+                            back()
+                        }
                     }
                 } else {
                     throw '商品页未能加载'
+                }
+            }
+            if (jumpButton[0].match(/直播/)) {
+                console.log('返回')
+                back()
+                sleep(1000)
+                if (!textContains('KEYBWc').findOne(5000)) {
+                    console.log('似乎没有返回，二次尝试')
+                    back()
+                    sleep(1000)
                 }
             }
         } else {
