@@ -181,6 +181,7 @@ try {
                 console.log('进行模拟滑动')
                 swipe(device.width / 2, device.height - 200, device.width / 2 + 20, device.height - 500, 2000)
                 finish_c = finish_c + 10
+                continue
             }
             let finish_reg = /.*任务.*?完成[\s\S]*?|.*失败.*|.*上限.*|.*开小差.*|.*喵币已发放[\s\S]*|.*下单可获得[\s\S]*|任务已经/
             if (textMatches(finish_reg).exists() || descMatches(finish_reg).exists()) { // 等待已完成出现，有可能失败
@@ -217,7 +218,7 @@ try {
                 sleep(1000)
                 break
             }
-            if (finish_c > 100 && finish_c % 50 == 0) {
+            if (finish_c % 50 == 0) {
                 console.log('滑动防止页面卡顿')
                 swipe( device.width / 2, device.height - 400, device.width / 2 + 20, device.height - 500, 500)
                 finish_c = finish_c + 5
