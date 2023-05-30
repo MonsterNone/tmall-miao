@@ -1,4 +1,4 @@
-const VERSION = '20221111-V'
+const VERSION = '2023618-K'
 
 if (!auto.service) {
     toast('无障碍服务未启动！退出！')
@@ -177,7 +177,7 @@ try {
         let countdown = 0
         console.log('开始检测任务完成，部分控件无法检测，会在30秒后自动返回，请耐心等待。')
         while (finish_c < 250) { // 0.1 * 250 = 25 秒，防止死循环
-            if (textMatches(/.*下拉浏览.*|.*浏览最高得.*/).exists()) {
+            if (textMatches(/.*下拉浏览.*|.*浏览最高得.*|.*浏览得奖励.*/).exists()) {
                 console.log('进行模拟滑动')
                 swipe(device.width / 2, device.height - 200, device.width / 2 + 20, device.height - 500, 2000)
                 finish_c = finish_c + 10
@@ -218,7 +218,7 @@ try {
                 sleep(1000)
                 break
             }
-            if (finish_c % 50 == 0) {
+            if (finish_c && finish_c % 50 == 0) {
                 console.log('滑动防止页面卡顿')
                 swipe( device.width / 2, device.height - 400, device.width / 2 + 20, device.height - 500, 500)
                 finish_c = finish_c + 5
@@ -410,12 +410,18 @@ try {
             jumpButton[1].click()
             console.log('等待搜索')
             sleep(2000)
-            textContains('搜索后浏览').findOne(8000)
-            let listView = className('android.widget.ListView').findOne(2000).child(0)
-            if (listView.childCount() == 1) {
-                listView.child(0).click()
-            } else {
-                listView.child(1).click()
+            let anchor = className("Button").text('搜索').findOne(8000)
+            try {
+                let listView = className('android.widget.ListView').findOne(2000).child(0)
+                if (listView.childCount() == 1) {
+                    listView.child(0).click()
+                } else {
+                    listView.child(1).click()
+                }
+            } catch(e) {
+                console.log('无法获取推荐搜索列表，使用自定义搜索')
+                anchor.parent().child(1).setText('iphone')
+                anchor.click()
             }
             liulan()
             sleep(1000)
