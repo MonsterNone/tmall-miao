@@ -1,4 +1,4 @@
-const VERSION = '2023618-J'
+const VERSION = '2023618-K'
 
 if (!auto.service) {
     toast('无障碍服务未启动！退出！')
@@ -223,7 +223,7 @@ try {
                 console.log('跳过互动任务')
                 break
             }
-            if (finish_c % 5 == 0) {
+            if (finish_c && finish_c % 5 == 0) {
                 console.log('滑动防止页面卡顿')
                 swipe( device.width / 2, device.height - 400, device.width / 2 + 20, device.height - 500, 500)
                 // finish_c = finish_c + 5
@@ -370,12 +370,18 @@ try {
             jumpButton[1].click()
             console.log('等待搜索')
             sleep(2000)
-            textContains('搜索发现').findOne(8000)
-            let listView = className('android.widget.ListView').findOne(2000).child(0)
-            if (listView.childCount() == 1) {
-                listView.child(0).click()
-            } else {
-                listView.child(1).click()
+            let anchor = className("Button").text('搜索').findOne(8000)
+            try {
+                let listView = className('android.widget.ListView').findOne(2000).child(0)
+                if (listView.childCount() == 1) {
+                    listView.child(0).click()
+                } else {
+                    listView.child(1).click()
+                }
+            } catch(e) {
+                console.log('无法获取推荐搜索列表，使用自定义搜索')
+                anchor.parent().child(1).setText('iphone')
+                anchor.click()
             }
             liulan()
             sleep(1000)
