@@ -1,4 +1,4 @@
-const VERSION = '2023618-K'
+const VERSION = '2023618-L'
 
 if (!auto.service) {
     toast('无障碍服务未启动！退出！')
@@ -176,6 +176,7 @@ try {
         let finish_c = 0
         let countdown = 0
         console.log('开始检测任务完成，部分控件无法检测，会在30秒后自动返回，请耐心等待。')
+        sleep(5000)
         while (finish_c < 250) { // 0.1 * 250 = 25 秒，防止死循环
             if (textMatches(/.*下拉浏览.*|.*浏览最高得.*|.*浏览得奖励.*/).exists()) {
                 console.log('进行模拟滑动')
