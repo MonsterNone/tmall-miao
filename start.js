@@ -1,4 +1,4 @@
-const VERSION = '2023618-L'
+const VERSION = '2023618-N'
 
 if (!auto.service) {
     toast('无障碍服务未启动！退出！')
@@ -297,11 +297,11 @@ try {
             sleep(2000)
 
             console.log('等待页面加载...')
-            textContains('领喵币').findOne(20000)
-            console.log('准备打开任务列表，第一次启动页面等待10秒加载')
-            sleep(10000)
+            textContains('赚猫币').findOne(20000)
+            console.log('准备打开任务列表')
+            // sleep(10000)
 
-            let c = textContains('领喵币').findOne(1000)
+            let c = textContains('赚猫币').findOne(20000)
             if (c) {
                 console.log('使用默认方法尝试打开任务列表')
                 c.click()
