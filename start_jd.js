@@ -1,4 +1,4 @@
-const VERSION = '2023618-N'
+const VERSION = '2023618-O'
 
 if (!auto.service) {
     toast('无障碍服务未启动！退出！')
@@ -99,10 +99,10 @@ threads.start(registerKey)
 // 自定义一个findTextDescMatchesTimeout
 function findTextDescMatchesTimeout(reg, timeout) {
     let c = 0
-    while (c < timeout / 50) {
+    while (c < timeout / 500) {
         let result = textMatches(reg).findOnce() || descMatches(reg).findOnce()
         if (result) return result
-        sleep(50)
+        sleep(500)
         c++
     }
     return null
@@ -248,7 +248,7 @@ function backToList() {
     sleep(500)
     back()
     for (let i = 0; i < 5; i++) { // 尝试返回3次
-        if (!findTextDescMatchesTimeout(/.*每做一次任务.*/, 5000)) {
+        if (!findTextDescMatchesTimeout(/.*每做一次任务.*/, 2000)) {
             console.log('返回失败，重试返回')
             sleep(2000)
             back()
@@ -264,7 +264,7 @@ function backToList() {
 function timeTask() {
     console.log('等待浏览任务完成...')
     let c = 0
-    while (c < 40) { // 0.5 * 40 = 20 秒，防止死循环
+    while (c < 60) { // 0.5 * 40 = 20 秒，防止死循环
         if ((textMatches(/获得.*?快递箱/).exists() || descMatches(/获得.*?快递箱/).exists())) // 等待已完成出现
             break
         if ((textMatches(/已.*?浏.*?览/).exists() || descMatches(/已.*?浏.*?览/).exists())) { // 失败
@@ -278,21 +278,21 @@ function timeTask() {
         if (textMatches(/.*滑动浏览.*[^可]得.*/).exists()) {
             console.log('进行模拟滑动')
             swipe_flag = 1
-            swipe(device.width / 2, device.height - 200, device.width / 2 + 20, device.height - 500, 500)
-            c++
+            swipe(device.width / 2, device.height - 300, device.width / 2 + 20, device.height - 500, 1000)
+            c = c + 2
         }
 
-        // 弹窗处理
-        let pop = text('升级开卡会员领好礼')
-        if (pop.exists()) {
-            pop.findOnce().parent().parent().child(2).click()
-            console.log('关闭会员弹窗')
-        }
+        // // 弹窗处理
+        // let pop = text('升级开卡会员领好礼')
+        // if (pop.exists()) {
+        //     pop.findOnce().parent().parent().child(2).click()
+        //     console.log('关闭会员弹窗')
+        // }
 
         sleep(500)
         c++
     }
-    if (c > 39) {
+    if (c > 59) {
         console.log('未检测到任务完成标识。')
         return false
     }
@@ -721,22 +721,22 @@ try {
             // console.log('最后进行签到任务')
             // let signT = signTask()
 
-            let endCoin = null
-            try {
-                console.log('获取结束快递箱数量')
-                endCoin = getCoin()
-                console.log('当前共有' + endCoin + '快递箱')
-            } catch (err) {
-                console.log('获取快递箱失败，跳过', err)
-            }
+            // let endCoin = null
+            // try {
+            //     console.log('获取结束快递箱数量')
+            //     endCoin = getCoin()
+            //     console.log('当前共有' + endCoin + '快递箱')
+            // } catch (err) {
+            //     console.log('获取快递箱失败，跳过', err)
+            // }
 
             console.log('没有可自动完成的任务了，退出。')
             console.log('互动任务、下单任务需要手动完成。')
-            if (startCoin && endCoin) {
-                console.log('本次运行获得' + (endCoin - startCoin) + '快递箱')
-            } else {
-                console.log('本次运行获得快递箱无法计算，具体原因请翻阅日志。')
-            }
+            // if (startCoin && endCoin) {
+            //     console.log('本次运行获得' + (endCoin - startCoin) + '快递箱')
+            // } else {
+            //     console.log('本次运行获得快递箱无法计算，具体原因请翻阅日志。')
+            // }
 
             alert('任务已完成', '别忘了在脚本主页领取618红包！')
 

@@ -1,4 +1,4 @@
-const VERSION = '2023618-N'
+const VERSION = '2023618-O'
 
 if (!auto.service) {
     toast('无障碍服务未启动！退出！')
@@ -60,8 +60,6 @@ if (autoMute) {
     }
 }
 
-console.show()
-showVersion()
 console.log('开始完成喵币任务...')
 console.log('按音量下键停止')
 
@@ -101,10 +99,10 @@ try {
     // 自定义一个findTimeout，find_f是原本的查询器 text('sss').find()
     function findTimeout(findF, timeout) {
         let c = 0
-        while (c < timeout / 50) {
+        while (c < timeout / 500) {
             let result = findF.find()
             if (result.nonEmpty()) return result
-            sleep(50)
+            sleep(500)
             c++
         }
         return null
@@ -156,11 +154,36 @@ try {
                     return findTask()
                 }
                 if (!(taskName.match(/淘金币|提醒|开通|续费|乐园|话费|斗地主|消消乐|流浪猫|开88|扔喵币|占领|邀请|登录|组队|参与|施肥|浇水|特价版|小鸡|消除|穿搭|森林|点淘|人生|我的淘宝|庄园|支付宝|点击人物|省钱卡|年卡|积分/) || content.match(/小互动|开通/))) {
-                    return [taskName, jumpButtons[i]]
+                    return [taskName, jumpButtons[i], content]
                 }
             }
         }
         return null
+    }
+
+    function backToList() {
+        console.log('返回')
+        back()
+        sleep(1000)
+        let flag = 0
+        for (let i = 0; i < 3; i++) {
+            if (!textContains('累计任务奖励').findOne(5000)) {
+                if (currentActivity() == 'com.taobao.tao.TBMainActivity') {
+                    console.log('返回到了主页，请重新运行任务！')
+                    quit()
+                } else {
+                    console.log('似乎没有返回，二次尝试')
+                    back()
+                }
+            } else {
+                flag = 1
+                break
+            }
+        }
+        if (flag != 1) {
+            console.log('返回任务界面失败！退出运行，请重试！')
+            quit()
+        }
     }
 
     function liulan() {
@@ -176,12 +199,11 @@ try {
         let finish_c = 0
         let countdown = 0
         console.log('开始检测任务完成，部分控件无法检测，会在30秒后自动返回，请耐心等待。')
-        sleep(5000)
-        while (finish_c < 250) { // 0.1 * 250 = 25 秒，防止死循环
-            if (textMatches(/.*下拉浏览.*|.*浏览最高得.*|.*浏览得奖励.*/).exists()) {
+        while (finish_c < 60) { // 0.5 * 60 = 30 秒，防止死循环
+            if (finish_c > 2 && textMatches(/.*下拉浏览.*|.*浏览最高得.*|.*浏览得奖励.*/).exists()) {
                 console.log('进行模拟滑动')
-                swipe(device.width / 2, device.height - 200, device.width / 2 + 20, device.height - 500, 2000)
-                finish_c = finish_c + 10
+                swipe(device.width / 2, device.height - 300, device.width / 2 + 20, device.height - 500, 1000)
+                finish_c = finish_c + 2
                 continue
             }
             let finish_reg = /.*任务.*?完成[\s\S]*?|.*失败.*|.*上限.*|.*开小差.*|.*喵币已发放[\s\S]*|.*下单可获得[\s\S]*|任务已经/
@@ -219,12 +241,12 @@ try {
                 sleep(1000)
                 break
             }
-            if (finish_c && finish_c % 50 == 0) {
+            if (finish_c > 4 && finish_c % 5 == 0 && !text('更多直播').exists()  && !text('视频').exists()) {
                 console.log('滑动防止页面卡顿')
-                swipe( device.width / 2, device.height - 400, device.width / 2 + 20, device.height - 500, 500)
-                finish_c = finish_c + 5
+                swipe(device.width / 2, device.height - 300, device.width / 2 + 20, device.height - 500, 1000)
+                finish_c = finish_c + 2
             }
-            sleep(100)
+            sleep(500)
             finish_c++
         }
 
@@ -233,7 +255,7 @@ try {
             sleep(18000)
         }
 
-        if (finish_c > 249) {
+        if (finish_c > 59) {
             console.log('未检测到任务完成标识。返回。')
             // console.log('如果你认为这是一个bug请截图反馈。')
             // console.log('一般情况下，二次运行脚本即可。')
@@ -244,29 +266,14 @@ try {
                 console.log('店铺已主动返回，继续任务')
                 return
             }
-            back()
-            sleep(1000)
-            // TODO: 返回检测
-            if (!textContains('累计任务奖励').findOne(8000)) {
-                console.log('似乎没有返回，二次尝试')
-                back()
-            }
+            backToList()
             return
         }
 
         console.log('任务结束，返回')
 
-        back()
-        sleep(1000)
-        if (!textContains('累计任务奖励').findOne(5000)) {
-            if (currentActivity() == 'com.taobao.tao.TBMainActivity') {
-                console.log('返回到了主页，尝试重新进入任务')
-                id('com.taobao.taobao:id/rv_main_container').findOnce().child(3).child(0).click()
-            } else {
-                console.log('似乎没有返回，二次尝试')
-                back()
-            }
-        }
+        backToList()
+        return
     }
 
     // 喵币数量
@@ -304,6 +311,7 @@ try {
             let c = textContains('赚猫币').findOne(20000)
             if (c) {
                 console.log('使用默认方法尝试打开任务列表')
+                sleep(1000)
                 c.click()
                 sleep(1000)
                 c.click()
@@ -419,14 +427,13 @@ try {
                 } else {
                     listView.child(1).click()
                 }
-            } catch(e) {
+            } catch (e) {
                 console.log('无法获取推荐搜索列表，使用自定义搜索')
                 anchor.parent().child(1).setText('iphone')
                 anchor.click()
             }
             liulan()
             sleep(1000)
-            back()
             backToList()
         } else {
             console.log('进行' + jumpButton[0] + '任务')
