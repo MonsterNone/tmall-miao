@@ -1,4 +1,4 @@
-const VERSION = '2023618-N'
+const VERSION = '2023618-P'
 
 if (!auto.service) {
     toast('无障碍服务未启动！退出！')
@@ -127,8 +127,10 @@ try {
             console.log('默认方式打开失败，二次尝试')
             console.log('首先检测弹窗')
             try {
-                idContains('J_wfdlgwrap_5').findOnce().child(0).click()
-                sleep(1000)
+                let anchor = textContains('O1CN01cR2RJh1DIRHl5jiO7').findOne(5000)
+                anchor.parent().child(4).child(0).click()
+                sleep(2000)
+                console.log('领红包弹窗已关闭')
             } catch (err) {
                 console.log(err)
                 console.log('领红包弹窗关闭失败。此问题不影响运行')
@@ -225,7 +227,7 @@ try {
             }
             if (finish_c && finish_c % 5 == 0) {
                 console.log('滑动防止页面卡顿')
-                swipe( device.width / 2, device.height - 400, device.width / 2 + 20, device.height - 500, 500)
+                swipe(device.width / 2, device.height - 400, device.width / 2 + 20, device.height - 500, 500)
                 // finish_c = finish_c + 5
             }
             sleep(500)
@@ -277,21 +279,24 @@ try {
 
     console.log('首先关闭弹窗')
     try {
-        idContains('J_wfdlgwrap_5').findOnce().child(0).click()
-        sleep(5000)
+        let anchor = textContains('O1CN01cR2RJh1DIRHl5jiO7').findOne(5000)
+        anchor.parent().child(4).child(0).click()
+        // idContains('J_wfdlgwrap_14').findOne(5000).child(0).click()
+        sleep(2000)
         console.log('领红包弹窗已关闭')
     } catch (err) {
         console.log(err)
         console.log('领红包弹窗关闭失败。此问题不影响运行')
     }
     try {
-        idContains('CLOSE').findOnce().click()
+        idContains('CLOSE').findOnce(5000).click()
         sleep(2000)
         console.log('其他弹窗已关闭')
     } catch (err) {
         console.log(err)
         console.log('其他弹窗关闭失败。此问题不影响运行')
     }
+    
     console.log('检测任务列表是否打开')
     if (textContains('task_detail').findOne(5000)) {
         console.log('先关闭列表')
@@ -326,7 +331,7 @@ try {
             }
             try {
                 count -= idContains('J_wf_node_2_time').findOne(5000).text()
-            } catch(err) {
+            } catch (err) {
                 console.log('获取数量失败，使用默认值', err)
             }
             console.log('点击', count, '个商品')
@@ -378,7 +383,7 @@ try {
                 } else {
                     listView.child(1).click()
                 }
-            } catch(e) {
+            } catch (e) {
                 console.log('无法获取推荐搜索列表，使用自定义搜索')
                 anchor.parent().child(1).setText('iphone')
                 anchor.click()
