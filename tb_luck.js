@@ -1,4 +1,4 @@
-const VERSION = '20231111-B'
+const VERSION = '20231111-E'
 
 if (!auto.service) {
     toast('无障碍服务未启动！退出！')
@@ -127,8 +127,7 @@ try {
         } else {
             throw '无法找到任务列表入口'
         }
-        if (!textContains('task_detail').findOne(8000)) {
-            console.log('默认方式打开失败，二次尝试')
+        if (!findTextDescMatchesTimeout(/.*task_detail.*/, 8000)) {
             console.log('首先检测弹窗')
             for (let i = 0; i < 2 && text('关闭').findOne(2000); i++) { // 关闭弹窗
                 console.log('检测到弹窗，关闭')
@@ -152,7 +151,7 @@ try {
 
     // 查找任务按钮
     function findTask() {
-        var jumpButtonFind = textMatches(/去浏览|去完成/) // 找进入任务的按钮，10秒
+        var jumpButtonFind = textMatches(/去浏览|去完成|已完成/) // 找进入任务的按钮，10秒
         var jumpButtons = findTimeout(jumpButtonFind, 10000)
 
         if (!jumpButtons) {
@@ -160,6 +159,7 @@ try {
         }
 
         for (var i = 0; i < jumpButtons.length; i++) {
+            if (jumpButtons[i].text() == '已完成') continue
             var taskName, content
             try {
                 taskName = jumpButtons[i].parent().child(1).text()
@@ -205,7 +205,7 @@ try {
             if (textMatches(finish_reg).exists() || descMatches(finish_reg).exists()) { // 等待已完成出现，有可能失败
                 break
             }
-            if (textMatches(/.*4ZSN0.*/).exists() && !textMatches(/.*已浏览.*|.*浏览15.*/).exists()) { // 标识加载且已浏览消失代表完成
+            if (textMatches(/.*O1CN01UMoPHa1tlUCoIdmj1.*/).exists() && !textMatches(/.*已浏览.*|.*浏览15.*/).exists()) { // 标识加载且已浏览消失代表完成
                 break
             }
             if (textMatches(/.*休息会呗.*/).exists()) {
@@ -337,9 +337,9 @@ try {
                 sleep(2000)
                 buttons[i].click()
                 console.log('等待加载')
-                if (text('加入购物车').findOne(10000) || currentActivity() == 'com.taobao.android.detail.wrapper.activity.DetailActivity') {
+                if (textMatches(/.*配送区域.*|.*客服.*|.*评价.*/).findOne(10000) || currentActivity() == 'com.taobao.android.detail.wrapper.activity.DetailActivity') {
                     console.log('商品打开成功，返回')
-                    sleep(2000)
+                    sleep(3000)
                     back()
                     if (jumpButton[0].match(/直播/)) {
                         if (!text('直播尖货').findOne(10000)) {
