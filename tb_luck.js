@@ -1,4 +1,4 @@
-const VERSION = '2023618-K'
+const VERSION = '20231111-B'
 
 if (!auto.service) {
     toast('无障碍服务未启动！退出！')
@@ -15,6 +15,9 @@ let showVersion = function () {
 
 console.show()
 showVersion()
+
+const BUTTON_TASKLIST = textContains('O1CN01Lvu8Gn1e2P2KEYBWc')
+const BUTTON_ITEM = textMatches(/.*马上抢.*|.*付定随机.*|.*立付.*|.*爆款热卖中.*|.*爆卖.*|.*购物车.*/)
 
 function getSetting() {
     let indices = []
@@ -117,7 +120,7 @@ try {
 
     // 打开任务列表
     function openTaskList() {
-        let c = textContains('KEYBWc').findOne(5000)
+        let c = BUTTON_TASKLIST.findOne(5000)
         if (c) {
             console.log('使用默认方法尝试打开任务列表')
             c.click()
@@ -141,7 +144,7 @@ try {
             // click(random(right,left), random(top, bottom))
             click(c.bounds().centerX(), c.bounds().centerY())
             console.log('已点击，等待任务列表出现')
-            if (!textContains('KEYBWc').findOne(8000)) {
+            if (!BUTTON_TASKLIST.findOne(8000)) {
                 throw '无法打开任务列表'
             }
         }
@@ -229,7 +232,7 @@ try {
             back()
             sleep(1000)
             // TODO: 返回检测
-            if (!textContains('KEYBWc').findOne(5000)) {
+            if (!BUTTON_TASKLIST.findOne(5000)) {
                 console.log('似乎没有返回，二次尝试')
                 back()
             }
@@ -241,7 +244,7 @@ try {
         sleep(1000)
         back()
         sleep(1000)
-        if (!textContains('KEYBWc').findOne(5000)) {
+        if (!BUTTON_TASKLIST.findOne(5000)) {
             console.log('似乎没有返回，二次尝试')
             back()
         }
@@ -250,7 +253,7 @@ try {
     if (autoOpen) {
         // 打开淘宝活动页面
         console.log('正在打开淘宝...')
-        var url = 's.click.taobao.com/GGoqoGu'
+        var url = 's.click.taobao.com/XcesU7u'
 
         app.startActivity({
             action: "VIEW",
@@ -260,9 +263,9 @@ try {
 
         console.log('等待页面加载...')
     } else {
-        console.log('请在30秒内打开淘宝做任务赢红包活动页，97￥ CZ0001 CpR8dLX7Afx￥ https://m.tb.cn/h.UEmsVLU')
+        console.log('请在30秒内打开淘宝做任务赢红包活动页，38￥ CZ3457 PtSdW1jQajS￥ https://m.tb.cn/h.5788kfI')
     }
-    if (!textContains('KEYBWc').findOne(30000)) {
+    if (!BUTTON_TASKLIST.findOne(30000)) {
         console.log('未能检测到任务页，退出')
         quit()
     }
@@ -309,7 +312,7 @@ try {
             }
             
             console.log('点击', count, '个商品')
-            let buttons = textMatches(/.*马上抢.*|.*付定随机.*|.*立付.*|.*爆款热卖中.*|.*爆卖.*/).find()
+            let buttons = BUTTON_ITEM.find()
             if (!buttons) {
                 throw '无法找到马上抢按钮，任务失败'
             }
@@ -321,7 +324,7 @@ try {
                 sleep(2000)
                 scrollDown()
                 sleep(2000)
-                buttons = textMatches(/.*马上抢.*|.*付定随机.*|.*立付.*|.*爆款热卖中.*|.*爆卖.*/).find()
+                buttons = BUTTON_ITEM.find()
                 console.log(buttons.length)
             }
             if (count + done > buttons.length) {
@@ -344,7 +347,7 @@ try {
                             back()
                         }
                     } else {
-                        if (!textContains('KEYBWc').findOne(10000)) {
+                        if (!BUTTON_TASKLIST.findOne(10000)) {
                             console.log('似乎没有返回，二次尝试')
                             back()
                         }
@@ -357,7 +360,7 @@ try {
                 console.log('返回')
                 back()
                 sleep(1000)
-                if (!textContains('KEYBWc').findOne(5000)) {
+                if (!BUTTON_TASKLIST.findOne(5000)) {
                     console.log('似乎没有返回，二次尝试')
                     back()
                     sleep(1000)
