@@ -1,4 +1,4 @@
-const VERSION = '2023618-O'
+const VERSION = '20231111-F'
 
 if (!auto.service) {
     toast('无障碍服务未启动！退出！')
@@ -153,7 +153,7 @@ try {
                     sleep(8000)
                     return findTask()
                 }
-                if (!(taskName.match(/淘金币|提醒|开通|续费|乐园|话费|斗地主|消消乐|流浪猫|开88|扔喵币|占领|邀请|登录|组队|参与|施肥|浇水|特价版|小鸡|消除|穿搭|森林|点淘|人生|我的淘宝|庄园|支付宝|点击人物|省钱卡|年卡|积分/) || content.match(/小互动|开通/))) {
+                if (!(taskName.match(/首页|提醒|开通|续费|乐园|话费|斗地主|消消乐|流浪猫|开88|扔喵币|占领|邀请|登录|组队|参与|施肥|浇水|特价版|小鸡|消除|穿搭|森林|点淘|人生|我的淘宝|庄园|支付宝|点击人物|省钱卡|年卡|积分|答题|分享|订阅|连连消/) || content.match(/小互动|开通/))) {
                     return [taskName, jumpButtons[i], content]
                 }
             }
@@ -163,11 +163,15 @@ try {
 
     function backToList() {
         console.log('返回')
+        if (textContains('当前已有金币').exists()) {
+            console.log('已在任务列表')
+            return
+        }
         back()
         sleep(1000)
         let flag = 0
         for (let i = 0; i < 3; i++) {
-            if (!textContains('累计任务奖励').findOne(5000)) {
+            if (!textContains('当前已有金币').findOne(5000)) {
                 if (currentActivity() == 'com.taobao.tao.TBMainActivity') {
                     console.log('返回到了主页，请重新运行任务！')
                     quit()
@@ -262,7 +266,7 @@ try {
             // console.log('请手动切换回主页面')
             // device.cancelKeepingAwake()
             // quit()
-            if (textContains('累计任务奖励').exists()) {
+            if (textContains('当前已有金币').exists()) {
                 console.log('店铺已主动返回，继续任务')
                 return
             }
@@ -280,8 +284,8 @@ try {
     function getCoin() {
         console.log('获取喵币数量')
         try {
-            let e = textContains('我的喵币').findOnce()
-            let num = e.text().match(/(\d*)个/)[1]
+            let e = textContains('当前已有金币').findOnce()
+            let num = e.parent().child(2).child(1).text().match(/([\d\.]*)万\//)[1]
             console.log('当前共有', num, '喵币')
             return num
         } catch (err) {
@@ -295,7 +299,7 @@ try {
         if (autoOpen) {
             // 打开淘宝活动页面
             console.log('正在打开淘宝...')
-            var url = 'pages.tmall.com/wow/z/hdwk/hd2023618/home?disableNav=YES&qd_from=tbsybutton'
+            var url = 'pages.tmall.com/wow/z/hdwk/d11fy24/singleplayer?disableNav=YES&qd_from=tbsybutton'
 
             app.startActivity({
                 action: "VIEW",
@@ -304,15 +308,15 @@ try {
             sleep(2000)
 
             console.log('等待页面加载...')
-            textContains('赚猫币').findOne(20000)
+            textContains('戳我赚金币').findOne(20000)
             console.log('准备打开任务列表')
             // sleep(10000)
 
-            let c = textContains('赚猫币').findOne(20000)
+            let c = textContains('戳我赚金币').findOne(20000)
             if (c) {
                 console.log('使用默认方法尝试打开任务列表')
                 sleep(1000)
-                c.click()
+                c.parent().parent().child(c.parent().parent().childCount()-2).click()
                 sleep(1000)
                 c.click()
                 console.log('已点击，未能打开建议手动点击一下任务列表。此问题并非bug，和网络以及设备性能有关。')
@@ -320,7 +324,7 @@ try {
             } else {
                 throw '无法找到任务列表入口'
             }
-            if (!textContains('累计任务奖励').findOne(8000)) {
+            if (!textContains('当前已有金币').findOne(8000)) {
                 console.log('默认方式打开失败，二次尝试')
                 console.log('首先检测弹窗')
                 for (let i = 0; i < 2 && text('关闭').findOne(2000); i++) { // 关闭弹窗
@@ -330,20 +334,16 @@ try {
                 }
                 console.log('已试图自动关闭弹窗。有未能自动关闭的弹窗请手动关闭')
                 sleep(5000)
-                // let right = c.bounds().right
-                // let left = c.bounds().left
-                // let top = c.bounds().top
-                // let bottom = c.bounds().bottom
-                // click(random(right,left), random(top, bottom))
+                c = c.parent().parent().child(c.parent().parent().childCount()-2)
                 click(c.bounds().centerX(), c.bounds().centerY())
                 console.log('已点击，等待任务列表出现')
-                if (!textContains('累计任务奖励').findOne(8000)) {
+                if (!textContains('当前已有金币').findOne(8000)) {
                     throw '无法打开任务列表'
                 }
             }
         } else {
             console.log('请在30秒内打开淘宝活动页，并打开任务列表')
-            if (textContains('累计任务奖励').findOne(30000)) {
+            if (textContains('当前已有金币').findOne(30000)) {
                 console.log('已打开，继续任务')
             } else {
                 console.log('未能检测到任务列表，退出')
@@ -371,7 +371,7 @@ try {
 
             if (awardButtons) {
                 for (var i = 0; i < awardButtons.length; i++) {
-                    console.log('领取累计任务奖励')
+                    console.log('领取当前已有金币')
                     awardButtons[i].click()
                     console.log('等待5秒再次领取...')
                     sleep(5000)
@@ -398,12 +398,12 @@ try {
                 liulan()
                 sleep(2000)
             }
-            back()
+            backToList()
         } else if (jumpButton[0].match(/.*玩游戏.*|.*浏览餐饮卡券.*|.*加油赛.*|.*赚星星.*/)) {
             console.log('进行' + jumpButton[0] + '任务，10秒后返回')
             jumpButton[1].click()
             sleep(10000)
-            back()
+            backToList()
         } else if (jumpButton[0].match(/领现金/)) {
             console.log('进行' + jumpButton[0] + '任务')
             jumpButton[1].click()
@@ -414,7 +414,7 @@ try {
             }
             into.click()
             liulan()
-        } else if (jumpButton[0].match(/搜一搜/)) {
+        } else if (jumpButton[0].match(/搜一搜[^#]/)) {
             console.log('进行' + jumpButton[0] + '任务')
             jumpButton[1].click()
             console.log('等待搜索')

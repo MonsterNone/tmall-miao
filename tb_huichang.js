@@ -1,4 +1,4 @@
-const VERSION = '2023618-P'
+const VERSION = '20231111-F'
 
 if (!auto.service) {
     toast('无障碍服务未启动！退出！')
@@ -123,12 +123,12 @@ try {
         } else {
             throw '无法找到任务列表入口'
         }
-        if (!textContains('task_detail').findOne(8000)) {
+        if (!textContains('O1CN01stVIJt1VSfFvIXWtd').findOne(8000)) {
             console.log('默认方式打开失败，二次尝试')
             console.log('首先检测弹窗')
             try {
-                let anchor = textContains('O1CN01cR2RJh1DIRHl5jiO7').findOne(5000)
-                anchor.parent().child(4).child(0).click()
+                let anchor = textContains('O1CN010Zax611FU0Z5m6nnQ').findOne(5000)
+                anchor.parent().click()
                 sleep(2000)
                 console.log('领红包弹窗已关闭')
             } catch (err) {
@@ -151,7 +151,7 @@ try {
             // click(random(right,left), random(top, bottom))
             click(c.bounds().centerX(), c.bounds().centerY())
             console.log('已点击，等待任务列表出现')
-            if (!textContains('task_detail').findOne(8000)) {
+            if (!textContains('O1CN01stVIJt1VSfFvIXWtd').findOne(8000)) {
                 throw '无法打开任务列表'
             }
         }
@@ -246,11 +246,18 @@ try {
     // TODO:
     function backToList() {
         console.log('返回上级')
+        if (idContains('node_2_icon').exists()) {
+            console.log('已在任务列表')
+            return
+        }
         back()
-        sleep(1000)
-        if (!idContains('node_2_icon').findOne(5000)) {
-            console.log('似乎没有返回，二次尝试')
-            back()
+        for (let i = 0; i < 3; i++) {
+            if (!idContains('node_2_icon').findOne(5000)) {
+                console.log('似乎没有返回，二次尝试')
+                back()
+            } else {
+                break
+            }
         }
         sleep(1000)
     }
@@ -261,13 +268,13 @@ try {
 
         app.startActivity({
             action: "VIEW",
-            data: "taobao://s.click.taobao.com/aPfWYGu"
+            data: "taobao://s.click.taobao.com/7qinv6u"
         })
         sleep(2000)
 
         console.log('等待页面加载...')
     } else {
-        console.log('请在30秒内打开淘宝做任务赢红包活动页 57￥ CZ0001 B0DHdLyJp6b￥ https://m.tb.cn/h.Uxt0Jyu')
+        console.log('请在30秒内打开淘宝做任务赢红包活动页 88￥ CZ3457 yRhaW1EFDJB￥ https://m.tb.cn/h.5SjTGhB')
     }
     if (!idContains('node_2_icon').findOne(30000)) {
         console.log('未能检测到任务页，退出')
@@ -289,7 +296,7 @@ try {
         console.log('领红包弹窗关闭失败。此问题不影响运行')
     }
     try {
-        idContains('CLOSE').findOnce(5000).click()
+        textContains('TB16l86YLb2gK0jSZK9XXaEgFXa').findOne(5000).click()
         sleep(2000)
         console.log('其他弹窗已关闭')
     } catch (err) {
@@ -298,7 +305,7 @@ try {
     }
     
     console.log('检测任务列表是否打开')
-    if (textContains('task_detail').findOne(5000)) {
+    if (textContains('O1CN01stVIJt1VSfFvIXWtd').findOne(5000)) {
         console.log('先关闭列表')
         idContains('close_btn').findOnce().click()
         sleep(2000)
@@ -326,7 +333,7 @@ try {
             sleep(2000)
             let count = jumpButton[0].match(/浏览(\d*)个/)[1]
             console.log('等待页面')
-            if (!textContains('超红精选热卖').findOne(8000)) {
+            if (!textContains('精选热卖').findOne(8000)) {
                 throw '商品页面未加载'
             }
             try {
@@ -361,7 +368,7 @@ try {
                 if (textMatches(/加入购物车|粉丝福利购/).findOne(10000) || currentActivity() == 'com.taobao.android.detail.wrapper.activity.DetailActivity') {
                     console.log('商品打开成功，返回')
                     back()
-                    if (!textContains('超红精选热卖').findOne(10000)) {
+                    if (!textContains('精选热卖').findOne(10000)) {
                         console.log('似乎没有返回，二次尝试')
                         back()
                     }
