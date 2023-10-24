@@ -18,3 +18,9 @@
 ---
 
 防止无脑二次打包，本仓库仅放置做任务代码（可直接在autojs或autoxjs中运行），ui页面和热更新相关代码不在此展示，尽情谅解。
+
+
+## Stargazers over time
+
+[![Stargazers over time](https://starchart.cc/MonsterNone/tmall-miao.svg)](https://starchart.cc/MonsterNone/tmall-miao)
+
