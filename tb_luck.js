@@ -17,7 +17,7 @@ console.show()
 showVersion()
 
 const BUTTON_TASKLIST = textContains('O1CN01Lvu8Gn1e2P2KEYBWc')
-const BUTTON_ITEM = textMatches(/.*马上抢.*|.*付定随机.*|.*立付.*|.*爆款热卖中.*|.*爆卖.*|.*购物车.*/)
+const BUTTON_ITEM = textMatches(/.*马上抢.*|.*付定随机.*|.*立付.*|.*爆款热卖中.*|.*爆卖.*|.*购物车.*|.*20点开抢.*/)
 
 function getSetting() {
     let indices = []
@@ -337,7 +337,7 @@ try {
                 sleep(2000)
                 buttons[i].click()
                 console.log('等待加载')
-                if (textMatches(/.*配送区域.*|.*客服.*|.*评价.*/).findOne(10000) || currentActivity() == 'com.taobao.android.detail.wrapper.activity.DetailActivity') {
+                if (textMatches(/.*配送区域.*|.*客服.*|.*评价.*|.*服务保障.*/).findOne(10000) || currentActivity() == 'com.taobao.android.detail.wrapper.activity.DetailActivity') {
                     console.log('商品打开成功，返回')
                     sleep(3000)
                     back()
@@ -353,17 +353,8 @@ try {
                         }
                     }
                 } else {
-                    throw '商品页未能加载'
-                }
-            }
-            if (jumpButton[0].match(/直播/)) {
-                console.log('返回')
-                back()
-                sleep(1000)
-                if (!BUTTON_TASKLIST.findOne(5000)) {
-                    console.log('似乎没有返回，二次尝试')
+                    console.log('商品页未能加载，尝试返回')
                     back()
-                    sleep(1000)
                 }
             }
         } else {
