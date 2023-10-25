@@ -1,4 +1,4 @@
-const VERSION = '20231111-E'
+const VERSION = '20231111-G'
 
 if (!auto.service) {
     toast('无障碍服务未启动！退出！')
@@ -130,7 +130,7 @@ function openTaskList() {
         console.log('点击打开任务列表1')
         let tmp = anchor.parent().parent()
         tmp.child(tmp.childCount() - 1).click()
-    } 
+    }
 
     anchor = text('立即领取').findOne(10000)
     if (!anchor) {
@@ -179,6 +179,8 @@ function reopenTaskList() {
     console.log('关闭任务列表')
     anchor.child(1).click()
     sleep(1000)
+
+    gesture(5000, [500, device.height - 200], [300, device.height - 500], [500, device.height - 200], [300, device.height - 500], [500, device.height - 500], [300, device.height - 200], [500, device.height - 500], [300, device.height - 200])
 
     console.log('重新打开任务列表')
     anchor = text('去领取').findOne(5000)
@@ -247,47 +249,39 @@ try {
     openTaskList()
     console.log('任务列表已打开，开始任务')
 
-    while (true) {
-        const tasks = findTimeout(textMatches(/去完成|已完成/), 5000)
-        if (!tasks) {
-            console.log('未找到任务')
-            break
-        }
-        let task
-        for (let i of tasks) {
-            if (i.text() == '已完成') continue
-            task = i
-        }
-        // console.log(task)
-        if (!task) {
-            console.log('任务已经全部完成')
-            break
-        }
+    const tasks = findTimeout(textMatches(/去完成|已完成/), 5000)
+    if (!tasks) {
+        console.log('未找到任务，退出')
+        quit()
+    }
+    for (let task of tasks) {
+        if (task.text() == '已完成') continue
+        console.log(task)
+        
+        // press(task.bounds().centerX(), task.bounds().centerY(), 1500)
+        console.log('尝试进入任务')
+        task.click()
         sleep(3000)
-        click(task.bounds().centerX(), task.bounds().centerY())
-        // task.click()
-        // // 根据任务列表存在情况判断
-        // let flag = 0
-        // let count = 0
-        // while (textContains('打卡领').exists()) {
-        //     if (count > 20) {  // 0.5*20= 10
-        //         flag = 1
-        //         break
-        //     }
-        //     sleep(500)
-        //     count++
-        // }
-        // if (flag) {
-        //     console.log('助手判断未能进入任务，退出')
-        //     quit()
-        // }
-        console.log('由于任务标识为纯图片，无法判断情况，等待12秒后自动返回')
+        // 根据任务列表存在情况判断
+        let flag = 0
+        let count = 0
+        if (textContains('打卡领').exists()) {
+            console.log('尝试进入任2')
+            task.click()
+            sleep(3000)
+        }
+        if (textContains('打卡领').exists()) {
+            console.log('助手判断未能进入任务，退出')
+            // console.log('京东')
+            quit()
+        }
+        console.log('已进入。由于任务标识为纯图片，无法判断情况，等待12秒后自动返回')
         sleep(12000)
         console.log('完成，返回')
         backToList()
-        reopenTaskList()
+        // reopenTaskList()
     }
-    console.log('执行完成，退出')
+    console.log('任务已经全部完成，退出')
 } catch (err) {
     device.cancelKeepingAwake()
     if (err.toString() != 'JavaException: com.stardust.autojs.runtime.exception.ScriptInterruptedException: null') {

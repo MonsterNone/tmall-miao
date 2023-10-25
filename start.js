@@ -1,4 +1,4 @@
-const VERSION = '20231111-F'
+const VERSION = '20231111-G'
 
 if (!auto.service) {
     toast('无障碍服务未启动！退出！')
@@ -153,7 +153,7 @@ try {
                     sleep(8000)
                     return findTask()
                 }
-                if (!(taskName.match(/首页|提醒|开通|续费|乐园|话费|斗地主|消消乐|流浪猫|开88|扔喵币|占领|邀请|登录|组队|参与|施肥|浇水|特价版|小鸡|消除|穿搭|森林|点淘|人生|我的淘宝|庄园|支付宝|点击人物|省钱卡|年卡|积分|答题|分享|订阅|连连消/) || content.match(/小互动|开通/))) {
+                if (!(taskName.match(/首页|提醒|开通|养猪|续费|乐园|话费|斗地主|消消|流浪猫|开88|扔喵币|占领|邀请|登录|组队|参与|施肥|浇水|特价版|小鸡|消除|穿搭|森林|点淘|人生|我的淘宝|庄园|支付宝|点击人物|省钱卡|年卡|积分|答题|分享|订阅|连连消|月月有余|守护/) || content.match(/小互动|开通/))) {
                     return [taskName, jumpButtons[i], content]
                 }
             }
@@ -299,7 +299,7 @@ try {
         if (autoOpen) {
             // 打开淘宝活动页面
             console.log('正在打开淘宝...')
-            var url = 'pages.tmall.com/wow/z/hdwk/d11fy24/singleplayer?disableNav=YES&qd_from=tbsybutton'
+            var url = 'pages.tmall.com/wow/z/hdwk/d11fy24/singleplayer?disableNav=YES&qd_from=tbsyicon'
 
             app.startActivity({
                 action: "VIEW",

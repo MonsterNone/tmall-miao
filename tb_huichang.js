@@ -1,4 +1,4 @@
-const VERSION = '20231111-F'
+const VERSION = '20231111-G'
 
 if (!auto.service) {
     toast('无障碍服务未启动！退出！')
@@ -123,37 +123,42 @@ try {
         } else {
             throw '无法找到任务列表入口'
         }
-        if (!textContains('O1CN01stVIJt1VSfFvIXWtd').findOne(8000)) {
-            console.log('默认方式打开失败，二次尝试')
-            console.log('首先检测弹窗')
-            try {
-                let anchor = textContains('O1CN010Zax611FU0Z5m6nnQ').findOne(5000)
-                anchor.parent().click()
-                sleep(2000)
-                console.log('领红包弹窗已关闭')
-            } catch (err) {
-                console.log(err)
-                console.log('领红包弹窗关闭失败。此问题不影响运行')
-            }
-            try {
-                idContains('CLOSE').findOnce().click()
-                sleep(1000)
-            } catch (err) {
-                console.log(err)
-                console.log('其他弹窗关闭失败。此问题不影响运行')
-            }
-            console.log('出现未能自动关闭的弹窗请手动关闭')
-            sleep(2000)
-            // let right = c.bounds().right
-            // let left = c.bounds().left
-            // let top = c.bounds().top
-            // let bottom = c.bounds().bottom
-            // click(random(right,left), random(top, bottom))
-            click(c.bounds().centerX(), c.bounds().centerY())
-            console.log('已点击，等待任务列表出现')
-            if (!textContains('O1CN01stVIJt1VSfFvIXWtd').findOne(8000)) {
-                throw '无法打开任务列表'
-            }
+        if (textContains('浏览商品领能量值').findOne(2000)) {
+            console.log('关闭弹窗')
+            idContains('CLOSE').findOnce().click()
+            sleep(1000)
+            c.click()
+        }
+        // if (!textContains('累计任务奖励').findOne(8000)) {
+        //     console.log('默认方式打开失败，二次尝试')
+        //     console.log('首先检测弹窗')
+        //     try {
+        //         let anchor = textContains('O1CN010Zax611FU0Z5m6nnQ').findOne(5000)
+        //         anchor.parent().click()
+        //         sleep(2000)
+        //         console.log('领红包弹窗已关闭')
+        //     } catch (err) {
+        //         console.log(err)
+        //         console.log('领红包弹窗关闭失败。此问题不影响运行')
+        //     }
+        //     try {
+        //         idContains('CLOSE').findOne(2000).click()
+        //         sleep(1000)
+        //     } catch (err) {
+        //         console.log(err)
+        //         console.log('其他弹窗关闭失败。此问题不影响运行')
+        //     }
+        //     console.log('出现未能自动关闭的弹窗请手动关闭')
+        //     sleep(2000)
+        //     // let right = c.bounds().right
+        //     // let left = c.bounds().left
+        //     // let top = c.bounds().top
+        //     // let bottom = c.bounds().bottom
+        //     // click(random(right,left), random(top, bottom))
+        //     click(c.bounds().centerX(), c.bounds().centerY())
+        //     console.log('已点击，等待任务列表出现')
+        if (!textContains('累计任务奖励').findOne(8000)) {
+            throw '无法打开任务列表'
         }
     }
 
@@ -171,7 +176,7 @@ try {
             var taskName, content
             try {
                 taskName = jumpButtons[i].parent().child(1).text()
-                content = jumpButtons[i].parent().child(2).child(0).text()
+                // content = jumpButtons[i].parent().child(2).child(0).text()
             } catch (err) {
                 console.log(err)
                 continue
@@ -184,10 +189,10 @@ try {
                 //     sleep(8000)
                 //     return findTask()
                 // }
-                // if (!(taskName.match(/淘金币|提醒|话费|斗地主|消消乐|流浪猫|开88|扔喵糖|占领|邀请|登录|组队|参与|施肥|浇水|特价版|小鸡|消除|穿搭|森林|点淘|人生|我的淘宝|庄园/) || content.match(/小互动/))) {
-                //     return [taskName, jumpButtons[i]]
-                // }
-                return [taskName, jumpButtons[i]]
+                console.log(taskName)
+                if (!(taskName.match(/天猫超市/))) {
+                    return [taskName, jumpButtons[i]]
+                }
             }
         }
         return null
@@ -211,7 +216,7 @@ try {
                 swipe(device.width / 2, device.height - 200, device.width / 2 + 20, device.height - 500, 2000)
                 continue
             }
-            let finish_reg = /.*任务已完成[\s\S]*|.*失败.*|.*上限.*|.*开小差.*/
+            let finish_reg = /.*任务已完成[\s\S]*|.*失败.*|.*上限.*|.*开小差.*|^\+[\d]*$/
             if (textMatches(finish_reg).exists() || descMatches(finish_reg).exists()) { // 等待已完成出现，有可能失败
                 break
             }
@@ -227,8 +232,8 @@ try {
             }
             if (finish_c && finish_c % 5 == 0) {
                 console.log('滑动防止页面卡顿')
-                swipe(device.width / 2, device.height - 400, device.width / 2 + 20, device.height - 500, 500)
-                // finish_c = finish_c + 5
+                swipe(device.width / 2, device.height - 400, device.width / 2 + 20, device.height - 500, 1000)
+                finish_c = finish_c + 2
             }
             sleep(500)
             finish_c++
@@ -286,11 +291,12 @@ try {
 
     console.log('首先关闭弹窗')
     try {
-        let anchor = textContains('O1CN01cR2RJh1DIRHl5jiO7').findOne(5000)
-        anchor.parent().child(4).child(0).click()
-        // idContains('J_wfdlgwrap_14').findOne(5000).child(0).click()
-        sleep(2000)
-        console.log('领红包弹窗已关闭')
+        let anchor = idContains('J_wfdlgwrap_6').findOne(5000)
+        if (anchor) {
+            click(anchor.bounds().centerX(), anchor.bounds().centerY())
+            sleep(2000)
+            console.log('领红包弹窗已关闭')
+        }
     } catch (err) {
         console.log(err)
         console.log('领红包弹窗关闭失败。此问题不影响运行')
@@ -303,9 +309,9 @@ try {
         console.log(err)
         console.log('其他弹窗关闭失败。此问题不影响运行')
     }
-    
+
     console.log('检测任务列表是否打开')
-    if (textContains('O1CN01stVIJt1VSfFvIXWtd').findOne(5000)) {
+    if (textContains('累计任务奖励').findOne(5000)) {
         console.log('先关闭列表')
         idContains('close_btn').findOnce().click()
         sleep(2000)
