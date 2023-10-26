@@ -1,4 +1,4 @@
-const VERSION = '20231111-G'
+const VERSION = '20231111-K'
 
 if (!auto.service) {
     toast('无障碍服务未启动！退出！')
@@ -122,7 +122,7 @@ try {
 
     // 查找任务按钮
     function findTask() {
-        var jumpButtonFind = textMatches(/.*(去浏览|去搜索|去完成|去签到|去逛逛|去观看|去参赛).*/) // 找进入任务的按钮，10秒
+        var jumpButtonFind = textMatches(/.*(去浏览|去搜索|去完成|立即签到|去逛逛|去观看|去参赛).*/) // 找进入任务的按钮，10秒
         var jumpButtons = findTimeout(jumpButtonFind, 10000)
 
         if (!jumpButtons) {
@@ -133,12 +133,12 @@ try {
             var taskName, content
             try {
                 taskName = jumpButtons[i].parent().child(0).child(0).text()
-                content = jumpButtons[i].parent().child(0).child(1).child(0).text()
+                content = jumpButtons[i].parent().child(0).child(1).text()
             } catch (err) {
                 console.log(err)
                 console.log('使用第二种方法尝试')
                 try {
-                    content = jumpButtons[i].parent().child(0).child(1).text()
+                    content = jumpButtons[i].parent().child(0).child(1).child(0).text()
                     console.log('成功，继续任务')
                 }
                 catch (err) {
@@ -153,7 +153,7 @@ try {
                     sleep(8000)
                     return findTask()
                 }
-                if (!(taskName.match(/首页|提醒|开通|养猪|续费|乐园|话费|斗地主|消消|流浪猫|开88|扔喵币|占领|邀请|登录|组队|参与|施肥|浇水|特价版|小鸡|消除|穿搭|森林|点淘|人生|我的淘宝|庄园|支付宝|点击人物|省钱卡|年卡|积分|答题|分享|订阅|连连消|月月有余|守护/) || content.match(/小互动|开通/))) {
+                if (!(taskName.match(/首页|提醒|开通|捕鱼|养猪|续费|乐园|话费|斗地主|消消|流浪猫|开88|扔喵币|占领|邀请|登录|组队|参与|施肥|浇水|特价版|小鸡|消除|穿搭|森林|点淘|人生|我的淘宝|庄园|支付宝|点击人物|省钱卡|年卡|积分|答题|分享|订阅|连连消|月月有余|守护/) || !content.match(/浏览|点击|小游戏/))) {
                     return [taskName, jumpButtons[i], content]
                 }
             }
@@ -434,6 +434,11 @@ try {
             }
             liulan()
             sleep(1000)
+            backToList()
+        } else if (jumpButton[2].match(/小游戏/)) {
+            console.log('出现互动任务，尝试刷新')
+            jumpButton[1].click()
+            sleep(3000)
             backToList()
         } else {
             console.log('进行' + jumpButton[0] + '任务')
