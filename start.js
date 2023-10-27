@@ -1,4 +1,4 @@
-const VERSION = '20231111-K'
+const VERSION = '20231111-M'
 
 if (!auto.service) {
     toast('无障碍服务未启动！退出！')
@@ -79,7 +79,7 @@ function registerKey() {
         console.log('喵币任务脚本停止了')
         console.log('请手动切换回主页面')
         if (startCoin) {
-            console.log('本次任务开始时有', startCoin, '喵币')
+            console.log('本次任务开始时有', startCoin, '万喵币')
         }
         device.cancelKeepingAwake()
         exit()
@@ -153,7 +153,8 @@ try {
                     sleep(8000)
                     return findTask()
                 }
-                if (!(taskName.match(/首页|提醒|开通|捕鱼|养猪|续费|乐园|话费|斗地主|消消|流浪猫|开88|扔喵币|占领|邀请|登录|组队|参与|施肥|浇水|特价版|小鸡|消除|穿搭|森林|点淘|人生|我的淘宝|庄园|支付宝|点击人物|省钱卡|年卡|积分|答题|分享|订阅|连连消|月月有余|守护/) || !content.match(/浏览|点击|小游戏/))) {
+                console.log(taskName, content)
+                if (!(taskName.match(/首页|提醒|开通|捕鱼|续费|乐园|斗地主|消消|流浪猫|开88|扔喵币|占领|邀请|登录|组队|参与|施肥|浇水|特价版|小鸡|消除|穿搭|森林|点淘|人生|我的淘宝|庄园|支付宝|点击人物|省钱卡|年卡|积分|答题|分享|订阅|连连消|月月有余|守护/) || !content.match(/浏览|点击|小游戏/))) {
                     return [taskName, jumpButtons[i], content]
                 }
             }
@@ -218,7 +219,7 @@ try {
                 countdown = 1
                 break
             }
-            if (textMatches(/.*休息会呗.*/).exists()) {
+            if (textMatches(/.*休息会呗.*|.*下方滑块.*/).exists()) {
                 alert('触发淘宝验证', '请手动验证后返回淘宝首页，重新执行任务')
                 console.log('异常退出。')
                 quit()
@@ -383,7 +384,7 @@ try {
             console.log('没找到合适的任务。也许任务已经全部做完了。退出。互动任务不会自动完成。')
             console.log('请手动切换回主页面')
             if (startCoin && endCoin) {
-                console.log('本次任务共获得', (endCoin - startCoin), '喵币')
+                console.log('本次任务共获得', (endCoin - startCoin), '万喵币')
             }
             alert('任务已完成', '别忘了在脚本主页领取双十一红包！互动任务需要手动完成。')
             quit()
@@ -399,10 +400,10 @@ try {
                 sleep(2000)
             }
             backToList()
-        } else if (jumpButton[0].match(/.*玩游戏.*|.*浏览餐饮卡券.*|.*加油赛.*|.*赚星星.*/)) {
-            console.log('进行' + jumpButton[0] + '任务，10秒后返回')
+        } else if (jumpButton[0].match(/养猪|台球/)) {
+            console.log('进行' + jumpButton[0] + '任务，20秒后返回')
             jumpButton[1].click()
-            sleep(10000)
+            sleep(20000)
             backToList()
         } else if (jumpButton[0].match(/领现金/)) {
             console.log('进行' + jumpButton[0] + '任务')

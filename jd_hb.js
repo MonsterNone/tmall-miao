@@ -1,4 +1,4 @@
-const VERSION = '20231111-K'
+const VERSION = '20231111-M'
 
 if (!auto.service) {
     toast('无障碍服务未启动！退出！')
@@ -282,6 +282,7 @@ try {
         // reopenTaskList()
     }
     console.log('任务已经全部完成，退出')
+    alert('记得手动完成分享任务并领取打卡红包！')
 } catch (err) {
     device.cancelKeepingAwake()
     if (err.toString() != 'JavaException: com.stardust.autojs.runtime.exception.ScriptInterruptedException: null') {
