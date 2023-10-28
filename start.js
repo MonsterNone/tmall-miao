@@ -157,7 +157,7 @@ try {
                 if (!(taskName.match(/首页|提醒|开通|捕鱼|续费|乐园|斗地主|消消|流浪猫|开88|扔喵币|占领|邀请|登录|组队|参与|施肥|浇水|特价版|小鸡|消除|穿搭|森林|点淘|人生|我的淘宝|庄园|支付宝|点击人物|省钱卡|年卡|积分|答题|分享|订阅|连连消|月月有余|守护/))) {
                     // 应对content为空的情况
                     if (content) {
-                        if (!content.match(/浏览|点击|小游戏/)) {
+                        if (content.match(/浏览|点击|小游戏/)) {
                             return [taskName, jumpButtons[i], content]
                         }
                     } else {
