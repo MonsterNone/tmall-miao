@@ -1,4 +1,4 @@
-const VERSION = '20231111-M'
+const VERSION = '20231111-AD'
 
 if (!auto.service) {
     toast('无障碍服务未启动！退出！')
@@ -116,7 +116,7 @@ try {
 
     // 打开任务列表
     function openTaskList() {
-        let c = idContains('node_2_icon').findOne(5000)
+        let c = idMatches(/node_\d_icon/).findOne(5000)
         if (c) {
             console.log('使用默认方法尝试打开任务列表')
             c.click()
@@ -190,7 +190,7 @@ try {
                 //     return findTask()
                 // }
                 console.log(taskName)
-                if (!(taskName.match(/天猫超市/))) {
+                if (!(taskName.match(/天猫超市|下单|施肥/))) {
                     return [taskName, jumpButtons[i]]
                 }
             }
@@ -248,16 +248,73 @@ try {
         return true
     }
 
+    function itemTask() {
+        console.log('等待页面')
+        if (!textContains('精选热卖').findOne(8000)) {
+            throw '商品页面未加载'
+        }
+    
+        let n = 0
+        while (true) {
+            let done = idContains('J_wf_node_2_time').findOne(5000)
+            if (!done) {
+                console.log('浏览商品任务完成，返回')
+                return
+            }
+            done = parseInt(done.text(), 10)
+            
+            if (n < done) n = done
+            console.log('循环完成任务，已点击', done, '个')
+            let buttons = textMatches(/.*q75.*/).find()
+            if (buttons.empty()) {
+                throw '无法找到商品，任务失败'
+            }
+            console.log(n, buttons.length)
+            for (let i = 0; i < 10 && n + 1 > buttons.length; i++) {
+                console.log('商品数量不足，', n + 1, '向下翻页')
+                scrollDown()
+                sleep(2000)
+                scrollDown()
+                sleep(2000)
+                buttons = textMatches(/.*q75.*/).find()
+                console.log(buttons.length)
+            }
+    
+            for (let i = 0; i < buttons.length; i++) {
+                console.log('点击第', i + 1, '个')
+                sleep(2000)
+                buttons[i].click()
+                console.log('等待加载')
+                if (textMatches(/加入购物车|粉丝福利购/).findOne(10000) || currentActivity() == 'com.taobao.android.detail.wrapper.activity.DetailActivity') {
+                    console.log('商品打开成功，返回')
+                    back()
+                    if (!textContains('精选热卖').findOne(10000)) {
+                        console.log('似乎没有返回，二次尝试')
+                        back()
+                    }
+                } else {
+                    throw '商品页未能加载'
+                }
+                n++
+                done = idContains('J_wf_node_2_time').findOne(5000)
+                if (!done) {
+                    console.log('浏览商品任务完成，返回')
+                    return
+                }
+            }
+        }
+    }
+
     // TODO:
     function backToList() {
         console.log('返回上级')
-        if (idContains('node_2_icon').exists()) {
+        if (idMatches(/node_\d_icon/).exists()) {
             console.log('已在任务列表')
             return
         }
         back()
         for (let i = 0; i < 3; i++) {
-            if (!idContains('node_2_icon').findOne(5000)) {
+            if (!idMatches(/node_\d_icon/).findOne(5000)) {
                 console.log('似乎没有返回，二次尝试')
                 back()
             } else {
@@ -281,7 +338,7 @@ try {
     } else {
         console.log('请在30秒内打开淘宝做任务赢红包活动页 88￥ CZ3457 yRhaW1EFDJB￥ https://m.tb.cn/h.5SjTGhB')
     }
-    if (!idContains('node_2_icon').findOne(30000)) {
+    if (!idMatches(/node_\d_icon/).findOne(30000)) {
         console.log('未能检测到任务页，退出')
         quit()
     }
@@ -334,54 +391,11 @@ try {
         console.log('进行' + jumpButton[0] + '任务')
         sleep(2000)
 
-        if (jumpButton[0].match(/商品/)) {
+        if (jumpButton[0].match(/个商品/)) {
             jumpButton[1].click()
             sleep(2000)
-            let count = jumpButton[0].match(/浏览(\d*)个/)[1]
-            console.log('等待页面')
-            if (!textContains('精选热卖').findOne(8000)) {
-                throw '商品页面未加载'
-            }
-            try {
-                count -= idContains('J_wf_node_2_time').findOne(5000).text()
-            } catch (err) {
-                console.log('获取数量失败，使用默认值', err)
-            }
-            console.log('点击', count, '个商品')
-            let buttons = textContains('q75').find()
-            if (!buttons) {
-                throw '无法找到商品，任务失败'
-            }
-            for (let i = 0; i < 10 && count > buttons.length; i++) {
-                console.log('商品数量不足，向下翻页', buttons.length)
-                scrollDown()
-                sleep(2000)
-                scrollDown()
-                sleep(2000)
-                buttons = textContains('q75').find()
-                console.log(buttons.length)
-            }
-            if (count > buttons.length) {
-                console.log('商品数量不足，分次完成')
-                count = buttons.length
-            }
-
-            for (let i = 0; i < count; i++) {
-                console.log('点击第', i + 1, '个')
-                sleep(2000)
-                buttons[i].click()
-                console.log('等待加载')
-                if (textMatches(/加入购物车|粉丝福利购/).findOne(10000) || currentActivity() == 'com.taobao.android.detail.wrapper.activity.DetailActivity') {
-                    console.log('商品打开成功，返回')
-                    back()
-                    if (!textContains('精选热卖').findOne(10000)) {
-                        console.log('似乎没有返回，二次尝试')
-                        back()
-                    }
-                } else {
-                    throw '商品页未能加载'
-                }
-            }
+            console.log('使用新版大循环方法完成')
+            itemTask()
             // sleep(1000)
             backToList()
         } else if (jumpButton[0].match(/搜索/)) {
@@ -408,6 +422,11 @@ try {
         } else if (jumpButton[0].match(/为你推荐|主会场/)) {
             jumpButton[1].click()
             liulan()
+        } else if (jumpButton[0].match(/消消乐|羊毛|淘金币/)) {
+            jumpButton[1].click()
+            console.log('参观任务，自动返回')
+            sleep(2000)
+            backToList()
         } else {
             jumpButton[1].click()
             liulan()

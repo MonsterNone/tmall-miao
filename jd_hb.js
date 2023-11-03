@@ -1,4 +1,4 @@
-const VERSION = '20231111-M'
+const VERSION = '20231111-AD'
 
 if (!auto.service) {
     toast('无障碍服务未启动！退出！')
@@ -121,18 +121,18 @@ function openAndInto() {
 
 // 打开任务列表
 function openTaskList() {
-    let anchor = textMatches(/11111|今日机会[\s\S]*/).findOne(10000)
+    let anchor = textMatches(/(活动时间：|今日机会)[\s\S]*/).findOne(10000)
     if (!anchor) {
         console.log('无法找到弹窗标识1，退出')
         quit()
     }
-    if (anchor.text() == '11111') {
+    if (anchor.text().match(/活动时间：[\s\S]*/)) {
         console.log('点击打开任务列表1')
         let tmp = anchor.parent().parent()
         tmp.child(tmp.childCount() - 1).click()
     }
 
-    anchor = text('立即领取').findOne(10000)
+    anchor = textMatches(/立即领取|查看进度/).findOne(10000)
     if (!anchor) {
         console.log('无法找到弹窗标识2，退出')
         quit()
@@ -191,7 +191,7 @@ function reopenTaskList() {
         console.log('重新打开任务列表失败，退出')
         quit()
     }
-    sleep(5000)
+    sleep(1000)
 }
 
 // --------------------------------------------
@@ -250,13 +250,8 @@ try {
     console.log('任务列表已打开，开始任务')
 
     const tasks = findTimeout(textMatches(/去完成|已完成/), 5000)
-    if (!tasks) {
-        console.log('未找到任务，退出')
-        quit()
-    }
     for (let task of tasks) {
         if (task.text() == '已完成') continue
-        console.log(task)
         
         // press(task.bounds().centerX(), task.bounds().centerY(), 1500)
         console.log('尝试进入任务')
@@ -281,8 +276,18 @@ try {
         backToList()
         // reopenTaskList()
     }
+    // let share = text('去分享').findOne(3000)
+    // if (share) {
+    //     console.log('进行分享任务')
+    //     task.click()
+    //     if (textContains('分享好友一起').findOne(3000)) {
+    //         click(200, 300)
+    //     } else {
+    //         console.log('未找到分享弹窗，失败')
+    //     }
+    // }
     console.log('任务已经全部完成，退出')
-    alert('记得手动完成分享任务并领取打卡红包！')
+    alert('记得手动分享领取打卡红包并抽盲盒！')
 } catch (err) {
     device.cancelKeepingAwake()
     if (err.toString() != 'JavaException: com.stardust.autojs.runtime.exception.ScriptInterruptedException: null') {
