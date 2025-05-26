@@ -1,0 +1,38 @@
+# 618任务助手(HarmonyOS Next版)
+
+> 当前仍在开发调试中，请手动运行。后续可能会制作一键运行安装包。
+
+> 此版本理论上也可以修改几行代码转换为uiautomator2在安卓运行，后续可能会制作整合版。
+
+## 任务依赖
+由于鸿蒙系统特性，需要使用电脑（Win/Mac）运行
+
+1. Python3.8+版本
+2. 鸿蒙HDC调试工具
+2. [hmdriver2](https://github.com/codematrixer/hmdriver2)库
+3. 手机开启开发者模式，并打开USB调试
+
+## 安装依赖
+
+1. 下载python3
+
+https://www.python.org/downloads/
+
+2. 安装HDC工具，并配置环境变量
+
+（此步骤稍后完善具体细节，可以问一下ai先）
+
+3. 开启手机usb调试
+
+`设置`-点击账号下方`手机名称`-连续点击5次`软件版本`，开启开发者选项
+
+重启后`设置`-`系统`-`开发者选项`，打开`USB调试开关`
+
+电脑上打开终端，执行hdc list targets查看是否显示手机
+
+4. 安装hmdirver2基础库
+电脑上打开终端，执行`pip3 install -U hmdriver2`
+
+## 运行脚本
+
+`python taobao.py`
