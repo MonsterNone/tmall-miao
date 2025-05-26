@@ -5,17 +5,6 @@ import time
 
 # 模拟滑动
 def human_swipe(d, x1, y1, x2, y2, base_speed=0.5, wave_range=30):
-    """
-    拟人化滑动（带随机波动和变速）
-
-    :param d: uiautomator2 设备对象
-    :param x1: 起点X坐标
-    :param y1: 起点Y坐标
-    :param x2: 终点X坐标
-    :param y2: 终点Y坐标
-    :param base_speed: 基础滑动速度（单位：秒，值越小越快）
-    :param wave_range: 轨迹波动幅度（像素）
-    """
     # 计算滑动方向向量
     dx = x2 - x1
     dy = y2 - y1
@@ -58,12 +47,51 @@ def human_swipe(d, x1, y1, x2, y2, base_speed=0.5, wave_range=30):
 
 
 # 超时寻找
-def find_timeout(selector, timeout):
+def find_timeout_text(d, text, timeout):
     flag = False
-    for i in range(timeout * 2):
-        if not selector.exists():
-            time.sleep(0.3)
+    for i in range(timeout):
+        if not d(text=text).exists():
+            time.sleep(0.8)
             continue
         flag = True
         break
     return flag
+
+
+def find_timeout_id(d, id, timeout):
+    flag = False
+    for i in range(timeout):
+        if not d(id=id).exists():
+            time.sleep(0.8)
+            continue
+        flag = True
+        break
+    return flag
+
+
+def find_timeout_xpath(d, xpath, timeout):
+    flag = False
+    for i in range(timeout):
+        if not d.xpath(xpath).exists():
+            time.sleep(0.8)
+            continue
+        flag = True
+        break
+    return flag
+
+def open_taobao_search(d, text):
+    print('首先关闭淘宝App')
+    d.stop_app('com.taobao.taobao4hmos')
+    time.sleep(3)
+    print('打开淘宝App')
+    d.start_app('com.taobao.taobao4hmos')
+    print('等待淘宝首页加载...')
+    if not find_timeout_id(d, 'searchBg', 10):
+        print('未能检测到淘宝首页，退出')
+    d.xpath('//*[@id="searchBg"]/Stack[2]').click()
+    print('等待淘宝搜索页加载...')
+    if not find_timeout_text(d, '搜索', 10):
+        print('未能检测到淘宝搜索页，退出')
+    print('进入活动')
+    d.input_text(text)
+    d(text='搜索').click()

@@ -1,8 +1,10 @@
 import json
 import re
 import time
+
 from hmdriver2.driver import Driver, logger
-from utils import find_timeout
+
+from utils import find_timeout_text, find_timeout_id, open_taobao_search
 
 
 # 检查是否在任务列表并返回
@@ -13,10 +15,10 @@ def return_task_list():
         return True
     print('已点击返回，检测是否成功')
     d.go_back()
-    if not find_timeout(d(text='累计任务奖励'), 5):
+    if not find_timeout_text(d, '累计任务奖励', 5):
         print('返回失败，再次返回重试')
         d.go_back()
-        if not find_timeout(d(text='累计任务奖励'), 5):
+        if not find_timeout_text(d, '累计任务奖励', 5):
             return False
     return True
 
@@ -66,7 +68,7 @@ def find_time_5_task():
 
 def do_time_task():
     print('等待进入')
-    if not find_timeout(d(text='浏览得奖励'), 10):
+    if not find_timeout_text(d, '浏览得奖励', 10):
         print('进入任务失败')
         return False
     print('进入任务成功，进行商品浏览')
@@ -81,7 +83,7 @@ def do_time_task():
 
 def do_search_task():
     print('等待进入')
-    if not find_timeout(d(text='搜索有福利'), 10):
+    if not find_timeout_text(d, '搜索有福利', 10):
         print('进入任务失败')
         return False
     print('进入任务成功，进行商品搜索')
@@ -102,27 +104,13 @@ if __name__ == '__main__':
     endCoin = 0
 
     if not TRY_RUN:
-        print('首先关闭媒体音量')
-        d.shell("uitest uiInput keyEvent 17")  # 点击音量减小键
+        print('首先关闭音量')
+        d.shell("uitest uiInput keyEvent 22")  # 点击扬声器静音
 
-        print('首先关闭淘宝App')
-        d.stop_app('com.taobao.taobao4hmos')
-        time.sleep(3)
-        print('打开淘宝App')
-        d.start_app('com.taobao.taobao4hmos')
-        print('等待淘宝首页加载...')
-        if not find_timeout(d(id='searchBg'), 10):
-            print('未能检测到淘宝首页，退出')
-        d.xpath('//*[@id="searchBg"]/Stack[2]').click()
-        print('等待淘宝搜索页加载...')
-        if not find_timeout(d(text='搜索'), 10):
-            print('未能检测到淘宝搜索页，退出')
-        print('进入活动')
-        d.input_text('淘金币618赢10亿')
-        d(text='搜索').click()
+        open_taobao_search(d, '淘金币618赢10亿')
 
         print('等待活动打开...')
-        if not find_timeout(d(text='O1CN01yJWwRA1uH5o8MXTSE_!!6000000006011-2-tps-741-84'), 30):
+        if not find_timeout_text(d, 'O1CN01yJWwRA1uH5o8MXTSE_!!6000000006011-2-tps-741-84', 30):
             print('未检测到活动页，退出')
             exit(0)
         print('活动已打开，开始任务')
@@ -132,7 +120,7 @@ if __name__ == '__main__':
         print('打开任务列表')
         d(text="赚体力").click()
         print('等待任务列表')
-        if find_timeout(d(text='累计任务奖励'), 5):
+        if find_timeout_text(d, '累计任务奖励', 5):
             print('任务列表打开成功')
         else:
             print('任务列表打开失败，退出')
@@ -192,7 +180,7 @@ if __name__ == '__main__':
                 print('没有浏览5秒任务')
                 noTime5TaskFlag = True
 
-            if noTime15TaskFlag and noTime5TaskFlag:
+            if noTime15TaskFlag and noTime5TaskFlag and noTime15SearchTaskFlag:
                 print('没有任务了')
                 break
 
