@@ -1,74 +1,9 @@
-import math
-import random
-import time
-
-from hmdriver2.driver import Driver, logger
 import json
 import re
+import time
+from hmdriver2.driver import Driver, logger
+from utils import find_timeout
 
-# 模拟滑动
-def __human_swipe(d, x1, y1, x2, y2, base_speed=0.5, wave_range=30):
-    """
-    拟人化滑动（带随机波动和变速）
-
-    :param d: uiautomator2 设备对象
-    :param x1: 起点X坐标
-    :param y1: 起点Y坐标
-    :param x2: 终点X坐标
-    :param y2: 终点Y坐标
-    :param base_speed: 基础滑动速度（单位：秒，值越小越快）
-    :param wave_range: 轨迹波动幅度（像素）
-    """
-    # 计算滑动方向向量
-    dx = x2 - x1
-    dy = y2 - y1
-    distance = math.hypot(dx, dy)
-
-    # 随机分段（5~10段）
-    num_steps = random.randint(5, 10)
-    step_length = distance / num_steps
-
-    # 生成波动轨迹
-    points = [(x1, y1)]
-    for i in range(1, num_steps):
-        # 计算当前步的基准坐标
-        progress = i / num_steps
-        current_x = x1 + dx * progress
-        current_y = y1 + dy * progress
-
-        # 添加正弦波动（模拟手指抖动）
-        wave = wave_range * math.sin(2 * math.pi * progress)
-        angle = math.atan2(dy, dx) + math.pi / 2  # 垂直方向波动
-        offset_x = int(wave * math.cos(angle))
-        offset_y = int(wave * math.sin(angle))
-
-        points.append((
-            current_x + offset_x + random.randint(-5, 5),
-            current_y + offset_y + random.randint(-5, 5)
-        ))
-    points.append((x2, y2))
-
-    g = d.gesture
-    g.start(x1, y1, interval = base_speed)
-
-    # 执行分段滑动
-    for i in range(1, len(points)):
-        start_x, start_y = points[i]
-        g.move(start_x, start_y)
-        g.pause(interval=random.uniform(0, 0.1))
-
-    g.action()
-
-# 超时寻找
-def __find_timeout(selector, timeout):
-    flag = False
-    for i in range(timeout * 2):
-        if not selector.exists():
-            time.sleep(0.3)
-            continue
-        flag = True
-        break
-    return flag
 
 # 检查是否在任务列表并返回
 def return_task_list():
@@ -78,12 +13,13 @@ def return_task_list():
         return True
     print('已点击返回，检测是否成功')
     d.go_back()
-    if not __find_timeout(d(text='累计任务奖励'), 5):
+    if not find_timeout(d(text='累计任务奖励'), 5):
         print('返回失败，再次返回重试')
         d.go_back()
-        if not __find_timeout(d(text='累计任务奖励'), 5):
+        if not find_timeout(d(text='累计任务奖励'), 5):
             return False
     return True
+
 
 # 获取当前体力
 def get_coin():
@@ -93,6 +29,7 @@ def get_coin():
     coin = int(coin)
     print('当前共有', coin, '体力')
     return coin
+
 
 # 任务名为浏览15秒，且不是搜索
 def find_time_15_task():
@@ -104,6 +41,7 @@ def find_time_15_task():
     else:
         return False
 
+
 # 任务名为浏览15秒，搜索任务
 def find_time_15_search_task():
     print('寻找浏览15秒的搜索任务')
@@ -113,6 +51,7 @@ def find_time_15_search_task():
         return True
     else:
         return False
+
 
 # 任务名为浏览5秒，且不是搜索
 def find_time_5_task():
@@ -124,9 +63,10 @@ def find_time_5_task():
     else:
         return False
 
+
 def do_time_task():
     print('等待进入')
-    if not __find_timeout(d(text='浏览得奖励'), 10):
+    if not find_timeout(d(text='浏览得奖励'), 10):
         print('进入任务失败')
         return False
     print('进入任务成功，进行商品浏览')
@@ -138,14 +78,16 @@ def do_time_task():
     print('任务已完成')
     return True
 
+
 def do_search_task():
     print('等待进入')
-    if not __find_timeout(d(text='搜索有福利'), 10):
+    if not find_timeout(d(text='搜索有福利'), 10):
         print('进入任务失败')
         return False
     print('进入任务成功，进行商品搜索')
     d.xpath('//*[@text="搜索发现"]/parent::*/list/listItem[1]').click()
     return do_time_task()
+
 
 if __name__ == '__main__':
     logger.disabled = True
@@ -161,7 +103,7 @@ if __name__ == '__main__':
 
     if not TRY_RUN:
         print('首先关闭媒体音量')
-        d.shell("uitest uiInput keyEvent 17") # 点击音量减小键
+        d.shell("uitest uiInput keyEvent 17")  # 点击音量减小键
 
         print('首先关闭淘宝App')
         d.stop_app('com.taobao.taobao4hmos')
@@ -169,18 +111,18 @@ if __name__ == '__main__':
         print('打开淘宝App')
         d.start_app('com.taobao.taobao4hmos')
         print('等待淘宝首页加载...')
-        if not __find_timeout(d(id='searchBg'), 10):
+        if not find_timeout(d(id='searchBg'), 10):
             print('未能检测到淘宝首页，退出')
         d.xpath('//*[@id="searchBg"]/Stack[2]').click()
         print('等待淘宝搜索页加载...')
-        if not __find_timeout(d(text='搜索'), 10):
+        if not find_timeout(d(text='搜索'), 10):
             print('未能检测到淘宝搜索页，退出')
         print('进入活动')
         d.input_text('淘金币618赢10亿')
         d(text='搜索').click()
 
         print('等待活动打开...')
-        if not __find_timeout(d(text='O1CN01yJWwRA1uH5o8MXTSE_!!6000000006011-2-tps-741-84'), 30):
+        if not find_timeout(d(text='O1CN01yJWwRA1uH5o8MXTSE_!!6000000006011-2-tps-741-84'), 30):
             print('未检测到活动页，退出')
             exit(0)
         print('活动已打开，开始任务')
@@ -190,7 +132,7 @@ if __name__ == '__main__':
         print('打开任务列表')
         d(text="赚体力").click()
         print('等待任务列表')
-        if __find_timeout(d(text='累计任务奖励'), 5):
+        if find_timeout(d(text='累计任务奖励'), 5):
             print('任务列表打开成功')
         else:
             print('任务列表打开失败，退出')
@@ -254,7 +196,6 @@ if __name__ == '__main__':
                 print('没有任务了')
                 break
 
-
         print('领取累计任务奖励')
         print('第一个')
         d(text='立即领取').click_if_exists()
@@ -271,7 +212,7 @@ if __name__ == '__main__':
 
         print('运行结束')
 
-    else: # TRYRUN
+    else:  # TRYRUN
         # do_time_task()
         # do_search_task()
         # get_coin()
