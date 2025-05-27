@@ -10,7 +10,7 @@
 1. Python3.8+版本
 2. 鸿蒙HDC调试工具
 2. [hmdriver2](https://github.com/codematrixer/hmdriver2)库
-3. 手机开启开发者模式，并打开USB调试
+3. 手机开启开发者模式，并打开USB调试或无线调试
 
 ## 安装依赖
 
@@ -22,13 +22,15 @@ https://www.python.org/downloads/
 
 （此步骤稍后完善具体细节，可以问一下ai先）
 
-3. 开启手机usb调试
+3. 开启手机usb调试，并连接电脑
 
 `设置`-点击账号下方`手机名称`-连续点击5次`软件版本`，开启开发者选项
 
-重启后`设置`-`系统`-`开发者选项`，打开`USB调试开关`
+重启后`设置`-`系统`-`开发者选项`，打开`USB调试`或`无线调试`
 
-电脑上打开终端，执行hdc list targets查看是否显示手机
+USB连接： 通过数据线连接电脑，终端执行hdc list targets查看是否显示手机
+
+无线连接：终端输入`hdc tconn 手机无线调试显示的ip:端口号`
 
 4. 安装hmdirver2基础库
 电脑上打开终端，执行`pip3 install -U hmdriver2`
