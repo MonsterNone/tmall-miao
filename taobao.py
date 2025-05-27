@@ -4,7 +4,7 @@ import time
 
 from hmdriver2.driver import Driver, logger
 
-from utils import find_timeout_text, find_timeout_id, open_taobao_search
+from utils import find_timeout_text, open_taobao_search, find_timeout_xpath
 
 
 # 检查是否在任务列表并返回
@@ -68,7 +68,7 @@ def find_time_5_task():
 
 def do_time_task():
     print('等待进入')
-    if not find_timeout_text(d, '浏览得奖励', 10):
+    if not find_timeout_xpath(d, '//*[contains(@text, "310x310xzq90")]', 10):
         print('进入任务失败')
         return False
     print('进入任务成功，进行商品浏览')
@@ -83,7 +83,7 @@ def do_time_task():
 
 def do_search_task():
     print('等待进入')
-    if not find_timeout_text(d, '搜索有福利', 10):
+    if not find_timeout_xpath(d, '//*[@text="搜索发现"]/parent::*/list/listItem[1]', 10):
         print('进入任务失败')
         return False
     print('进入任务成功，进行商品搜索')
@@ -137,6 +137,8 @@ if __name__ == '__main__':
                     print('浏览任务失败')
                 else:
                     print('浏览任务成功')
+
+                time.sleep(3)  # 可能有弹窗，等待消失
 
                 if not return_task_list():
                     print('返回任务列表失败，请重新运行')

@@ -116,7 +116,7 @@ def do_time_task_energy():
 
 def do_search_task_energy():
     print('等待进入')
-    if not find_timeout_text(d, '搜索有福利', 10):
+    if not find_timeout_xpath(d, '//*[@text="搜索发现"]/parent::*/list/listItem[1]', 10):
         print('进入任务失败')
         return False
     print('进入任务成功，进行商品搜索')
