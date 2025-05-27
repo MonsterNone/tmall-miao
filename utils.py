@@ -1,6 +1,11 @@
+import json
+import logging
 import math
 import random
+import re
 import time
+
+from hmdriver2._xpath import _XPath
 
 
 # 模拟滑动
@@ -46,29 +51,7 @@ def human_swipe(d, x1, y1, x2, y2, base_speed=0.5, wave_range=30):
     g.action()
 
 
-# 超时寻找
-def find_timeout_text(d, text, timeout):
-    flag = False
-    for i in range(timeout):
-        if not d(text=text).exists():
-            time.sleep(0.8)
-            continue
-        flag = True
-        break
-    return flag
-
-
-def find_timeout_id(d, id, timeout):
-    flag = False
-    for i in range(timeout):
-        if not d(id=id).exists():
-            time.sleep(0.8)
-            continue
-        flag = True
-        break
-    return flag
-
-
+# 通过xpath超时寻找，找到返回true，找不到返回false
 def find_timeout_xpath(d, xpath, timeout):
     flag = False
     for i in range(timeout):
@@ -79,19 +62,44 @@ def find_timeout_xpath(d, xpath, timeout):
         break
     return flag
 
+
+# 通过正则寻找，找到返回[result]，找不到返回[]
+def find_timeout_re(d, reg, timeout):
+    for i in range(timeout):
+        t = d.dump_hierarchy()
+        t = json.dumps(t, ensure_ascii=False)
+        r = re.findall(reg, t)
+        if not r and i != timeout:
+            logger.debug('搜索 {} 次'.format(i + 1))
+            time.sleep(0.8)
+            continue
+        return r
+    return []
+
+
 def open_taobao_search(d, text):
-    print('首先关闭淘宝App')
+    logger.info('首先关闭淘宝App')
     d.stop_app('com.taobao.taobao4hmos')
     time.sleep(3)
-    print('打开淘宝App')
+    logger.info('打开淘宝App')
     d.start_app('com.taobao.taobao4hmos')
-    print('等待淘宝首页加载...')
-    if not find_timeout_id(d, 'searchBg', 10):
-        print('未能检测到淘宝首页，退出')
+    logger.info('等待淘宝首页加载...')
+    if not find_timeout_re(d, 'searchBg', 10):
+        logger.info('未能检测到淘宝首页，退出')
     d.xpath('//*[@id="searchBg"]/Stack[2]').click()
-    print('等待淘宝搜索页加载...')
-    if not find_timeout_text(d, '搜索', 10):
-        print('未能检测到淘宝搜索页，退出')
-    print('进入活动')
+    logger.info('等待淘宝搜索页加载...')
+    if not find_timeout_re(d, '搜索', 10):
+        logger.info('未能检测到淘宝搜索页，退出')
+    logger.info('进入活动')
     d.input_text(text)
     d(text='搜索').click()
+
+
+def json2xml(hierarchy):
+    return _XPath._json2xml(hierarchy)
+
+
+logging.basicConfig(format='%(asctime)s %(levelname)-8s [%(filename)-9s:%(lineno)-3d] %(message)s',
+                    datefmt='%Y-%m-%d:%H:%M:%S')
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
