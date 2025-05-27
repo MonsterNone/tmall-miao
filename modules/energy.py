@@ -6,7 +6,7 @@ import time
 import hmdriver2.driver
 from hmdriver2.driver import Driver, logger
 
-from utils import find_timeout_xpath, open_taobao_search, logger, find_timeout_re, json2xml
+from modules.utils import find_timeout_xpath, open_taobao_search, logger, find_timeout_re, json2xml
 
 
 # 打开任务列表
@@ -62,6 +62,7 @@ def get_coin():
     coin = int(coin)
     logger.info('当前共有 {} 能量'.format(coin))
     return coin
+
 
 # TODO: 改为正则匹配合并搜索
 # 任务名为浏览15秒，且不是搜索
@@ -176,9 +177,114 @@ def do_10_item_task():
         d.swipe_ext('up')
 
 
-logger.setLevel(logging.INFO)
+def run():
+    global d
+    logger.setLevel(logging.INFO)
+    logger.info('连接设备...')
+    d = Driver()
+    logger.info('开始运行...')
+
+    start_coin = 0
+    end_coin = 0
+
+    logger.info('首先关闭音量')
+    d.shell("uitest uiInput keyEvent 22")  # 设置扬声器静音
+    d.shell("uitest uiInput keyEvent 23")  # 点击扬声器静音
+
+    open_taobao_search(d, '好运红包6666')
+
+    logger.info('等待活动打开...')
+    if not find_timeout_re(d, 'O1CN013Lp0e21GnX8El4YEd_!!6000000000667-1-tps-256-256', 30):
+        logger.info('未检测到活动页，退出')
+        exit(0)
+    logger.info('活动已打开，开始任务')
+
+    logger.info('首先关闭弹窗')
+    if d(text='我的能量值').exists():
+        logger.info('不需要关闭')
+    else:
+        close_popup()
+
+    if not open_task_list():
+        logger.error('任务列表打开失败，退出')
+        exit(0)
+
+    start_coin = get_coin()
+
+    while True:
+        no_time_15_task_flag = False
+        no_time_15_search_task_flag = False
+        no_item_10_task = False
+
+        if not open_task_list():
+            logger.error('任务列表打开失败，退出')
+            exit(0)
+
+        if find_time_15_task():
+            logger.info('进行浏览任务')
+            if not do_time_task_energy():
+                logger.info('浏览任务失败')
+            else:
+                logger.info('浏览任务成功')
+
+            if not return_task_list():
+                logger.info('返回任务列表失败，请重新运行')
+                exit(0)
+            else:
+                logger.info('返回成功，进行下一个任务')
+                continue
+        else:
+            logger.info('没有浏览15秒任务')
+            no_time_15_task_flag = True
+
+        if find_time_15_search_task():
+            logger.info('进行搜索任务')
+            if not do_search_task_energy():
+                logger.info('搜索任务失败')
+            else:
+                logger.info('搜索任务成功')
+
+            if not return_task_list():
+                logger.info('返回任务列表失败，请重新运行')
+                exit(0)
+            else:
+                logger.info('返回成功，进行下一个任务')
+                continue
+        else:
+            logger.info('没有搜索任务')
+            no_time_15_search_task_flag = True
+
+        if find_item_10_task():
+            logger.info('进行浏览10次商品任务')
+            if not do_10_item_task(d):
+                logger.info('浏览10次商品失败')
+            else:
+                logger.info('浏览10次商品成功')
+
+            if not return_task_list():
+                logger.info('返回任务列表失败，请重新运行')
+                exit(0)
+            else:
+                logger.info('返回成功，进行下一个任务')
+                continue
+        else:
+            logger.info('没有浏览10次任务')
+            no_item_10_task = True
+
+        if no_time_15_task_flag and no_time_15_search_task_flag and no_item_10_task:
+            logger.info('没有任务了')
+            break
+
+    end_coin = get_coin()
+    logger.info('本次运行共获得 {} 能量'.format(end_coin - start_coin))
+
+    logger.info('运行结束')
+
+hmdriver2.driver.logger.disabled = True
+d = 0
 
 if __name__ == '__main__':
+    logger.setLevel(logging.DEBUG)
     hmdriver2.driver.logger.disabled = True
     logger.info('连接设备...')
     d = Driver()
@@ -187,101 +293,8 @@ if __name__ == '__main__':
     TRY_RUN = False
     # TRY_RUN = True
 
-    startCoin = 0
-    endCoin = 0
-
     if not TRY_RUN:
-        logger.info('首先关闭音量')
-        d.shell("uitest uiInput keyEvent 22")  # 设置扬声器静音
-
-        open_taobao_search(d, '好运红包6666')
-
-        logger.info('等待活动打开...')
-        if not find_timeout_re(d, 'O1CN013Lp0e21GnX8El4YEd_!!6000000000667-1-tps-256-256', 30):
-            logger.info('未检测到活动页，退出')
-            exit(0)
-        logger.info('活动已打开，开始任务')
-
-        logger.info('首先关闭弹窗')
-        if d(text='我的能量值').exists():
-            logger.info('不需要关闭')
-        else:
-            close_popup()
-
-        if not open_task_list():
-            logger.error('任务列表打开失败，退出')
-            exit(0)
-        startCoin = get_coin()
-
-        while True:
-            noTime15TaskFlag = False
-            noTime15SearchTaskFlag = False
-            noItem10Task = False
-
-            if not open_task_list():
-                logger.error('任务列表打开失败，退出')
-                exit(0)
-
-            if find_time_15_task():
-                logger.info('进行浏览任务')
-                if not do_time_task_energy():
-                    logger.info('浏览任务失败')
-                else:
-                    logger.info('浏览任务成功')
-
-                if not return_task_list():
-                    logger.info('返回任务列表失败，请重新运行')
-                    exit(0)
-                else:
-                    logger.info('返回成功，进行下一个任务')
-                    continue
-            else:
-                logger.info('没有浏览15秒任务')
-                noTime15TaskFlag = True
-
-            if find_time_15_search_task():
-                logger.info('进行搜索任务')
-                if not do_search_task_energy():
-                    logger.info('搜索任务失败')
-                else:
-                    logger.info('搜索任务成功')
-
-                if not return_task_list():
-                    logger.info('返回任务列表失败，请重新运行')
-                    exit(0)
-                else:
-                    logger.info('返回成功，进行下一个任务')
-                    continue
-            else:
-                logger.info('没有搜索任务')
-                noTime15SearchTaskFlag = True
-
-            if find_item_10_task():
-                logger.info('进行浏览10次商品任务')
-                if not do_10_item_task(d):
-                    logger.info('浏览10次商品失败')
-                else:
-                    logger.info('浏览10次商品成功')
-
-                if not return_task_list():
-                    logger.info('返回任务列表失败，请重新运行')
-                    exit(0)
-                else:
-                    logger.info('返回成功，进行下一个任务')
-                    continue
-            else:
-                logger.info('没有浏览10次任务')
-                noItem10Task = True
-
-            if noTime15TaskFlag and noTime15SearchTaskFlag and noItem10Task:
-                logger.info('没有任务了')
-                break
-
-        endCoin = get_coin()
-        logger.info('本次运行共获得 {} 能量'.format(endCoin - startCoin))
-
-        logger.info('运行结束')
-
+        run()
     else:  # TRYRUN
         # do_time_task_energy()
         # do_search_task()
