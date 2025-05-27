@@ -130,9 +130,9 @@ def run():
 
     # TODO: 任务统计
     while True:
-        noTime15TaskFlag = False
-        noTime15SearchTaskFlag = False
-        noTime5TaskFlag = False
+        no_time_15_task_flag = False
+        no_time_15_search_task_flag = False
+        no_time_5_task_flag = False
 
         if find_time_15_task():
             logger.info('进行浏览任务')
@@ -151,7 +151,7 @@ def run():
                 continue
         else:
             logger.info('没有浏览15秒任务')
-            noTime15TaskFlag = True
+            no_time_15_task_flag = True
 
         if find_time_15_search_task():
             logger.info('进行搜索任务')
@@ -169,7 +169,7 @@ def run():
                 continue
         else:
             logger.info('没有搜索任务')
-            noTime15SearchTaskFlag = True
+            no_time_15_search_task_flag = True
 
         if find_time_5_task():
             logger.info('进行浏览5秒任务，8秒自动返回')
@@ -183,9 +183,9 @@ def run():
                 continue
         else:
             logger.info('没有浏览5秒任务')
-            noTime5TaskFlag = True
+            no_time_5_task_flag = True
 
-        if noTime15TaskFlag and noTime5TaskFlag and noTime15SearchTaskFlag:
+        if no_time_15_task_flag and no_time_5_task_flag and no_time_15_search_task_flag:
             logger.info('没有任务了')
             break
 
