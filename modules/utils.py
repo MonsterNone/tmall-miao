@@ -95,6 +95,24 @@ def open_taobao_search(d, text):
     d(text='搜索').click()
 
 
+def open_jd_search(d, text):
+    logger.info('首先关闭京东App')
+    d.stop_app('com.jd.hm.mall')
+    time.sleep(3)
+    logger.info('打开京东App')
+    d.start_app('com.jd.hm.mall')
+    logger.info('等待京东首页加载...')
+    if not find_timeout_re(d, '搜索', 10):
+        logger.info('未能检测到京东首页，退出')
+    d.xpath('//*[@text="搜索"]/../Row').click()
+    logger.info('等待京东搜索页加载...')
+    if not find_timeout_re(d, '搜索', 10):
+        logger.info('未能检测到京东搜索页，退出')
+    logger.info('进入活动')
+    d.input_text(text)
+    d(text='搜索').click()
+
+
 def json2xml(hierarchy):
     return _XPath._json2xml(hierarchy)
 

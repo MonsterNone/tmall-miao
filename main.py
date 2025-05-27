@@ -1,7 +1,7 @@
-import sys
-import time
 import os
 import platform
+import sys
+import time
 
 
 # 颜色设置 - 适用于支持ANSI转义码的终端
@@ -74,20 +74,23 @@ def display_menu():
     # 显示618红包提示横幅（红色）
     print(f"{Colors.FAIL}╔══════════════════════════════════════════╗{Colors.ENDC}")
     print(f"{Colors.FAIL}║          {Colors.ENDC}618大额红包，每日可领！         {Colors.FAIL}║{Colors.ENDC}")
-    print(f"{Colors.FAIL}║     淘宝红包搜：粉丝领红包8888{Colors.FAIL.ljust(16, ' ')}║{Colors.ENDC}")
-    print(f"{Colors.FAIL}║     京东红包搜：幸运抽红包999{Colors.FAIL.ljust(17, ' ')}║{Colors.ENDC}")
-    print(f"{Colors.FAIL}║     淘宝购物车红包搜：购物车福利666{Colors.FAIL.ljust(11, ' ')}║{Colors.ENDC}")
+    print(f"{Colors.FAIL}║          {Colors.ENDC}(进入对应APP搜索哦！)           {Colors.FAIL}║{Colors.ENDC}")
+    print(f"{Colors.FAIL}║       淘宝红包搜：粉丝领红包8888{Colors.FAIL.ljust(14, ' ')}║{Colors.ENDC}")
+    print(f"{Colors.FAIL}║       京东红包搜：幸运抽红包999{Colors.FAIL.ljust(15, ' ')}║{Colors.ENDC}")
+    print(f"{Colors.FAIL}║ 淘宝购物车红包搜：购物车福利666{Colors.FAIL.ljust(15, ' ')}║{Colors.ENDC}")
     print(f"{Colors.FAIL}╚══════════════════════════════════════════╝{Colors.ENDC}")
     print()  # 空行分隔
-    
+
     # 功能菜单
     print(f"{Colors.OKBLUE}╔══════════════════════════════════════════╗{Colors.ENDC}")
-    print(f"{Colors.OKBLUE}║                {Colors.BOLD}功能菜单{Colors.ENDC}{Colors.OKBLUE}                  ║{Colors.ENDC}")
+    print(
+        f"{Colors.OKBLUE}║                {Colors.BOLD}功能菜单{Colors.ENDC}{Colors.OKBLUE}                  ║{Colors.ENDC}")
     print(f"{Colors.OKBLUE}╠══════════════════════════════════════════╣{Colors.ENDC}")
     print(f"{Colors.OKCYAN}║ 1. {Colors.ENDC}淘金币任务{Colors.OKBLUE.ljust(33, ' ')}║{Colors.ENDC}")
-    print(f"{Colors.OKCYAN}║ 2. {Colors.ENDC}能量红包任务{Colors.OKBLUE.ljust(31, ' ')}║{Colors.ENDC}")
-    print(f"{Colors.OKCYAN}║ 3. {Colors.ENDC}京东任务（未开通）{Colors.OKBLUE.ljust(25, ' ')}║{Colors.ENDC}")
-    print(f"{Colors.WARNING}║ 4. {Colors.ENDC}退出程序{Colors.OKBLUE.ljust(35, ' ')}║{Colors.ENDC}")
+    print(f"{Colors.OKCYAN}║ 2. {Colors.ENDC}淘宝能量红包任务{Colors.OKBLUE.ljust(27, ' ')}║{Colors.ENDC}")
+    print(f"{Colors.OKCYAN}║ 3. {Colors.ENDC}京东推红包任务{Colors.OKBLUE.ljust(29, ' ')}║{Colors.ENDC}")
+    print(f"{Colors.OKCYAN}║ 4. {Colors.ENDC}京东打卡任务{Colors.OKBLUE.ljust(31, ' ')}║{Colors.ENDC}")
+    print(f"{Colors.WARNING}║ 5. {Colors.ENDC}退出程序{Colors.OKBLUE.ljust(35, ' ')}║{Colors.ENDC}")
     print(f"{Colors.OKBLUE}╚══════════════════════════════════════════╝{Colors.ENDC}")
 
 
@@ -114,7 +117,8 @@ def main():
         display_menu()
 
         try:
-            choice = input(f"{Colors.INPUT}请输入你的选择 (1-4): {Colors.ENDC}").strip()
+            print(f"{Colors.INPUT}任务运行中按Ctrl+C可以停止{Colors.ENDC}")
+            choice = input(f"{Colors.INPUT}请输入你的选择 (1-5): {Colors.ENDC}").strip()
 
             if choice == "1":
                 loading_animation("正在加载淘金币任务脚本")
@@ -129,12 +133,18 @@ def main():
                 energy.run()
                 print("")
             elif choice == "3":
-                loading_animation("正在加载京东任务脚本")
+                loading_animation("正在加载京东推红包任务脚本")
                 print("")
-                # from modules import string_tools
-                # string_tools.run()
+                from modules import jd_push
+                jd_push.run()
                 print("")
             elif choice == "4":
+                loading_animation("正在加载京东打卡任务脚本")
+                print("")
+                from modules import jd_hb
+                jd_hb.run()
+                print("")
+            elif choice == "5":
                 print(f"{Colors.OKGREEN}感谢使用，再见！{Colors.ENDC}")
                 sys.exit()
             else:
