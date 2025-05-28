@@ -46,9 +46,14 @@ def return_task_list():
 def close_popup():
     logger.info('关闭弹窗，检测3次')
     for i in range(3):
-        r = find_timeout_re(d, '"((TB16l86YLb2gK0jSZK9XXaEgFXa|O1CN01Tz6gW71FZ35a6LhE4_).*?jpg_)"', 5)
+        r = find_timeout_re(d, '"((TB16l86YLb2gK0jSZK9XXaEgFXa.*?jpg_)|开奖即同意)"', 5)
         if r:
-            d(text=r[0][0]).click()
+            if r[0][0] == '开奖即同意':
+                logger.info('点击开奖')
+                d.xpath('//*[@text="开奖即同意"]/../../*[last()-1]').click()
+            else:
+                logger.info('点击关闭')
+                d(text=r[0][0]).click()
             time.sleep(1)
         else:
             logger.info('不需要关闭')
@@ -299,8 +304,9 @@ if __name__ == '__main__':
         # do_time_task_energy()
         # do_search_task()
         # get_coin()
-        logger.info(find_time_15_task())
+        # logger.info(find_time_15_task())
         # logger.info(find_time_15_search_task())
         # return_task_list()
         # logger.info(find_item_10_task())
         # do_10_item_task()
+        close_popup()
