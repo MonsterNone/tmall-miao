@@ -86,7 +86,7 @@ def display_menu():
     print(
         f"{Colors.OKBLUE}║                {Colors.BOLD}功能菜单{Colors.ENDC}{Colors.OKBLUE}                  ║{Colors.ENDC}")
     print(f"{Colors.OKBLUE}╠══════════════════════════════════════════╣{Colors.ENDC}")
-    print(f"{Colors.OKCYAN}║ 1. {Colors.ENDC}淘金币任务{Colors.OKBLUE.ljust(33, ' ')}║{Colors.ENDC}")
+    print(f"{Colors.OKCYAN}║ 1. {Colors.ENDC}淘金币10亿任务{Colors.OKBLUE.ljust(29, ' ')}║{Colors.ENDC}")
     print(f"{Colors.OKCYAN}║ 2. {Colors.ENDC}淘宝能量红包任务{Colors.OKBLUE.ljust(27, ' ')}║{Colors.ENDC}")
     print(f"{Colors.OKCYAN}║ 3. {Colors.ENDC}京东推红包任务{Colors.OKBLUE.ljust(29, ' ')}║{Colors.ENDC}")
     print(f"{Colors.OKCYAN}║ 4. {Colors.ENDC}京东打卡任务{Colors.OKBLUE.ljust(31, ' ')}║{Colors.ENDC}")
