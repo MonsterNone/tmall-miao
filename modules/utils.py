@@ -116,6 +116,9 @@ def open_jd_search(d, text):
 def json2xml(hierarchy):
     return _XPath._json2xml(hierarchy)
 
+def mute(d):
+    for i in range(10):
+        d.shell("uitest uiInput keyEvent 17")  # 点击音量减少
 
 logging.basicConfig(format='%(asctime)s %(levelname)-8s [%(filename)-9s:%(lineno)-3d] %(message)s',
                     datefmt='%Y-%m-%d:%H:%M:%S')

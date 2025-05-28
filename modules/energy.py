@@ -6,7 +6,7 @@ import time
 import hmdriver2.driver
 from hmdriver2.driver import Driver, logger
 
-from modules.utils import find_timeout_xpath, open_taobao_search, logger, find_timeout_re, json2xml
+from modules.utils import find_timeout_xpath, open_taobao_search, logger, find_timeout_re, json2xml, mute
 
 
 # 打开任务列表
@@ -193,8 +193,7 @@ def run():
     end_coin = 0
 
     logger.info('首先关闭音量')
-    d.shell("uitest uiInput keyEvent 22")  # 设置扬声器静音
-    d.shell("uitest uiInput keyEvent 23")  # 点击扬声器静音
+    mute(d)
 
     open_taobao_search(d, '好运红包6666')
 

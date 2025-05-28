@@ -6,7 +6,7 @@ import time
 import hmdriver2.driver
 from hmdriver2.driver import Driver
 
-from modules.utils import open_taobao_search, find_timeout_xpath, logger, find_timeout_re
+from modules.utils import open_taobao_search, find_timeout_xpath, logger, find_timeout_re, mute
 
 
 # 检查是否在任务列表并返回
@@ -105,8 +105,7 @@ def run():
     endCoin = 0
 
     logger.info('首先关闭音量')
-    d.shell("uitest uiInput keyEvent 22")  # 点击扬声器静音
-    d.shell("uitest uiInput keyEvent 23")  # 点击扬声器静音
+    mute(d)
 
     open_taobao_search(d, '淘金币618赢10亿')
 
@@ -138,7 +137,6 @@ def run():
 
         if find_time_15_task():
             logger.info('进行浏览任务')
-            done_count
             if not do_time_task():
                 logger.info('浏览任务失败')
             else:

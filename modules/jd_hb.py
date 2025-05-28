@@ -4,7 +4,7 @@ import time
 import hmdriver2
 from hmdriver2.driver import Driver
 
-from modules.utils import open_jd_search, logger, find_timeout_re
+from modules.utils import open_jd_search, logger, find_timeout_re, mute
 
 
 def close_popup():
@@ -110,8 +110,7 @@ def run():
     logger.info('开始运行...')
 
     logger.info('首先关闭音量')
-    d.shell("uitest uiInput keyEvent 22")  # 点击扬声器静音
-    d.shell("uitest uiInput keyEvent 23")  # 点击扬声器静音
+    mute(d)
 
     open_jd_search(d, '红包快来886')
     logger.info('等待活动打开...')
