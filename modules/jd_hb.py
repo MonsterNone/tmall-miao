@@ -130,6 +130,8 @@ def run():
         logger.error('未检测到任务列表，退出')
         exit(0)
 
+    swipe_flag = False # 任务可能分页，需要滑动
+
     while True:
         no_view_task = False
         no_item_5_task = False
@@ -167,8 +169,14 @@ def run():
             no_item_5_task = True
 
         if no_view_task and no_item_5_task:
-            logger.info('没有任务了')
-            break
+            if not swipe_flag:
+                logger.info('没有找到任务，下滑尝试')
+                d.swipe_ext('up', box=(0.4, 0.6, 0.6, 0.8))
+                swipe_flag = True
+                continue
+            else:
+                logger.info('没有任务了')
+                break
 
     logger.info('领取打卡奖励')
     if d(text='4c1b204204e75dd7').exists():
