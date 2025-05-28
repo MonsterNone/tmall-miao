@@ -77,7 +77,7 @@ def do_item_5_task():
     while True:
         logger.info('搜索商品')
         r = find_timeout_re(d, r'text": "([0-9a-z]{16})"', 3)
-        print(r)
+        logger.debug(r)
         if not r:
             logger.info('未找到商品，退出')
             return False
