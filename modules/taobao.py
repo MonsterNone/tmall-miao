@@ -128,7 +128,9 @@ def run():
         logger.info('任务列表打开失败，退出')
         exit(0)
 
-    # TODO: 任务统计
+    # 任务统计
+    done_count = 0
+
     while True:
         no_time_15_task_flag = False
         no_time_15_search_task_flag = False
@@ -136,9 +138,11 @@ def run():
 
         if find_time_15_task():
             logger.info('进行浏览任务')
+            done_count
             if not do_time_task():
                 logger.info('浏览任务失败')
             else:
+                done_count += 1
                 logger.info('浏览任务成功')
 
             time.sleep(3)  # 可能有弹窗，等待消失
@@ -158,6 +162,7 @@ def run():
             if not do_search_task():
                 logger.info('搜索任务失败')
             else:
+                done_count += 1
                 logger.info('搜索任务成功')
                 d.go_back()
 
@@ -174,6 +179,7 @@ def run():
         if find_time_5_task():
             logger.info('进行浏览5秒任务，8秒自动返回')
             time.sleep(8)
+            done_count += 1
 
             if not return_task_list():
                 logger.info('返回任务列表失败，请重新运行')
@@ -196,7 +202,7 @@ def run():
         time.sleep(0.5)
 
     endCoin = get_coin()
-    logger.info('本次运行共获得 {} 体力'.format(endCoin - startCoin))
+    logger.info('本次运行共完成 {} 任务，获得 {} 体力'.format(done_count, endCoin - startCoin))
 
     logger.info('运行结束')
 
