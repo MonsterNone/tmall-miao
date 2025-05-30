@@ -86,6 +86,7 @@ def display_menu():
     print(
         f"{Colors.OKBLUE}║                {Colors.BOLD}功能菜单{Colors.ENDC}{Colors.OKBLUE}                  ║{Colors.ENDC}")
     print(f"{Colors.OKBLUE}╠══════════════════════════════════════════╣{Colors.ENDC}")
+    print(f"{Colors.OKCYAN}║ 0. {Colors.ENDC}一键完成所有任务{Colors.OKBLUE.ljust(27, ' ')}║{Colors.ENDC}")
     print(f"{Colors.OKCYAN}║ 1. {Colors.ENDC}淘金币10亿任务{Colors.OKBLUE.ljust(29, ' ')}║{Colors.ENDC}")
     print(f"{Colors.OKCYAN}║ 2. {Colors.ENDC}淘宝能量红包任务{Colors.OKBLUE.ljust(27, ' ')}║{Colors.ENDC}")
     print(f"{Colors.OKCYAN}║ 3. {Colors.ENDC}京东推红包任务{Colors.OKBLUE.ljust(29, ' ')}║{Colors.ENDC}")
@@ -118,9 +119,32 @@ def main():
 
         try:
             print(f"{Colors.INPUT}任务运行中按Ctrl+C可以停止{Colors.ENDC}")
-            choice = input(f"{Colors.INPUT}请输入你的选择 (1-5): {Colors.ENDC}").strip()
+            choice = input(f"{Colors.INPUT}请输入你的选择 (0-5): {Colors.ENDC}").strip()
 
-            if choice == "1":
+            if choice == "0":
+                loading_animation("开始每日任务一键完成")
+                print("")
+                loading_animation("正在加载淘金币任务脚本")
+                print("")
+                from modules import taobao
+                taobao.run()
+                print("")
+                loading_animation("正在加载能量红包任务脚本")
+                print("")
+                from modules import energy
+                energy.run()
+                print("")
+                loading_animation("正在加载京东推红包任务脚本")
+                print("")
+                from modules import jd_push
+                jd_push.run()
+                print("")
+                loading_animation("正在加载京东打卡任务脚本")
+                print("")
+                from modules import jd_hb
+                jd_hb.run()
+                print("")
+            elif choice == "1":
                 loading_animation("正在加载淘金币任务脚本")
                 print("")
                 from modules import taobao
