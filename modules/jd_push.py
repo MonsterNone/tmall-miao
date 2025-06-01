@@ -38,7 +38,7 @@ def return_task_list():
 #   genericContainer - 去完成
 def find_view_task():
     logger.info('寻找浏览加购任务')
-    xpath = "//*[@text='去完成' or @text='去关注']"
+    xpath = "//*[@text='去完成' or @text='去关注' or @text='逛一逛']"
     if d.xpath(xpath).exists():
         d.xpath(xpath).click()
         return True
