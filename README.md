@@ -1,5 +1,7 @@
 # 618任务助手(HarmonyOS Next版)
 
+> AutoJS版请切换到master分支
+
 已支持：
 
 - [x] 淘宝淘金币任务
