@@ -136,6 +136,7 @@ def run():
     logger.info('本次运行共获得 {} 推红包次数'.format(end_red - start_red))
 
     logger.info('运行结束')
+    return end_red - start_red
 
 
 hmdriver2.driver.logger.disabled = True

@@ -204,6 +204,8 @@ def run():
 
     logger.info('运行结束')
 
+    return endCoin - startCoin
+
 
 hmdriver2.driver.logger.disabled = True
 d = 0

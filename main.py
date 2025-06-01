@@ -127,23 +127,34 @@ def main():
                 loading_animation("正在加载淘金币任务脚本")
                 print("")
                 from modules import taobao
-                taobao.run()
+                tb_coin = taobao.run()
                 print("")
                 loading_animation("正在加载能量红包任务脚本")
                 print("")
                 from modules import energy
-                energy.run()
+                energy_coin = energy.run()
                 print("")
                 loading_animation("正在加载京东推红包任务脚本")
                 print("")
                 from modules import jd_push
-                jd_push.run()
+                push_coin = jd_push.run()
                 print("")
                 loading_animation("正在加载京东打卡任务脚本")
                 print("")
                 from modules import jd_hb
                 jd_hb.run()
                 print("")
+
+                print(f"{Colors.HEADER}╔══════════════════════════════════════════╗{Colors.ENDC}")
+                print(
+                    f"{Colors.HEADER}║       {Colors.BOLD}任务全部完成，获得收益统计{Colors.ENDC}{Colors.HEADER}             ║{Colors.ENDC}")
+                print(f"{Colors.HEADER}╠══════════════════════════════════════════╣{Colors.ENDC}")
+                print(f"{Colors.OKCYAN}║ 跳一跳体力: {tb_coin:<27}    ║{Colors.ENDC}")
+                print(f"{Colors.OKCYAN}║ 红包能量值:  {energy_coin:<27}    ║{Colors.ENDC}")
+                print(f"{Colors.OKCYAN}║ 推红包次数: {push_coin:<27}    ║{Colors.ENDC}")
+                print(f"{Colors.OKCYAN}║ 京东打卡:  任务完成                         ║{Colors.ENDC}")
+                print(f"{Colors.HEADER}╚══════════════════════════════════════════╝{Colors.ENDC}")
+
             elif choice == "1":
                 loading_animation("正在加载淘金币任务脚本")
                 print("")
