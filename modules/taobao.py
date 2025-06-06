@@ -110,7 +110,7 @@ def run():
     open_taobao_search(d, '淘金币618赢10亿')
 
     logger.info('等待活动打开...')
-    if not find_timeout_re(d, 'O1CN01yJWwRA1uH5o8MXTSE_!!6000000006011-2-tps-741-84', 30):
+    if not find_timeout_re(d, '3531Qa2FksNg', 30):
         logger.info('未检测到活动页，退出')
         exit(0)
     logger.info('活动已打开，开始任务')
