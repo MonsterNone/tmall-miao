@@ -86,10 +86,12 @@ def open_taobao_search(d, text):
     logger.info('等待淘宝首页加载...')
     if not find_timeout_re(d, 'searchBg', 10):
         logger.info('未能检测到淘宝首页，退出')
-    d.xpath('//*[@id="searchBg"]/Stack[2]').click()
+        exit(0)
+    d.xpath('//*[@id="searchBg"]/Stack[3]').click()
     logger.info('等待淘宝搜索页加载...')
     if not find_timeout_re(d, '搜索', 10):
         logger.info('未能检测到淘宝搜索页，退出')
+        exit(0)
     logger.info('进入活动')
     d.input_text(text)
     d(text='搜索').click()

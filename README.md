@@ -1,13 +1,13 @@
 # 618任务助手(HarmonyOS Next版)
 
-> AutoJS版请切换到master分支
+> AutoJS版太容易被检测，已停止开发。
 
-已支持：
+2026 618已支持：
 
 - [x] 淘宝淘金币任务
-- [x] 淘宝红包能量任务
-- [x] 京东推红包任务
-- [x] 京东红包打卡任务
+- [未开始] 淘宝红包能量任务
+- [未开始] 京东推红包任务
+- [未开始] 京东红包打卡任务
 
 开发中：
 - [ ] 打包运行
@@ -32,9 +32,13 @@
 
 https://www.python.org/downloads/
 
+> Windows推荐3.10版本，https://www.python.org/ftp/python/3.10.11/
+
 2. 安装HDC工具，并配置环境变量
 
-（此步骤稍后完善具体细节，可以问一下ai先）
+[官网操作指南](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/hdc#环境准备)
+
+安装后根据指南后续不知，添加hdc到系统环境变量
 
 3. 安装hmdirver2基础库
 

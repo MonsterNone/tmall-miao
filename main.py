@@ -48,12 +48,12 @@ def display_welcome():
     title = f"""
 {Colors.HEADER}╔══════════════════════════════════════════╗{Colors.ENDC}
 {Colors.HEADER}║                                          ║{Colors.ENDC}
-{Colors.HEADER}║   {Colors.BOLD}欢迎使用喵币助手Next v20250618-A{Colors.ENDC}{Colors.HEADER}       ║{Colors.ENDC}
+{Colors.HEADER}║   {Colors.BOLD}欢迎使用喵币助手Next v20260618-A{Colors.ENDC}{Colors.HEADER}       ║{Colors.ENDC}
 {Colors.HEADER}║                                          ║{Colors.ENDC}
 {Colors.HEADER}╚══════════════════════════════════════════╝{Colors.ENDC}
 """
-    animate_text(title, 0.01)
-    time.sleep(0.3)
+    animate_text(title, 0.005)
+    time.sleep(0.2)
 
     # 显示简短描述
     features = [
@@ -63,8 +63,8 @@ def display_welcome():
     ]
 
     for feature in features:
-        animate_text(feature)
-        time.sleep(0.2)
+        animate_text(feature, 0.01)
+        time.sleep(0.05)
 
     print()
 
@@ -72,14 +72,14 @@ def display_welcome():
 def display_menu():
     """显示优化的功能菜单"""
     # 显示618红包提示横幅（红色）
-    print(f"{Colors.FAIL}╔══════════════════════════════════════════╗{Colors.ENDC}")
-    print(f"{Colors.FAIL}║          {Colors.ENDC}618大额红包，每日可领！         {Colors.FAIL}║{Colors.ENDC}")
-    print(f"{Colors.FAIL}║          {Colors.ENDC}(进入对应APP搜索哦！)           {Colors.FAIL}║{Colors.ENDC}")
-    print(f"{Colors.FAIL}║       淘宝红包搜：粉丝领红包8888{Colors.FAIL.ljust(14, ' ')}║{Colors.ENDC}")
-    print(f"{Colors.FAIL}║       京东红包搜：幸运抽红包999{Colors.FAIL.ljust(15, ' ')}║{Colors.ENDC}")
-    print(f"{Colors.FAIL}║ 淘宝购物车红包搜：购物车福利666{Colors.FAIL.ljust(15, ' ')}║{Colors.ENDC}")
-    print(f"{Colors.FAIL}╚══════════════════════════════════════════╝{Colors.ENDC}")
-    print()  # 空行分隔
+    # print(f"{Colors.FAIL}╔══════════════════════════════════════════╗{Colors.ENDC}")
+    # print(f"{Colors.FAIL}║          {Colors.ENDC}618大额红包，每日可领！         {Colors.FAIL}║{Colors.ENDC}")
+    # print(f"{Colors.FAIL}║          {Colors.ENDC}(进入对应APP搜索哦！)           {Colors.FAIL}║{Colors.ENDC}")
+    # print(f"{Colors.FAIL}║       淘宝红包搜：{Colors.FAIL.ljust(14, ' ')}║{Colors.ENDC}")
+    # print(f"{Colors.FAIL}║       京东红包搜：{Colors.FAIL.ljust(15, ' ')}║{Colors.ENDC}")
+    # print(f"{Colors.FAIL}║ 淘宝购物车红包搜：{Colors.FAIL.ljust(15, ' ')}║{Colors.ENDC}")
+    # print(f"{Colors.FAIL}╚══════════════════════════════════════════╝{Colors.ENDC}")
+    # print()  # 空行分隔
 
     # 功能菜单
     print(f"{Colors.OKBLUE}╔══════════════════════════════════════════╗{Colors.ENDC}")
@@ -181,7 +181,7 @@ def main():
                 print("")
             elif choice == "5":
                 print(f"{Colors.OKGREEN}感谢使用，再见！{Colors.ENDC}")
-                sys.exit()
+                sys.exit(0)
             else:
                 print(f"{Colors.FAIL}❌ 无效选择，请重新输入。{Colors.ENDC}")
                 time.sleep(0.5)
