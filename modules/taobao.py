@@ -110,7 +110,7 @@ def run():
     open_taobao_search(d, '618赢20亿')
 
     logger.info('等待活动打开...')
-    if not find_timeout_re(d, 'O1CN01FW0Jjo1vV7dMOnfU8', 30):
+    if not find_timeout_re(d, '赚体力', 30):
         logger.info('未检测到活动页，退出')
         exit(0)
     logger.info('活动已打开，开始任务')
@@ -125,7 +125,7 @@ def run():
         logger.info('任务列表打开成功')
     else:
         logger.info('任务列表打开失败，退出')
-        exit(0)
+        return False
 
     # 任务统计
     done_count = 0

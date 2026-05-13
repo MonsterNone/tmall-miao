@@ -88,9 +88,9 @@ def display_menu():
     print(f"{Colors.OKBLUE}╠══════════════════════════════════════════╣{Colors.ENDC}")
     print(f"{Colors.OKCYAN}║ 0. {Colors.ENDC}一键完成所有任务{Colors.OKBLUE.ljust(27, ' ')}║{Colors.ENDC}")
     print(f"{Colors.OKCYAN}║ 1. {Colors.ENDC}淘金币10亿任务{Colors.OKBLUE.ljust(29, ' ')}║{Colors.ENDC}")
-    print(f"{Colors.OKCYAN}║ 2. {Colors.ENDC}淘宝能量红包任务{Colors.OKBLUE.ljust(27, ' ')}║{Colors.ENDC}")
-    print(f"{Colors.OKCYAN}║ 3. {Colors.ENDC}京东推红包任务{Colors.OKBLUE.ljust(29, ' ')}║{Colors.ENDC}")
-    print(f"{Colors.OKCYAN}║ 4. {Colors.ENDC}京东打卡任务{Colors.OKBLUE.ljust(31, ' ')}║{Colors.ENDC}")
+    # print(f"{Colors.OKCYAN}║ 2. {Colors.ENDC}淘宝能量红包任务{Colors.OKBLUE.ljust(27, ' ')}║{Colors.ENDC}")
+    # print(f"{Colors.OKCYAN}║ 3. {Colors.ENDC}京东推红包任务{Colors.OKBLUE.ljust(29, ' ')}║{Colors.ENDC}")
+    # print(f"{Colors.OKCYAN}║ 4. {Colors.ENDC}京东打卡任务{Colors.OKBLUE.ljust(31, ' ')}║{Colors.ENDC}")
     print(f"{Colors.WARNING}║ 5. {Colors.ENDC}退出程序{Colors.OKBLUE.ljust(35, ' ')}║{Colors.ENDC}")
     print(f"{Colors.OKBLUE}╚══════════════════════════════════════════╝{Colors.ENDC}")
 
@@ -161,24 +161,24 @@ def main():
                 from modules import taobao
                 taobao.run()
                 print("")
-            elif choice == "2":
-                loading_animation("正在加载能量红包任务脚本")
-                print("")
-                from modules import energy
-                energy.run()
-                print("")
-            elif choice == "3":
-                loading_animation("正在加载京东推红包任务脚本")
-                print("")
-                from modules import jd_push
-                jd_push.run()
-                print("")
-            elif choice == "4":
-                loading_animation("正在加载京东打卡任务脚本")
-                print("")
-                from modules import jd_hb
-                jd_hb.run()
-                print("")
+            # elif choice == "2":
+            #     loading_animation("正在加载能量红包任务脚本")
+            #     print("")
+            #     from modules import energy
+            #     energy.run()
+            #     print("")
+            # elif choice == "3":
+            #     loading_animation("正在加载京东推红包任务脚本")
+            #     print("")
+            #     from modules import jd_push
+            #     jd_push.run()
+            #     print("")
+            # elif choice == "4":
+            #     loading_animation("正在加载京东打卡任务脚本")
+            #     print("")
+            #     from modules import jd_hb
+            #     jd_hb.run()
+            #     print("")
             elif choice == "5":
                 print(f"{Colors.OKGREEN}感谢使用，再见！{Colors.ENDC}")
                 sys.exit(0)
