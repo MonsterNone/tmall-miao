@@ -171,8 +171,8 @@ def do_10_item_task():
             logger.info('点击浏览')
             d(text=i).click()
             already.append(i)
-            logger.info('等待8秒自动返回')
-            time.sleep(8)
+            logger.info('等待5秒自动返回')
+            time.sleep(5)
             if not d.xpath('//*[contains(@text, "_580x580q75")]').exists():
                 logger.info('返回')
                 d.go_back()
