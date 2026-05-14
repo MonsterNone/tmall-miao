@@ -160,7 +160,7 @@ def do_10_item_task():
     while True:
         logger.info('搜索商品')
         t = json.dumps(d.dump_hierarchy(), ensure_ascii=False, indent=2)
-        r = re.findall('"(O1.*?_560x560q75.*?)"', t)
+        r = re.findall('"(O1.*?_580x580q75.*?)"', t)
         if len(r) == 0:
             logger.info('未能找到商品。退出')
             exit(0)
