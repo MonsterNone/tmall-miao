@@ -48,7 +48,7 @@ def display_welcome():
     title = f"""
 {Colors.HEADER}╔══════════════════════════════════════════╗{Colors.ENDC}
 {Colors.HEADER}║                                          ║{Colors.ENDC}
-{Colors.HEADER}║   {Colors.BOLD}欢迎使用喵币助手Next v20260618-A{Colors.ENDC}{Colors.HEADER}       ║{Colors.ENDC}
+{Colors.HEADER}║   {Colors.BOLD}欢迎使用喵币助手Next v20260618-B{Colors.ENDC}{Colors.HEADER}       ║{Colors.ENDC}
 {Colors.HEADER}║                                          ║{Colors.ENDC}
 {Colors.HEADER}╚══════════════════════════════════════════╝{Colors.ENDC}
 """
@@ -57,9 +57,9 @@ def display_welcome():
 
     # 显示简短描述
     features = [
-        f"{Colors.OKCYAN}✓ 互助QQ群：533943195{Colors.ENDC}",
-        f"{Colors.OKCYAN}✓ 线报优惠群：604427222{Colors.ENDC}",
-        f"{Colors.OKCYAN}✓ 活动通知群：418454328{Colors.ENDC}"
+        f"{Colors.OKCYAN}✓ 互助QQ群：533943195{Colors.ENDC}"
+        # f"{Colors.OKCYAN}✓ 线报优惠群：604427222{Colors.ENDC}",
+        # f"{Colors.OKCYAN}✓ 活动通知群：418454328{Colors.ENDC}"
     ]
 
     for feature in features:
@@ -88,7 +88,7 @@ def display_menu():
     print(f"{Colors.OKBLUE}╠══════════════════════════════════════════╣{Colors.ENDC}")
     print(f"{Colors.OKCYAN}║ 0. {Colors.ENDC}一键完成所有任务{Colors.OKBLUE.ljust(27, ' ')}║{Colors.ENDC}")
     print(f"{Colors.OKCYAN}║ 1. {Colors.ENDC}淘金币10亿任务{Colors.OKBLUE.ljust(29, ' ')}║{Colors.ENDC}")
-    # print(f"{Colors.OKCYAN}║ 2. {Colors.ENDC}淘宝能量红包任务{Colors.OKBLUE.ljust(27, ' ')}║{Colors.ENDC}")
+    print(f"{Colors.OKCYAN}║ 2. {Colors.ENDC}淘宝能量红包任务{Colors.OKBLUE.ljust(27, ' ')}║{Colors.ENDC}")
     # print(f"{Colors.OKCYAN}║ 3. {Colors.ENDC}京东推红包任务{Colors.OKBLUE.ljust(29, ' ')}║{Colors.ENDC}")
     # print(f"{Colors.OKCYAN}║ 4. {Colors.ENDC}京东打卡任务{Colors.OKBLUE.ljust(31, ' ')}║{Colors.ENDC}")
     print(f"{Colors.WARNING}║ 5. {Colors.ENDC}退出程序{Colors.OKBLUE.ljust(35, ' ')}║{Colors.ENDC}")
@@ -161,12 +161,12 @@ def main():
                 from modules import taobao
                 taobao.run()
                 print("")
-            # elif choice == "2":
-            #     loading_animation("正在加载能量红包任务脚本")
-            #     print("")
-            #     from modules import energy
-            #     energy.run()
-            #     print("")
+            elif choice == "2":
+                loading_animation("正在加载能量红包任务脚本")
+                print("")
+                from modules import energy
+                energy.run()
+                print("")
             # elif choice == "3":
             #     loading_animation("正在加载京东推红包任务脚本")
             #     print("")

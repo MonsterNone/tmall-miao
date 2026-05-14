@@ -4,7 +4,7 @@ import re
 import time
 
 import hmdriver2.driver
-from hmdriver2.driver import Driver, logger
+from hmdriver2.driver import Driver
 
 from modules.utils import find_timeout_xpath, open_taobao_search, logger, find_timeout_re, json2xml, mute
 
@@ -12,15 +12,19 @@ from modules.utils import find_timeout_xpath, open_taobao_search, logger, find_t
 # 打开任务列表
 def open_task_list():
     logger.info('打开任务列表，首先检测')
-    if find_timeout_re(d, '我的能量值', 5):
+    if find_timeout_re(d, '当前进度', 5):
         logger.info('已打开')
         return True
     logger.info('点击打开')
     d(text="O1CN013Lp0e21GnX8El4YEd_!!6000000000667-1-tps-256-256").click()
     logger.info('等待任务列表')
-    if find_timeout_re(d, '我的能量值', 5):
+    if find_timeout_re(d, '当前进度', 5):
         logger.info('任务列表打开成功')
         return True
+    elif find_timeout_re(d, 'TB16l86YLb2gK0jSZK9XXaEgFXa-92-92.png_100x100.jpg_', 5):
+        logger.info('关闭弹窗，重新打开')
+        d(text="TB16l86YLb2gK0jSZK9XXaEgFXa-92-92.png_100x100.jpg_").click()
+        return open_task_list
     else:
         logger.info('未检测到任务列表')
         return False
@@ -62,9 +66,7 @@ def close_popup():
 # 获取当前体力
 def get_coin():
     logger.info('获取当前体力')
-    x = json2xml(d.dump_hierarchy())
-    coin = x.xpath('//*[@text="我的能量值"]/../*[3]/@text')[0]
-    coin = int(coin)
+    coin = int(re.findall(r'当前进度 (\d*)/2500', json.dumps(d.dump_hierarchy(), ensure_ascii=False))[0])
     logger.info('当前共有 {} 能量'.format(coin))
     return coin
 
@@ -154,6 +156,7 @@ def do_10_item_task():
         logger.info('未能检测到进入任务，退出')
         exit(0)
     already = []
+    time.sleep(5)
     while True:
         logger.info('搜索商品')
         t = json.dumps(d.dump_hierarchy(), ensure_ascii=False, indent=2)
@@ -162,7 +165,7 @@ def do_10_item_task():
             logger.info('未能找到商品。退出')
             exit(0)
         for i in r:
-            # logger.info(i)
+            logger.info(i)
             if i in already:
                 continue
             logger.info('点击浏览')
@@ -170,7 +173,7 @@ def do_10_item_task():
             already.append(i)
             logger.info('等待8秒自动返回')
             time.sleep(8)
-            if not d.xpath('//*[contains(@text, "_560x560q75")]').exists():
+            if not d.xpath('//*[contains(@text, "_580x580q75")]').exists():
                 logger.info('返回')
                 d.go_back()
             else:
@@ -195,7 +198,7 @@ def run():
     logger.info('首先关闭音量')
     mute(d)
 
-    open_taobao_search(d, '好运红包6666')
+    open_taobao_search(d, 'https://s.click.taobao.com/izgBEml')
 
     logger.info('等待活动打开...')
     if not find_timeout_re(d, 'O1CN013Lp0e21GnX8El4YEd_!!6000000000667-1-tps-256-256', 30):
@@ -204,7 +207,7 @@ def run():
     logger.info('活动已打开，开始任务')
 
     logger.info('首先关闭弹窗')
-    if d(text='我的能量值').exists():
+    if d(text='当前进度').exists():
         logger.info('不需要关闭')
     else:
         close_popup()
@@ -260,7 +263,7 @@ def run():
 
         if find_item_10_task():
             logger.info('进行浏览10次商品任务')
-            if not do_10_item_task(d):
+            if not do_10_item_task():
                 logger.info('浏览10次商品失败')
             else:
                 logger.info('浏览10次商品成功')
@@ -292,7 +295,6 @@ d = 0
 
 if __name__ == '__main__':
     logger.setLevel(logging.DEBUG)
-    hmdriver2.driver.logger.disabled = True
     logger.info('连接设备...')
     d = Driver()
     logger.info('开始运行...')
