@@ -48,7 +48,7 @@ def display_welcome():
     title = f"""
 {Colors.HEADER}╔══════════════════════════════════════════╗{Colors.ENDC}
 {Colors.HEADER}║                                          ║{Colors.ENDC}
-{Colors.HEADER}║   {Colors.BOLD}欢迎使用喵币助手Next v20260618-B{Colors.ENDC}{Colors.HEADER}       ║{Colors.ENDC}
+{Colors.HEADER}║   {Colors.BOLD}欢迎使用喵币助手Next v20260618-C{Colors.ENDC}{Colors.HEADER}       ║{Colors.ENDC}
 {Colors.HEADER}║                                          ║{Colors.ENDC}
 {Colors.HEADER}╚══════════════════════════════════════════╝{Colors.ENDC}
 """
