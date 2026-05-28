@@ -1,7 +1,9 @@
+import argparse
 import os
 import platform
 import sys
 import time
+import threading
 
 
 # 颜色设置 - 适用于支持ANSI转义码的终端
@@ -15,7 +17,6 @@ class Colors:
     ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
-    # 新增颜色和样式
     INFO = '\033[90m'
     INPUT = '\033[33m'
     BLINK = '\033[5m'
@@ -44,45 +45,77 @@ def display_welcome():
     """显示增强的欢迎界面"""
     clear_screen()
 
-    # 显示ASCII艺术标题
     title = f"""
 {Colors.HEADER}╔══════════════════════════════════════════╗{Colors.ENDC}
 {Colors.HEADER}║                                          ║{Colors.ENDC}
-{Colors.HEADER}║   {Colors.BOLD}欢迎使用喵币助手Next v20260618-C{Colors.ENDC}{Colors.HEADER}       ║{Colors.ENDC}
+{Colors.HEADER}║   {Colors.BOLD}欢迎使用喵币助手Next v20260618-D{Colors.ENDC}{Colors.HEADER}       ║{Colors.ENDC}
 {Colors.HEADER}║                                          ║{Colors.ENDC}
 {Colors.HEADER}╚══════════════════════════════════════════╝{Colors.ENDC}
 """
     animate_text(title, 0.005)
     time.sleep(0.2)
 
-    # 显示简短描述
+    print()
+
+
+def select_device():
+    """设备类型选择"""
+    print(f"{Colors.OKBLUE}╔══════════════════════════════════════════╗{Colors.ENDC}")
+    print(f"{Colors.OKBLUE}║          {Colors.BOLD}请选择设备类型{Colors.ENDC}{Colors.OKBLUE}                  ║{Colors.ENDC}")
+    print(f"{Colors.OKBLUE}╠══════════════════════════════════════════╣{Colors.ENDC}")
+    print(f"{Colors.OKCYAN}║ 1. {Colors.ENDC}鸿蒙 (HarmonyOS)  - hmdriver2{Colors.OKBLUE}        ║{Colors.ENDC}")
+    print(f"{Colors.OKCYAN}║ 2. {Colors.ENDC}安卓 (Android)     - uiautomator2{Colors.OKBLUE}     ║{Colors.ENDC}")
+    print(f"{Colors.OKBLUE}╚══════════════════════════════════════════╝{Colors.ENDC}")
+
+    while True:
+        choice = input(f"{Colors.INPUT}请选择设备类型 (1-2): {Colors.ENDC}").strip()
+        if choice == "1":
+            print(f"{Colors.OKGREEN}已选择：鸿蒙设备 (hmdriver2){Colors.ENDC}")
+            return 'hmdriver2'
+        elif choice == "2":
+            print(f"{Colors.OKGREEN}已选择：安卓设备 (uiautomator2){Colors.ENDC}")
+            return 'uiautomator2'
+        else:
+            print(f"{Colors.FAIL}❌ 无效选择，请输入1或2。{Colors.ENDC}")
+
+
+def select_connection():
+    """连接方式选择"""
+    print()
+    print(f"{Colors.OKBLUE}╔══════════════════════════════════════════╗{Colors.ENDC}")
+    print(f"{Colors.OKBLUE}║          {Colors.BOLD}请选择连接方式{Colors.ENDC}{Colors.OKBLUE}                  ║{Colors.ENDC}")
+    print(f"{Colors.OKBLUE}╠══════════════════════════════════════════╣{Colors.ENDC}")
+    print(f"{Colors.OKCYAN}║ 1. {Colors.ENDC}USB 有线连接{Colors.OKBLUE}                         ║{Colors.ENDC}")
+    print(f"{Colors.OKCYAN}║ 2. {Colors.ENDC}WiFi 无线连接{Colors.OKBLUE}                         ║{Colors.ENDC}")
+    print(f"{Colors.OKBLUE}╚══════════════════════════════════════════╝{Colors.ENDC}")
+
+    while True:
+        choice = input(f"{Colors.INPUT}请选择连接方式 (1-2): {Colors.ENDC}").strip()
+        if choice == "1":
+            print(f"{Colors.OKGREEN}已选择：USB有线连接{Colors.ENDC}")
+            return None
+        elif choice == "2":
+            addr = input(f"{Colors.INPUT}请输入设备IP地址和端口 (如 192.168.1.100:5555): {Colors.ENDC}").strip()
+            if not addr:
+                print(f"{Colors.FAIL}❌ 地址不能为空，请重新选择。{Colors.ENDC}")
+                continue
+            print(f"{Colors.OKGREEN}已选择：WiFi无线连接 ({addr}){Colors.ENDC}")
+            return addr
+        else:
+            print(f"{Colors.FAIL}❌ 无效选择，请输入1或2。{Colors.ENDC}")
+
+
+def display_menu():
     features = [
         f"{Colors.OKCYAN}✓ 互助QQ群：533943195{Colors.ENDC}",
         f"{Colors.OKCYAN}✓ 互助网站：https://tasku.top{Colors.ENDC}"
-        # f"{Colors.OKCYAN}✓ 线报优惠群：604427222{Colors.ENDC}",
-        # f"{Colors.OKCYAN}✓ 活动通知群：418454328{Colors.ENDC}"
     ]
 
     for feature in features:
         animate_text(feature, 0.01)
         time.sleep(0.05)
 
-    print()
-
-
-def display_menu():
     """显示优化的功能菜单"""
-    # 显示618红包提示横幅（红色）
-    # print(f"{Colors.FAIL}╔══════════════════════════════════════════╗{Colors.ENDC}")
-    # print(f"{Colors.FAIL}║          {Colors.ENDC}618大额红包，每日可领！         {Colors.FAIL}║{Colors.ENDC}")
-    # print(f"{Colors.FAIL}║          {Colors.ENDC}(进入对应APP搜索哦！)           {Colors.FAIL}║{Colors.ENDC}")
-    # print(f"{Colors.FAIL}║       淘宝红包搜：{Colors.FAIL.ljust(14, ' ')}║{Colors.ENDC}")
-    # print(f"{Colors.FAIL}║       京东红包搜：{Colors.FAIL.ljust(15, ' ')}║{Colors.ENDC}")
-    # print(f"{Colors.FAIL}║ 淘宝购物车红包搜：{Colors.FAIL.ljust(15, ' ')}║{Colors.ENDC}")
-    # print(f"{Colors.FAIL}╚══════════════════════════════════════════╝{Colors.ENDC}")
-    # print()  # 空行分隔
-
-    # 功能菜单
     print(f"{Colors.OKBLUE}╔══════════════════════════════════════════╗{Colors.ENDC}")
     print(
         f"{Colors.OKBLUE}║                {Colors.BOLD}功能菜单{Colors.ENDC}{Colors.OKBLUE}                  ║{Colors.ENDC}")
@@ -97,7 +130,7 @@ def display_menu():
 
 
 def loading_animation(message="加载中", duration=1.5):
-    """显示加载动画"""
+    """显示加载动画（固定时长）"""
     symbols = ['⣾', '⣽', '⣻', '⢿', '⡿', '⣟', '⣯', '⣷']
     start_time = time.time()
 
@@ -111,9 +144,105 @@ def loading_animation(message="加载中", duration=1.5):
     print(f"\r{Colors.OKGREEN}{message} 完成！{Colors.ENDC}{' ' * 10}")
 
 
+class _LoadingSpinner:
+    """后台加载动画，配合实际操作使用"""
+
+    def __init__(self, message="加载中"):
+        self.message = message
+        self._stop_event = threading.Event()
+        self._thread = None
+
+    def start(self):
+        self._stop_event.clear()
+        self._thread = threading.Thread(target=self._spin, daemon=True)
+        self._thread.start()
+
+    def _spin(self):
+        symbols = ['⣾', '⣽', '⣻', '⢿', '⡿', '⣟', '⣯', '⣷']
+        idx = 0
+        while not self._stop_event.is_set():
+            print(f"\r{Colors.INFO}{self.message} {symbols[idx % len(symbols)]}{Colors.ENDC}", end='', flush=True)
+            idx += 1
+            self._stop_event.wait(0.1)
+
+    def stop(self, success=True):
+        self._stop_event.set()
+        if self._thread:
+            self._thread.join()
+        if success:
+            print(f"\r{Colors.OKGREEN}{self.message} 完成！{Colors.ENDC}{' ' * 10}")
+        else:
+            print(f"\r{Colors.FAIL}{self.message} 失败！{Colors.ENDC}{' ' * 10}")
+
+
 def main():
     """程序主函数"""
+    parser = argparse.ArgumentParser(description='喵币助手Next - 618自动化任务')
+    parser.add_argument(
+        '--log', dest='loglevel', default='INFO',
+        choices=['DEBUG', 'INFO', 'WARNING', 'ERROR'],
+        help='日志级别 (默认: INFO)'
+    )
+    args = parser.parse_args()
+
+    # 统一日志配置
+    import logging
+    logging.basicConfig(
+        format='%(asctime)s %(levelname)-8s [%(filename)-9s:%(lineno)-3d] %(message)s',
+        datefmt='%Y-%m-%d:%H:%M:%S'
+    )
+    root_logger = logging.getLogger()
+    root_logger.setLevel(getattr(logging, args.loglevel))
+    global LOG_LEVEL
+    LOG_LEVEL = args.loglevel
+
     display_welcome()
+
+    # 设备选择
+    device_type = select_device()
+
+    # 连接方式选择
+    serial = select_connection()
+
+    # 初始化设备适配器（含重试）
+    from modules.device_adapter import DeviceAdapter
+    max_retries = 2
+    d = None
+    last_error = None
+    for attempt in range(1, max_retries + 1):
+        label = f"正在连接设备{' (重试 ' + str(attempt - 1) + '/' + str(max_retries - 1) + ')' if attempt > 1 else ''}"
+        spinner = _LoadingSpinner(label)
+        spinner.start()
+        try:
+            d = DeviceAdapter(device_type=device_type, serial=serial)
+            spinner.stop(success=True)
+            print(f"{Colors.OKGREEN}设备连接成功！({d}){Colors.ENDC}")
+            break
+        except Exception as e:
+            spinner.stop(success=False)
+            last_error = e
+            if attempt < max_retries:
+                print(f"{Colors.WARNING}连接失败，等待3秒后重试...{Colors.ENDC}")
+                time.sleep(3)
+    else:
+        print(f"{Colors.FAIL}❌ 设备连接失败（已重试{max_retries}次）: {str(last_error)}{Colors.ENDC}")
+        print(f"{Colors.WARNING}请检查：{Colors.ENDC}")
+        if device_type == 'hmdriver2':
+            print(f"  1. 手机是否通过USB连接电脑（或WiFi地址是否正确）")
+            print(f"  2. 是否开启USB调试")
+            print(f"  3. hdc list targets 是否能看到设备")
+            if serial:
+                print(f"  4. 无线连接需先用USB执行 hdc tmode port 5555 开启TCP模式")
+        else:
+            print(f"  1. 手机是否通过USB连接电脑（或WiFi地址是否正确）")
+            print(f"  2. 是否开启USB调试")
+            print(f"  3. adb devices 是否能看到设备")
+            print(f"  4. 是否已运行 python -m uiautomator2 init")
+            if serial:
+                print(f"  5. 无线连接需先用USB执行 adb tcpip 5555 开启TCP模式")
+        sys.exit(1)
+
+    print('\n\n\n')
 
     while True:
         display_menu()
@@ -128,23 +257,13 @@ def main():
                 loading_animation("正在加载淘金币任务脚本")
                 print("")
                 from modules import taobao
-                tb_coin = taobao.run()
+                tb_coin = taobao.run(d)
                 print("")
                 loading_animation("正在加载能量红包任务脚本")
                 print("")
                 from modules import energy
-                energy_coin = energy.run()
+                energy_coin = energy.run(d)
                 print("")
-                # loading_animation("正在加载京东推红包任务脚本")
-                # print("")
-                # from modules import jd_push
-                # push_coin = jd_push.run()
-                # print("")
-                # loading_animation("正在加载京东打卡任务脚本")
-                # print("")
-                # from modules import jd_hb
-                # jd_hb.run()
-                # print("")
 
                 print(f"{Colors.HEADER}╔══════════════════════════════════════════╗{Colors.ENDC}")
                 print(
@@ -152,34 +271,20 @@ def main():
                 print(f"{Colors.HEADER}╠══════════════════════════════════════════╣{Colors.ENDC}")
                 print(f"{Colors.OKCYAN}║ 跳一跳体力: {tb_coin:<27}    ║{Colors.ENDC}")
                 print(f"{Colors.OKCYAN}║ 红包能量值:  {energy_coin:<27}    ║{Colors.ENDC}")
-                # print(f"{Colors.OKCYAN}║ 推红包次数: {push_coin:<27}    ║{Colors.ENDC}")
-                # print(f"{Colors.OKCYAN}║ 京东打卡:  任务完成                         ║{Colors.ENDC}")
                 print(f"{Colors.HEADER}╚══════════════════════════════════════════╝{Colors.ENDC}")
 
             elif choice == "1":
                 loading_animation("正在加载淘金币任务脚本")
                 print("")
                 from modules import taobao
-                taobao.run()
+                taobao.run(d)
                 print("")
             elif choice == "2":
                 loading_animation("正在加载能量红包任务脚本")
                 print("")
                 from modules import energy
-                energy.run()
+                energy.run(d)
                 print("")
-            # elif choice == "3":
-            #     loading_animation("正在加载京东推红包任务脚本")
-            #     print("")
-            #     from modules import jd_push
-            #     jd_push.run()
-            #     print("")
-            # elif choice == "4":
-            #     loading_animation("正在加载京东打卡任务脚本")
-            #     print("")
-            #     from modules import jd_hb
-            #     jd_hb.run()
-            #     print("")
             elif choice == "5":
                 print(f"{Colors.OKGREEN}感谢使用，再见！{Colors.ENDC}")
                 sys.exit(0)
@@ -189,6 +294,9 @@ def main():
         except KeyboardInterrupt:
             print(f"\n{Colors.WARNING}⚠️ 操作已取消。{Colors.ENDC}")
             time.sleep(0.5)
+        except RuntimeError as e:
+            print(f"{Colors.FAIL}❌ 任务异常: {str(e)}{Colors.ENDC}")
+            time.sleep(1)
         except Exception as e:
             print(f"{Colors.FAIL}❌ 发生错误: {str(e)}{Colors.ENDC}")
             print(e)

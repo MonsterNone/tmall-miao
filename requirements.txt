@@ -1,1 +1,2 @@
 hmdriver2~=1.4.4
+uiautomator2~=3.5.0
