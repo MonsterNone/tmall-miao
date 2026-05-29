@@ -3,3 +3,5 @@ try.py
 __pycache__/
 .vscode/
 .venv/
+build/
+dist/

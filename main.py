@@ -7,6 +7,13 @@ import time
 import threading
 import urllib.request
 
+# 打包后将内置的 tools 目录加入 PATH，使 hdc/adb 可被找到
+if getattr(sys, 'frozen', False):
+    _tools_dir = os.path.join(sys._MEIPASS, 'tools')
+    if os.path.isdir(_tools_dir):
+        os.environ['PATH'] = _tools_dir + os.pathsep + os.environ.get('PATH', '')
+        os.environ['ADBUTILS_ADB_PATH'] = os.path.join(_tools_dir, 'adb.exe')
+
 
 # 颜色设置 - 适用于支持ANSI转义码的终端
 class Colors:
@@ -43,10 +50,17 @@ def animate_text(text, delay=0.02, new_line=True):
         print()
 
 
+def _get_base_path():
+    """获取资源文件的基础路径，兼容 PyInstaller 打包"""
+    if getattr(sys, 'frozen', False):
+        return sys._MEIPASS
+    return os.path.dirname(os.path.abspath(__file__))
+
+
 def _read_local_version():
     """从 version.json 读取本地版本号"""
     try:
-        version_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'version.json')
+        version_path = os.path.join(_get_base_path(), 'version.json')
         with open(version_path, 'r', encoding='utf-8') as f:
             data = json.load(f)
         return data.get('version', '')
@@ -61,7 +75,7 @@ def check_version():
         return
 
     try:
-        url = 'https://raw.githubusercontent.com/MonsterNone/tmall-miao/master/version.json'
+        url = 'https://gh.dpik.top/https://github.com/MonsterNone/tmall-miao/raw/refs/heads/next/version.json'
         req = urllib.request.Request(url, headers={'User-Agent': 'tmall-miao'})
         with urllib.request.urlopen(req, timeout=3) as resp:
             remote_data = json.loads(resp.read().decode('utf-8'))
