@@ -259,18 +259,18 @@ def main():
                 from modules import taobao
                 tb_coin = taobao.run(d)
                 print("")
-                loading_animation("正在加载能量红包任务脚本")
-                print("")
-                from modules import energy
-                energy_coin = energy.run(d)
-                print("")
+                # loading_animation("正在加载能量红包任务脚本")
+                # print("")
+                # from modules import energy
+                # energy_coin = energy.run(d)
+                # print("")
 
                 print(f"{Colors.HEADER}╔══════════════════════════════════════════╗{Colors.ENDC}")
                 print(
                     f"{Colors.HEADER}║       {Colors.BOLD}任务全部完成，获得收益统计{Colors.ENDC}{Colors.HEADER}             ║{Colors.ENDC}")
                 print(f"{Colors.HEADER}╠══════════════════════════════════════════╣{Colors.ENDC}")
                 print(f"{Colors.OKCYAN}║ 跳一跳体力: {tb_coin:<27}    ║{Colors.ENDC}")
-                print(f"{Colors.OKCYAN}║ 红包能量值:  {energy_coin:<27}    ║{Colors.ENDC}")
+                # print(f"{Colors.OKCYAN}║ 红包能量值:  {energy_coin:<27}    ║{Colors.ENDC}")
                 print(f"{Colors.HEADER}╚══════════════════════════════════════════╝{Colors.ENDC}")
 
             elif choice == "1":
@@ -279,12 +279,12 @@ def main():
                 from modules import taobao
                 taobao.run(d)
                 print("")
-            elif choice == "2":
-                loading_animation("正在加载能量红包任务脚本")
-                print("")
-                from modules import energy
-                energy.run(d)
-                print("")
+            # elif choice == "2":
+            #     loading_animation("正在加载能量红包任务脚本")
+            #     print("")
+            #     from modules import energy
+            #     energy.run(d)
+            #     print("")
             elif choice == "5":
                 print(f"{Colors.OKGREEN}感谢使用，再见！{Colors.ENDC}")
                 sys.exit(0)
