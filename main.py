@@ -1,9 +1,11 @@
 import argparse
+import json
 import os
 import platform
 import sys
 import time
 import threading
+import urllib.request
 
 
 # 颜色设置 - 适用于支持ANSI转义码的终端
@@ -41,14 +43,49 @@ def animate_text(text, delay=0.02, new_line=True):
         print()
 
 
+def _read_local_version():
+    """从 version.json 读取本地版本号"""
+    try:
+        version_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'version.json')
+        with open(version_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        return data.get('version', '')
+    except Exception:
+        return ''
+
+
+def check_version():
+    """检测是否有新版本，有则提示，异常时静默跳过"""
+    local_version = _read_local_version()
+    if not local_version:
+        return
+
+    try:
+        url = 'https://raw.githubusercontent.com/MonsterNone/tmall-miao/master/version.json'
+        req = urllib.request.Request(url, headers={'User-Agent': 'tmall-miao'})
+        with urllib.request.urlopen(req, timeout=3) as resp:
+            remote_data = json.loads(resp.read().decode('utf-8'))
+        remote_version = remote_data.get('version', '')
+        if remote_version and remote_version != local_version:
+            print(f"{Colors.WARNING}╔══════════════════════════════════════════╗{Colors.ENDC}")
+            print(f"{Colors.WARNING}║  {Colors.BOLD}发现新版本: {remote_version}{Colors.ENDC}{Colors.WARNING}".ljust(44) + f"║{Colors.ENDC}")
+            print(f"{Colors.WARNING}║  请及时更新以获得最新功能和修复".ljust(42) + f"║{Colors.ENDC}")
+            print(f"{Colors.WARNING}╚══════════════════════════════════════════╝{Colors.ENDC}")
+            print()
+    except Exception:
+        print(f"{Colors.INFO}版本检测失败，请检查网络连接{Colors.ENDC}")
+        print()
+
+
 def display_welcome():
     """显示增强的欢迎界面"""
     clear_screen()
 
+    local_version = _read_local_version() or 'unknown'
     title = f"""
 {Colors.HEADER}╔══════════════════════════════════════════╗{Colors.ENDC}
 {Colors.HEADER}║                                          ║{Colors.ENDC}
-{Colors.HEADER}║   {Colors.BOLD}欢迎使用喵币助手Next v20260618-D{Colors.ENDC}{Colors.HEADER}       ║{Colors.ENDC}
+{Colors.HEADER}║   {Colors.BOLD}欢迎使用喵币助手Next {local_version}{Colors.ENDC}{Colors.HEADER}       ║{Colors.ENDC}
 {Colors.HEADER}║                                          ║{Colors.ENDC}
 {Colors.HEADER}╚══════════════════════════════════════════╝{Colors.ENDC}
 """
@@ -197,6 +234,7 @@ def main():
     LOG_LEVEL = args.loglevel
 
     display_welcome()
+    check_version()
 
     # 设备选择
     device_type = select_device()
