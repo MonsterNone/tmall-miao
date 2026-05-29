@@ -1,4 +1,4 @@
-# 618任务助手(HarmonyOS Next版)
+# 618任务助手(鸿蒙/安卓通用版)
 
 > AutoJS版太容易被检测，已停止开发。
 
@@ -17,51 +17,94 @@
 - [ ] 京东推红包任务
 - [ ] 京东红包打卡任务
 
+已完成：
+
+- [x] 适配Android (uiautomator2)
+- [x] 适配HarmonyOS (hmdriver2)
+- [x] 运行时设备类型选择
+
 开发中：
+
 - [ ] 打包运行
-- [ ] 适配Android
 
 > 当前仍在开发调试中，请手动运行。后续可能会制作一键运行安装包。
 
-> 此版本理论上也可以修改几行代码转换为uiautomator2在安卓运行，后续可能会制作整合版。
-
 ## 任务依赖
 
-由于鸿蒙系统特性，需要使用电脑（Win/Mac）运行
+由于系统特性，需要使用电脑（Win/Mac）运行
 
 1. Python3.8+版本
-2. 鸿蒙HDC调试工具
-2. [hmdriver2](https://github.com/codematrixer/hmdriver2)库
-3. 手机开启开发者模式，并打开USB调试或无线调试
+2. 对应的调试工具：
+   - 鸿蒙：HDC调试工具
+   - 安卓：ADB调试工具
+3. 对应的自动化库：
+   - 鸿蒙：[hmdriver2](https://github.com/codematrixer/hmdriver2)
+   - 安卓：[uiautomator2](https://github.com/openatx/uiautomator2)
+4. 手机开启开发者模式，并打开USB调试或无线调试
+
+## 克隆仓库
+
+git clone或右上角下载zip均可
 
 ## 安装依赖
 
-1. 下载python3
+### 1. 下载Python3
 
 https://www.python.org/downloads/
 
-> Windows推荐3.10版本，https://www.python.org/ftp/python/3.10.11/
+推荐3.10版本，https://www.python.org/ftp/python/3.10.11/
 
-2. 安装HDC工具，并配置环境变量
+### 2. 安装自动化库
+
+电脑上打开终端，执行：
+
+```bash
+# 安装两个库（都装上，运行时选择设备类型）
+pip3 install -r requirements.txt
+```
+
+### 3. 安装调试工具
+
+**鸿蒙设备：**
+
+安装HDC工具，并配置环境变量
 
 [官网操作指南](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/hdc#环境准备)
 
-安装后根据指南后续不知，添加hdc到系统环境变量
+**安卓设备：**
 
-3. 安装hmdirver2基础库
+安装ADB工具，并配置环境变量
 
-电脑上打开终端，执行`pip3 install -U hmdriver2`
+然后初始化uiautomator2设备端：
 
-4. 开启手机usb调试，并连接电脑
+```bash
+python -m uiautomator2 init
+```
+
+### 4. 开启手机USB调试，并连接电脑
+
+**鸿蒙设备：**
 
 `设置`-点击账号下方`手机名称`-连续点击5次`软件版本`，开启开发者选项
 
 重启后`设置`-`系统`-`开发者选项`，打开`USB调试`或`无线调试`
 
-USB连接： 通过数据线连接电脑，终端执行hdc list targets查看是否显示手机
+USB连接：通过数据线连接电脑，终端执行`hdc list targets`查看是否显示手机
 
 无线连接：终端输入`hdc tconn 手机无线调试显示的ip:端口号`
 
+**安卓设备：**
+
+`设置`-`关于手机`-连续点击7次`版本号`，开启开发者选项
+
+`设置`-`开发者选项`，打开`USB调试`
+
+USB连接：通过数据线连接电脑，终端执行`adb devices`查看是否显示手机
+
 ## 运行脚本
 
-`python main.py`
+```bash
+python main.py
+```
+
+运行后会提示选择设备类型（鸿蒙/安卓），选择后即可使用。
