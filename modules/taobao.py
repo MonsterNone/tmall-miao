@@ -35,7 +35,8 @@ def get_coin(d):
 # 任务名为浏览15秒
 def find_time_15_task(d):
     logger.info('寻找浏览15秒任务')
-    xpath = "//*[@text='去完成'][parent::*[.//*[contains(@text, '浏览15')]]]"
+    # 先找到包含"浏览15"的元素，再找其父容器下的"去完成"按钮
+    xpath = "//*[contains(@text, '浏览15')]/..//*[@text='去完成']"
     if d.xpath_exists(xpath):
         d.xpath(xpath).click()
         return True
@@ -113,13 +114,38 @@ def run(d):
     logger.info('首先关闭音量')
     mute(d)
 
-    open_taobao_search(d, '618赢20亿')
+    # 选择启动模式
+    print()
+    print("╔══════════════════════════════════════════╗")
+    print("║          请选择启动模式                  ║")
+    print("╠══════════════════════════════════════════╣")
+    print("║ 1. 自动打开活动（默认）                  ║")
+    print("║ 2. 手动打开活动（适用于淘宝分身）        ║")
+    print("╚══════════════════════════════════════════╝")
+    while True:
+        mode = input("请选择 (1-2，默认1): ").strip()
+        if mode == '' or mode == '1':
+            logger.info('使用自动模式')
+            open_taobao_search(d, '618赢20亿')
+            logger.info('等待活动打开...')
+            if not find_timeout_re(d, '赚体力', 30):
+                logger.info('未检测到活动页，退出')
+                raise RuntimeError('未检测到活动页')
+            logger.info('活动已打开')
+            break
+        elif mode == '2':
+            logger.info('使用手动模式，请手动打开淘宝分身并进入活动页面')
+            input("请手动打开淘宝分身并进入活动页面，完成后按回车继续...")
+            logger.info('等待检测活动页...')
+            if not find_timeout_re(d, '赚体力', 10):
+                logger.info('未检测到活动页，退出')
+                raise RuntimeError('未检测到活动页，请确认已进入活动页面')
+            logger.info('检测到活动页面')
+            break
+        else:
+            print("无效选择，请输入1或2")
 
-    logger.info('等待活动打开...')
-    if not find_timeout_re(d, '赚体力', 30):
-        logger.info('未检测到活动页，退出')
-        raise RuntimeError('未检测到活动页')
-    logger.info('活动已打开，开始任务')
+    logger.info('开始任务')
 
     startCoin = get_coin(d)
 
