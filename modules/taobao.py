@@ -35,8 +35,7 @@ def get_coin(d):
 # 任务名为浏览15秒
 def find_time_15_task(d):
     logger.info('寻找浏览15秒任务')
-    # 先找到包含"浏览15"的元素，再找其父容器下的"去完成"按钮
-    xpath = "//*[contains(@text, '浏览15')]/..//*[@text='去完成']"
+    xpath = "//*[@text='去完成'][..//*[contains(@text, '浏览15')]]"
     if d.xpath_exists(xpath):
         d.xpath(xpath).click()
         return True
@@ -58,7 +57,7 @@ def find_time_15_search_task(d):
 # 任务名为浏览5秒，且不是搜索
 def find_time_5_task(d):
     logger.info('寻找浏览5秒任务')
-    xpath = "//*[@text='去完成'][parent::*[.//*[contains(@text, '浏览5秒')]]]"
+    xpath = "//*[@text='去完成'][..//*[contains(@text, '浏览5秒')]]"
     if d.xpath_exists(xpath):
         d.xpath(xpath).click()
         return True
@@ -165,6 +164,9 @@ def run(d):
     while True:
         no_time_15_task_flag = False
         no_time_5_task_flag = False
+
+        logger.info('等待任务列表刷新')
+        time.sleep(5)
 
         if find_time_15_task(d):
             logger.info('进行浏览任务')

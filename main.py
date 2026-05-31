@@ -230,9 +230,9 @@ def main():
     """程序主函数"""
     parser = argparse.ArgumentParser(description='喵币助手Next - 618自动化任务')
     parser.add_argument(
-        '--log', dest='loglevel', default='INFO',
+        '--log', dest='loglevel', default='DEBUG',
         choices=['DEBUG', 'INFO', 'WARNING', 'ERROR'],
-        help='日志级别 (默认: INFO)'
+        help='日志级别 (默认: DEBUG)'
     )
     args = parser.parse_args()
 
