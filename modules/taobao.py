@@ -99,6 +99,10 @@ def do_task(d):
     time.sleep(18)
     logger.info('返回')
     d.go_back()
+    if matched == '搜索发现':
+        time.sleep(1)
+        logger.info('再次返回')
+        d.go_back()
     logger.info('任务已完成')
     return True
 
