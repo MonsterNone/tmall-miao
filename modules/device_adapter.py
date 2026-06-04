@@ -32,7 +32,7 @@ class DeviceAdapter:
         if self.device_type == 'hmdriver2':
             import hmdriver2
             from hmdriver2.driver import Driver
-            hmdriver2.driver.logger.disabled = True
+            hmdriver2.driver.logger.disabled = False
             if self.serial:
                 # 无线连接：先通过 hdc tconn 连接远程设备
                 import subprocess

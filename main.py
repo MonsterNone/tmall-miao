@@ -29,6 +29,7 @@ class Colors:
     INFO = '\033[90m'
     INPUT = '\033[33m'
     BLINK = '\033[5m'
+    LIGHT_GRAY = '\033[38;5;250m'
 
 
 def is_windows():
@@ -238,11 +239,23 @@ def main():
 
     # 统一日志配置
     import logging
-    logging.basicConfig(
-        format='%(asctime)s %(levelname)-8s [%(filename)-9s:%(lineno)-3d] %(message)s',
+
+    class ColoredFormatter(logging.Formatter):
+        """带颜色的日志格式化器，DEBUG级别整行显示为浅灰色"""
+        def format(self, record):
+            result = super().format(record)
+            if record.levelno == logging.DEBUG:
+                result = f'{Colors.LIGHT_GRAY}{result}{Colors.ENDC}'
+            return result
+
+    formatter = ColoredFormatter(
+        fmt='%(asctime)s %(levelname)-8s [%(filename)-9s:%(lineno)-3d] %(message)s',
         datefmt='%Y-%m-%d:%H:%M:%S'
     )
+    handler = logging.StreamHandler()
+    handler.setFormatter(formatter)
     root_logger = logging.getLogger()
+    root_logger.addHandler(handler)
     root_logger.setLevel(getattr(logging, args.loglevel))
     global LOG_LEVEL
     LOG_LEVEL = args.loglevel
