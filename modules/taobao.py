@@ -212,8 +212,29 @@ def run(d):
         #     no_time_15_search_task_flag = True
 
         if find_time_5_task(d):
-            logger.info('进行浏览5秒任务，8秒自动返回')
-            time.sleep(8)
+            logger.info('进行浏览5秒任务，等待检测到浏览5秒字样且离开任务列表')
+            # 等待检测到"浏览5秒"字样且不在任务列表
+            start_time = time.time()
+            detected = False
+            while time.time() - start_time < 15:  # 最多等待15秒
+                # 检查是否在任务列表（有累计任务奖励字样）
+                if d(text='累计任务奖励').exists():
+                    logger.debug('仍在任务列表，继续等待')
+                    time.sleep(0.5)
+                    continue
+                # 检查页面是否出现"浏览5秒"字样
+                if d.xpath('//*[contains(@text, "浏览5秒") or contains(@text, "任务已完成")]').exists():
+                    logger.info('检测到浏览5秒字样且已离开任务列表，开始计时8秒')
+                    detected = True
+                    break
+                time.sleep(0.5)
+
+            if detected:
+                time.sleep(8)
+                logger.info('8秒等待完成，准备返回')
+            else:
+                logger.warning('未检测到浏览5秒字样，超时返回')
+
             done_count += 1
 
             if not return_task_list(d):
