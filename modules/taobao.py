@@ -22,13 +22,13 @@ def return_task_list(d):
     return True
 
 
-# 获取当前体力
+# 获取当前能量
 def get_coin(d):
-    logger.info('获取当前体力')
+    logger.info('获取当前能量')
     j = d.dump_hierarchy()
-    coin = re.findall(r'剩余 (\d*) 体力', json.dumps(j, ensure_ascii=False))[0]
+    coin = re.findall(r'剩余 (\d*) 能量', json.dumps(j, ensure_ascii=False))[0]
     coin = int(coin)
-    logger.info('当前共有 {} 体力'.format(coin))
+    logger.info('当前共有 {} 能量'.format(coin))
     return coin
 
 
@@ -69,7 +69,7 @@ def do_task(d):
     """执行浏览/搜索任务，自动判断页面标识"""
     logger.info('等待进入任务页面')
 
-    result = find_timeout_re(d, '搜索发现|310x310xzq90|浏览15[秒s]"[\s\S]+?得', 10)
+    result = find_timeout_re(d, '搜索发现|金币已抵|浏览15[秒s]"[\s\S]+?得|秒可领', 10)
     logger.debug(result)
     if not result:
         logger.info('进入任务失败，未检测到任何标识')
@@ -80,20 +80,20 @@ def do_task(d):
         logger.info('检测到搜索标识，进行搜索任务')
         if d.device_type == 'hmdriver2':
             d.xpath('//*[@text="搜索发现"]/parent::*/list/listItem[1]').click()
-            if not find_timeout_re(d, '310x310xzq90', 10):
-                logger.info('搜索任务失败，未检测到310x310xzq90标识')
+            if not find_timeout_re(d, '金币已抵', 10):
+                logger.info('搜索任务失败，未检测到金币已抵标识')
                 return False
-            d.xpath('//*[contains(@text, "310x310xzq90")]').click()
+            d.xpath('//*[contains(@text, "金币已抵")]').click()
         else:
             d.xpath('//*[@text="搜索发现"]/following-sibling::*[1]/*[1]').click()
-            if not d.xpath('//*[contains(@text, "310x310xzq90")]').click_exists(timeout=10):
-                logger.info('搜索任务失败，未检测到310x310xzq90标识')
+            if not d.xpath('//*[contains(@text, "金币已抵")]').click_exists(timeout=10):
+                logger.info('搜索任务失败，未检测到金币已抵标识')
                 return False
     elif '浏览15' in matched:
         logger.info('检测到沉浸浏览标识，进行浏览任务')
     else:
         logger.info('检测到浏览标识，进行浏览任务')
-        d.xpath('//*[contains(@text, "310x310xzq90")]').click()
+        d.xpath('//*[contains(@text, "金币已抵")]').click()
 
     logger.info('浏览中 等待18秒返回')
     time.sleep(18)
@@ -129,9 +129,9 @@ def run(d):
         mode = input("请选择 (1-2，默认1): ").strip()
         if mode == '' or mode == '1':
             logger.info('使用自动模式')
-            open_taobao_search(d, '618赢20亿')
+            open_taobao_search(d, '淘金币赢20亿')
             logger.info('等待活动打开...')
-            if not find_timeout_re(d, '赚体力', 30):
+            if not find_timeout_re(d, '去赚能量', 30):
                 logger.info('未检测到活动页，退出')
                 raise RuntimeError('未检测到活动页')
             logger.info('活动已打开')
@@ -140,7 +140,7 @@ def run(d):
             logger.info('使用手动模式，请手动打开淘宝分身并进入活动页面')
             input("请手动打开淘宝分身并进入活动页面，完成后按回车继续...")
             logger.info('等待检测活动页...')
-            if not find_timeout_re(d, '赚体力', 10):
+            if not find_timeout_re(d, '去赚能量', 10):
                 logger.info('未检测到活动页，退出')
                 raise RuntimeError('未检测到活动页，请确认已进入活动页面')
             logger.info('检测到活动页面')
@@ -154,7 +154,7 @@ def run(d):
 
     logger.info('打开任务列表')
     time.sleep(5)
-    d(text="赚体力").click()
+    d(text="去赚能量").click()
     logger.info('等待任务列表')
     if find_timeout_re(d, '累计任务奖励', 10):
         logger.info('任务列表打开成功')
@@ -258,7 +258,7 @@ def run(d):
         time.sleep(0.5)
 
     endCoin = get_coin(d)
-    logger.info('本次运行共完成 {} 任务，获得 {} 体力'.format(done_count, endCoin - startCoin))
+    logger.info('本次运行共完成 {} 任务，获得 {} 能量'.format(done_count, endCoin - startCoin))
 
     logger.info('运行结束')
 
