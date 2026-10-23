@@ -57,7 +57,17 @@ def find_time_15_search_task(d):
 # 任务名为浏览5秒，且不是搜索
 def find_time_5_task(d):
     logger.info('寻找浏览5秒任务')
-    xpath = "//*[@text='去完成'][..//*[contains(@text, '浏览5秒')]]"
+    xpath = "//*[@text='去完成'][parent::*[.//*[contains(@text, '浏览5秒')] and not(.//*[contains(@text, '搜一搜')])]]"
+    if d.xpath_exists(xpath):
+        d.xpath(xpath).click()
+        return True
+    else:
+        return False
+
+# 任务名为浏览5秒，是搜索
+def find_time_5_search_task(d):
+    logger.info('寻找浏览5秒搜索任务')
+    xpath = "//*[@text='去完成'][parent::*[.//*[contains(@text, '浏览5秒')] and .//*[contains(@text, '搜一搜')]]]"
     if d.xpath_exists(xpath):
         d.xpath(xpath).click()
         return True
@@ -69,7 +79,7 @@ def do_task(d):
     """执行浏览/搜索任务，自动判断页面标识"""
     logger.info('等待进入任务页面')
 
-    result = find_timeout_re(d, '搜索发现|金币已抵|浏览15[秒s]"[\s\S]+?得|秒可领', 10)
+    result = find_timeout_re(d, '搜索发现|浏览15[秒s]"[\s\S]+?得|秒可领', 10)
     logger.debug(result)
     if not result:
         logger.info('进入任务失败，未检测到任何标识')
@@ -80,20 +90,20 @@ def do_task(d):
         logger.info('检测到搜索标识，进行搜索任务')
         if d.device_type == 'hmdriver2':
             d.xpath('//*[@text="搜索发现"]/parent::*/list/listItem[1]').click()
-            if not find_timeout_re(d, '金币已抵', 10):
+            if not find_timeout_re(d, '金币已抵|金币热卖价', 10):
                 logger.info('搜索任务失败，未检测到金币已抵标识')
                 return False
-            d.xpath('//*[contains(@text, "金币已抵")]').click()
+            d.xpath('//*[contains(@text, "金币已抵") or contains(@text, "金币热卖价")]').click()
         else:
             d.xpath('//*[@text="搜索发现"]/following-sibling::*[1]/*[1]').click()
-            if not d.xpath('//*[contains(@text, "金币已抵")]').click_exists(timeout=10):
+            if not d.xpath('//*contains(@text, "金币已抵") or contains(@text, "金币热卖价")').click_exists(timeout=10):
                 logger.info('搜索任务失败，未检测到金币已抵标识')
                 return False
     elif '浏览15' in matched:
         logger.info('检测到沉浸浏览标识，进行浏览任务')
     else:
         logger.info('检测到浏览标识，进行浏览任务')
-        d.xpath('//*[contains(@text, "金币已抵")]').click()
+        d.xpath('//*[contains(@text, "金币已抵") or contains(@text, "金币热卖价")]').click()
 
     logger.info('浏览中 等待18秒返回')
     time.sleep(18)
@@ -107,6 +117,18 @@ def do_task(d):
     return True
 
 
+def do_time_5_search_task(d):
+    if find_timeout_re(d, '搜索发现', 10):
+        xpath = '//*[@content-desc="搜索发现"]/../*[normalize-space(@content-desc)!="" and @content-desc!="搜索发现"][2]'
+
+        d.xpath(xpath).click()
+        logger.info('已点击搜索，等待10秒自动返回')
+        time.sleep(10)
+        return True
+    else:
+        print('未找到搜索标识，跳过')
+        return False
+
 def run(d):
 
     logger.info('开始运行...')
@@ -114,8 +136,8 @@ def run(d):
     startCoin = 0
     endCoin = 0
 
-    logger.info('首先关闭音量')
-    mute(d)
+    # logger.info('首先关闭音量')
+    # mute(d)
 
     # 选择启动模式
     print()
@@ -168,6 +190,7 @@ def run(d):
     while True:
         no_time_15_task_flag = False
         no_time_5_task_flag = False
+        no_time_5_search_task_flag = False
 
         logger.info('等待任务列表刷新')
         time.sleep(5)
@@ -223,7 +246,7 @@ def run(d):
                     time.sleep(0.5)
                     continue
                 # 检查页面是否出现"浏览5秒"字样
-                if d.xpath('//*[contains(@text, "浏览5秒") or contains(@text, "任务已完成")]').exists():
+                if d.xpath_exists('//*[contains(@text, "浏览5秒") or contains(@text, "任务已完成")]'):
                     logger.info('检测到浏览5秒字样且已离开任务列表，开始计时8秒')
                     detected = True
                     break
@@ -247,7 +270,27 @@ def run(d):
             logger.info('没有浏览5秒任务')
             no_time_5_task_flag = True
 
-        if no_time_15_task_flag and no_time_5_task_flag:
+        if find_time_5_search_task(d):
+            logger.info('进行浏览5秒搜索任务')
+
+            if not do_time_5_search_task(d):
+                logger.info('浏览5秒搜索失败')
+            else:
+                done_count += 1
+                logger.info('浏览5秒搜索成功')
+
+            time.sleep(3)
+            if not return_task_list(d):
+                logger.info('返回任务列表失败，请重新运行')
+                raise RuntimeError('返回任务列表失败')
+            else:
+                logger.info('返回成功，进行下一个任务')
+                continue
+        else:
+            logger.info('没有浏览5秒搜索任务')
+            no_time_5_search_task_flag = True
+
+        if no_time_15_task_flag and no_time_5_task_flag and no_time_5_search_task_flag  :
             logger.info('没有任务了')
             break
 
