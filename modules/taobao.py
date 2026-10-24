@@ -176,7 +176,7 @@ def run(d):
 
     logger.info('打开任务列表')
     time.sleep(5)
-    d(text="去赚能量").click()
+    d.xpath('//*[contains(@text, "去赚能量")]').click()
     logger.info('等待任务列表')
     if find_timeout_re(d, '累计任务奖励', 10):
         logger.info('任务列表打开成功')
