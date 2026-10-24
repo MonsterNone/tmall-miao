@@ -96,7 +96,7 @@ def do_task(d):
             d.xpath('//*[contains(@text, "金币已抵") or contains(@text, "金币热卖价")]').click()
         else:
             d.xpath('//*[@text="搜索发现"]/following-sibling::*[1]/*[1]').click()
-            if not d.xpath('//*contains(@text, "金币已抵") or contains(@text, "金币热卖价")').click_exists(timeout=10):
+            if not d.xpath('//*[contains(@text, "金币已抵") or contains(@text, "金币热卖价")]').click_exists(timeout=10):
                 logger.info('搜索任务失败，未检测到金币已抵标识')
                 return False
     elif '浏览15' in matched:
