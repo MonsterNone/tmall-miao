@@ -300,6 +300,9 @@ def run(d):
         d.xpath('//*[contains(@text, "立即领取")]').click()
         time.sleep(0.5)
 
+    logger.info('关闭任务列表，等待能量值刷新')
+    d(text='关闭').click()
+    time.sleep(3)
     endCoin = get_coin(d)
     logger.info('本次运行共完成 {} 任务，获得 {} 能量'.format(done_count, endCoin - startCoin))
 
