@@ -3,7 +3,7 @@ import logging
 import re
 import time
 
-from modules.utils import open_taobao_search, find_timeout_xpath, logger, find_timeout_re, mute
+from modules.utils import open_taobao_search, logger, find_timeout_re, mute
 
 
 # 检查是否在任务列表并返回
@@ -297,7 +297,7 @@ def run(d):
     logger.info('领取累计任务奖励')
     for i in find_timeout_re(d, '立即领取', 1):
         logger.info('领取')
-        d.click_if_exists(text='立即领取')
+        d.xpath('//*[contains(@text, "立即领取")]').click()
         time.sleep(0.5)
 
     endCoin = get_coin(d)
