@@ -72,6 +72,7 @@ def _read_local_version():
 def check_version():
     """检测是否有新版本，有则提示，异常时静默跳过"""
     local_version = _read_local_version()
+    print('检查更新中...')
     if not local_version:
         return
 
@@ -108,6 +109,28 @@ def display_welcome():
     time.sleep(0.2)
 
     print()
+
+def display_features():
+    
+    features = [
+        f"{Colors.OKCYAN}✓ 互助QQ群：533943195{Colors.ENDC}",
+        f"{Colors.OKCYAN}✓ 互助网站：https://tasku.top{Colors.ENDC}"
+    ]
+
+    for feature in features:
+        print(feature)
+    print()
+
+
+def display_red():
+    features = [
+        f"{Colors.HEADER}🐱：淘宝双十一无门槛红包，搜索【红包到手91199】{Colors.ENDC}",
+        f"{Colors.HEADER}🐶：京东双十一无门槛红包，搜索【购物红包128】{Colors.ENDC}"
+    ]
+    
+    for feature in features:
+        animate_text(feature, 0.01)
+        time.sleep(0.05)
 
 
 def select_device():
@@ -158,14 +181,6 @@ def select_connection():
 
 
 def display_menu():
-    features = [
-        f"{Colors.OKCYAN}✓ 互助QQ群：533943195{Colors.ENDC}",
-        f"{Colors.OKCYAN}✓ 互助网站：https://tasku.top{Colors.ENDC}"
-    ]
-
-    for feature in features:
-        animate_text(feature, 0.01)
-        time.sleep(0.05)
 
     """显示优化的功能菜单"""
     print(f"{Colors.OKBLUE}╔══════════════════════════════════════════╗{Colors.ENDC}")
@@ -229,7 +244,7 @@ class _LoadingSpinner:
 
 def main():
     """程序主函数"""
-    parser = argparse.ArgumentParser(description='喵币助手Next - 618自动化任务')
+    parser = argparse.ArgumentParser(description='喵币助手Next - 双十一自动化任务')
     parser.add_argument(
         '--log', dest='loglevel', default='DEBUG',
         choices=['DEBUG', 'INFO', 'WARNING', 'ERROR'],
@@ -261,6 +276,7 @@ def main():
     LOG_LEVEL = args.loglevel
 
     display_welcome()
+    display_features()
     check_version()
 
     # 设备选择
@@ -310,7 +326,10 @@ def main():
     print('\n\n\n')
 
     while True:
+        display_features()
+        display_red()
         display_menu()
+        
 
         try:
             print(f"{Colors.INPUT}任务运行中按Ctrl+C可以停止{Colors.ENDC}")
