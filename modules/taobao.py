@@ -18,7 +18,9 @@ def return_task_list(d):
         logger.info("返回失败，再次返回重试")
         d.go_back()
         if not find_timeout_re(d, "累计任务奖励", 5):
-            return False
+            d.go_back()
+            if not find_timeout_re(d, "累计任务奖励", 5):
+                return False
     return True
 
 
